@@ -1,4 +1,3 @@
-import { Bubbles } from './Bubbles';
 import { WaveDivider } from './WaveDivider';
 
 export function Hero({ location }) {
@@ -15,10 +14,22 @@ export function Hero({ location }) {
   if (words.length && words[words.length - 1].br) words.pop();
 
   return (
-    <header className="hero-shell" id="top">
-      <Bubbles />
-      <div className="container-x">
-        <div className="relative z-[3] pb-[140px] max-[720px]:pb-[110px]">
+    <header className="hero-shell relative overflow-hidden" id="top">
+      <video
+        className="absolute inset-0 h-full w-full object-cover z-0"
+        src="https://www.aquaimagicaa.com/surat/wp-content/uploads/aquamagica-video-desktop.mp4"
+        poster={hero.videoPoster}
+        autoPlay
+        muted
+        loop
+        playsInline
+        preload="auto"
+      />
+      {/* keeps text/badges readable over the footage — tune opacity to taste */}
+      <div className="absolute inset-0 z-[1] bg-gradient-to-b from-black/40 via-black/20 to-black/50" />
+
+      <div className="container-x relative z-[3]">
+        <div className="relative pb-[140px] max-[720px]:pb-[110px]">
           <p className="eyebrow eyebrow-sun hero-fade mb-5">{hours.eyebrow}</p>
           <h1 className="hero-title">
             {words.map((item) => {
@@ -36,6 +47,7 @@ export function Hero({ location }) {
           </div>
         </div>
       </div>
+
       <div className="container-x absolute left-0 right-0 bottom-16 z-[3] flex justify-between items-end gap-6 opacity-0 max-[720px]:hidden" style={{ animation: 'fadeUp .8s cubic-bezier(.22,1,.36,1) forwards .8s' }}>
         <div className="flex gap-10">
           {hero.meta.map((m) => (
@@ -44,6 +56,7 @@ export function Hero({ location }) {
         </div>
         <div className="scroll-cue" aria-hidden="true">Scroll</div>
       </div>
+
       <WaveDivider fill="#EAFBFD" />
     </header>
   );

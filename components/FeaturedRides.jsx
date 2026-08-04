@@ -19,8 +19,26 @@ export function FeaturedRides({ locationSlug }) {
 
         <Reveal className="grid grid-cols-3 gap-5 max-[1024px]:grid-cols-2 max-[720px]:flex max-[720px]:overflow-x-auto max-[720px]:snap-x max-[720px]:snap-mandatory max-[720px]:-mx-4 max-[720px]:px-4 max-[720px]:pb-3 max-[720px]:gap-4">
           {FEATURED_RIDES.map((ride) => (
-            <Link key={ride.name} href={`/${locationSlug}/rides/${ride.slug}`} className="ride-card max-[720px]:flex-[0_0_78%] max-[720px]:snap-center text-inherit hover:text-inherit">
-              <div className={`ride-art ${ride.artClass}`} aria-hidden="true" />
+            <Link
+              key={ride.name}
+              href={`/${locationSlug}/rides/${ride.slug}`}
+              className="ride-card max-[720px]:flex-[0_0_78%] max-[720px]:snap-center text-inherit hover:text-inherit"
+            >
+              <div className={`ride-art relative overflow-hidden ${ride.artClass}`}>
+                <video
+                  className="absolute inset-0 h-full w-full object-cover"
+                  src={ride.video}
+                  poster={ride.poster}
+                  autoPlay
+                  muted
+                  loop
+                  playsInline
+                  preload="metadata"
+                />
+                {/* keeps white text readable over any footage */}
+                <div className="absolute inset-0 bg-gradient-to-t from-black/75 via-black/10 to-transparent" />
+              </div>
+
               <div className="absolute top-4 left-4 right-4 flex justify-between z-[2]">
                 {ride.badges.map((b) => <span key={b.label} className={`chip ${b.cls}`}>{b.label}</span>)}
               </div>
