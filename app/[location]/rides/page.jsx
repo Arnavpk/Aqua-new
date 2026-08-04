@@ -13,7 +13,7 @@ import { RIDE_SECTIONS } from '@/lib/data/rides';
 export function generateMetadata({ params }) {
   const loc = getLocation(params.location);
   return {
-    title: `Rides & Attractions — ${loc?.displayName}`,
+    title: `Rides & Attractions to page — ${loc?.displayName}`,
     description: `Explore 14 signature rides, 3 pools and live events at ${loc?.displayName}.`,
   };
 }
