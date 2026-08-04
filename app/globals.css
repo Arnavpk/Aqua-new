@@ -113,6 +113,75 @@
   .group[data-solid="true"] .nav-burger { @apply bg-brand-50; border-color: theme('colors.line'); }
   .nav-burger span { @apply w-4 block; height: 1.5px; background: currentColor; }
 
+  /* ---- Nav dropdown ---- */
+  .nav-dropdown {
+    @apply absolute bg-white text-ink;
+    top: calc(100% + 10px);
+    left: 50%;
+    transform: translateX(-50%) translateY(6px);
+    min-width: 220px;
+    border-radius: 20px;
+    padding: 16px;
+    border: 1px solid theme('colors.line');
+    box-shadow: 0 20px 60px -15px rgba(10,85,102,.35);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity .25s cubic-bezier(.22,1,.36,1), transform .25s cubic-bezier(.22,1,.36,1);
+    z-index: 50;
+  }
+  .nav-dropdown::before {
+    content: "";
+    @apply absolute bg-white;
+    top: -5px;
+    left: 50%;
+    transform: translateX(-50%) rotate(45deg);
+    width: 10px;
+    height: 10px;
+    border-top: 1px solid theme('colors.line');
+    border-left: 1px solid theme('colors.line');
+  }
+  .nav-item:hover .nav-dropdown,
+  .nav-item:focus-within .nav-dropdown {
+    opacity: 1;
+    pointer-events: auto;
+    transform: translateX(-50%) translateY(0);
+  }
+  .nav-dropdown-heading {
+    @apply font-accent text-[10px] uppercase font-semibold text-ink-2 m-0 mb-2 mt-3 first:mt-0;
+    letter-spacing: .2em;
+  }
+  .nav-dropdown a {
+    @apply block text-sm font-medium text-ink rounded-[12px] no-underline;
+    padding: 10px 14px;
+    transition: background .2s cubic-bezier(.22,1,.36,1);
+  }
+  .nav-dropdown a:hover {
+    @apply bg-brand-50 text-brand-700;
+  }
+  /* Invisible bridge so mouse can travel from trigger to dropdown */
+  .nav-item-has-dropdown::after {
+    content: "";
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    height: 14px;
+  }
+
+  .caret-down {
+    @apply inline-block opacity-60;
+    width: 0; height: 0;
+    border-left: 3.5px solid transparent;
+    border-right: 3.5px solid transparent;
+    border-top: 4.5px solid currentColor;
+    margin-left: 2px;
+    transition: transform .3s cubic-bezier(.22,1,.36,1);
+  }
+  .nav-item:hover .caret-down,
+  .nav-item:focus-within .caret-down {
+    transform: rotate(180deg);
+  }
+
   /* ---- Mobile drawer ---- */
   .drawer-backdrop { @apply fixed inset-0 z-[119]; background: rgba(10,59,71,.5); backdrop-filter: blur(6px); opacity: 0; pointer-events: none; transition: opacity .4s cubic-bezier(.22,1,.36,1); }
   .drawer-backdrop[data-open="true"] { opacity: 1; pointer-events: auto; }

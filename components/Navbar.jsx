@@ -68,10 +68,42 @@ export function Navbar({ location }) {
 
             <div className="nav-links-hide flex gap-1.5 text-sm font-medium">
               {NAV_LINKS.map((link) => (
-                <div key={link.label} className="nav-item">
-                  <Link href={base + link.href} className={isActive(link.href) ? 'is-active' : ''}>
-                    {link.label}
-                  </Link>
+                <div
+                  key={link.label}
+                  className={`nav-item ${link.dropdown ? 'nav-item-has-dropdown relative' : ''}`}
+                >
+                  {link.dropdown ? (
+                    <>
+                      <Link
+                        href={base + link.href}
+                        className={isActive(link.href) ? 'is-active' : ''}
+                      >
+                        {link.label}
+                        <span className="caret-down" aria-hidden="true" />
+                      </Link>
+                      <div className="nav-dropdown">
+                        {link.dropdown.map((group, gi) => (
+                          <div key={gi}>
+                            {group.heading && (
+                              <div className="nav-dropdown-heading">{group.heading}</div>
+                            )}
+                            {group.links.map((dl) => (
+                              <Link key={dl.label} href={base + dl.href}>
+                                {dl.label}
+                              </Link>
+                            ))}
+                          </div>
+                        ))}
+                      </div>
+                    </>
+                  ) : (
+                    <Link
+                      href={base + link.href}
+                      className={isActive(link.href) ? 'is-active' : ''}
+                    >
+                      {link.label}
+                    </Link>
+                  )}
                 </div>
               ))}
             </div>
