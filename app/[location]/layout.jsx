@@ -1,5 +1,6 @@
 import { notFound } from 'next/navigation';
 import { getLocation, getAllLocationSlugs } from '@/lib/locations';
+import { MobileTabBar } from '@/components/MobileTabBar';
 
 export function generateStaticParams() {
   return getAllLocationSlugs().map((slug) => ({ location: slug }));
@@ -22,5 +23,10 @@ export function generateMetadata({ params }) {
 
 export default function LocationLayout({ children, params }) {
   if (!getLocation(params.location)) notFound();
-  return children;
+  return (
+    <>
+      {children}
+      <MobileTabBar locationSlug={params.location} />
+    </>
+  );
 }
