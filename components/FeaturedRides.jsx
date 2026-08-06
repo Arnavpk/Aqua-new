@@ -7,12 +7,16 @@ import { FEATURED_RIDES } from '@/lib/data/home';
 
 const AUTOPLAY_MS = 3000;
 
-export function FeaturedRides({ locationSlug }) {
+export function FeaturedRides({ locationSlug, data }) {
+  const eyebrow = data?.eyebrow || "Featured attractions";
+  const heading = data?.heading || "Pick your adventure.";
+  const rides = data?.rides?.length ? data.rides : FEATURED_RIDES;
+
   const trackRef = useRef(null);
   const timerRef = useRef(null);
   const [idx, setIdx] = useState(0);
   const [paused, setPaused] = useState(false);
-  const total = FEATURED_RIDES.length;
+  const total = rides.length;
 
   /* ---- scroll to card ---- */
   const scrollTo = useCallback((i) => {
@@ -71,8 +75,11 @@ export function FeaturedRides({ locationSlug }) {
       <div className="container-x">
         <Reveal className="section-head max-[720px]:!flex-row max-[720px]:!items-center">
           <div className="max-w-[640px]">
-            <span className="eyebrow mb-3.5 block">Featured attractions</span>
-            <h2 className="h1">Pick your <em>adventure.</em></h2>
+            <span className="eyebrow mb-3.5 block">{eyebrow}</span>
+            <h2 className="h1">
+              {heading.split(" ").slice(0, -1).join(" ")}{" "}
+              <em>{heading.split(" ").slice(-1)}</em>
+            </h2>
           </div>
           <div className="flex items-center gap-3">
             <div className="flex gap-2 max-[720px]:hidden">
@@ -96,38 +103,46 @@ export function FeaturedRides({ locationSlug }) {
             onTouchEnd={onInteractEnd}
             onScroll={onScroll}
           >
-            {FEATURED_RIDES.map((ride) => (
+            {rides.map((ride) => (
               <Link
                 key={ride.name}
                 href={`/${locationSlug}/rides/${ride.slug}`}
                 className="rides-carousel-card text-inherit hover:text-inherit"
               >
-                {/* Art layer — video if available, gradient fallback */}
-                <div className={`ride-art relative overflow-hidden ${ride.artClass}`}>
+                <div className="ride-art relative overflow-hidden bg-gradient-to-br from-brand-900 to-brand-600">
                   {ride.video && (
                     <video
-                      className="absolute inset-0 h-full w-full object-cover"
+                      className="absolute inset-0 h-full w-full object-cover hidden md:block"
                       src={ride.video}
                       poster={ride.poster}
-                      autoPlay
-                      muted
-                      loop
-                      playsInline
+                      autoPlay muted loop playsInline
                       preload="metadata"
                     />
                   )}
-                  {/* Gradient overlay — keeps text readable over video or gradient */}
+                  {ride.mobileVideo ? (
+                    <video
+                      className="absolute inset-0 h-full w-full object-cover md:hidden"
+                      src={ride.mobileVideo}
+                      autoPlay muted loop playsInline
+                      preload="metadata"
+                    />
+                  ) : ride.video ? (
+                    <video
+                      className="absolute inset-0 h-full w-full object-cover md:hidden"
+                      src={ride.video}
+                      autoPlay muted loop playsInline
+                      preload="metadata"
+                    />
+                  ) : null}
                   <div className="absolute inset-0 bg-gradient-to-t from-black/75 via-black/10 to-transparent" />
                 </div>
 
-                {/* Badges */}
                 <div className="absolute top-3 left-3 right-3 flex justify-between z-[2]">
                   {ride.badges.map((b) => (
                     <span key={b.label} className={`chip ${b.cls}`}>{b.label}</span>
                   ))}
                 </div>
 
-                {/* Info */}
                 <div className="absolute left-4 right-4 bottom-4 text-white z-[2]">
                   <div className="font-accent text-[9px] opacity-70 mb-1" style={{ letterSpacing: '.14em' }}>
                     {ride.index} · {ride.category}
@@ -143,7 +158,7 @@ export function FeaturedRides({ locationSlug }) {
 
           {/* Dots */}
           <div className="rides-dots">
-            {FEATURED_RIDES.map((_, i) => (
+            {rides.map((_, i) => (
               <button
                 key={i}
                 type="button"
