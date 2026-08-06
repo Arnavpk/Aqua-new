@@ -26,7 +26,7 @@ export default function RidesPage({ params }) {
       <Navbar location={location} />
       <RidesHero locationSlug={location.slug} />
       <CategoryNav />
-      <FilterBar />
+      {/* <FilterBar /> */}
       <FeaturedRideSpotlight locationSlug={location.slug} />
       <main>
         {RIDE_SECTIONS.map((section) => (

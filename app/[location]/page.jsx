@@ -13,6 +13,7 @@ import { SafetyBand } from '@/components/SafetyBand';
 import { CtaBanner } from '@/components/CtaBanner';
 import { Footer } from '@/components/Footer';
 import { MobBook } from '@/components/MobBook';
+import { PlanVisit } from '@/components/PlanVisit';
 
 export default function LocationHome({ params }) {
   const location = getLocation(params.location);
@@ -23,9 +24,10 @@ export default function LocationHome({ params }) {
       <Hero location={location} />
       <main>
         <FeaturedRides locationSlug={location.slug} />
-        <Categories />
-        <HotOffers locationSlug={location.slug} />
+        {/* <Categories /> */}
         <EventsSplit />
+        <HotOffers locationSlug={location.slug} />
+        <PlanVisit locationSlug={location.slug} />
         <ParkMap />
         <Gallery locationSlug={location.slug} />
         <Testimonials />
