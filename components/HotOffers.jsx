@@ -2,25 +2,46 @@ import Link from 'next/link';
 import { Reveal } from './Reveal';
 import { HOT_OFFERS } from '@/lib/data/home';
 
-export function HotOffers({ locationSlug }) {
+export function HotOffers({ locationSlug, data }) {
+  const eyebrow = data?.eyebrow || "Save more, splash more";
+  const heading = data?.heading || "Hot offers.";
+  const ctaLabel = data?.ctaLabel || "View all offers →";
+  const ctaUrl = data?.ctaUrl || `/${locationSlug}/tickets`;
+  const offers = data?.offers?.length ? data.offers : HOT_OFFERS;
+
   return (
     <section className="section-shell" style={{ paddingTop: 40 }}>
       <div className="container-x">
         <Reveal className="flex justify-between items-end gap-5 mb-6">
           <div>
-            <span className="eyebrow">Save more, splash more</span>
-            <h2 className="h1 mt-3">Hot offers.</h2>
+            <span className="eyebrow">{eyebrow}</span>
+            <h2 className="h1 mt-3">{heading}</h2>
           </div>
-          <Link href={`/${locationSlug}/tickets`} className="btn btn-ghost max-[720px]:hidden">
-            View all offers →
+          <Link href={ctaUrl} className="btn btn-ghost max-[720px]:hidden">
+            {ctaLabel}
           </Link>
         </Reveal>
 
         <Reveal className="grid grid-cols-3 gap-5 max-[1024px]:grid-cols-2 max-[720px]:grid-cols-1">
-          {HOT_OFFERS.map((offer) => (
+          {offers.map((offer) => (
             <div key={offer.slug} className="hot-card">
               <div className="relative" style={{ aspectRatio: '16/10' }}>
-                <div className="absolute inset-0 rounded-t-rl" style={{ background: offer.gradient }} />
+                {offer.image ? (
+                  <>
+                    <img
+                      className="absolute inset-0 h-full w-full object-cover rounded-t-rl hidden md:block"
+                      src={offer.image}
+                      alt={offer.title}
+                    />
+                    <img
+                      className="absolute inset-0 h-full w-full object-cover rounded-t-rl md:hidden"
+                      src={offer.mobileImage || offer.image}
+                      alt={offer.title}
+                    />
+                  </>
+                ) : (
+                  <div className="absolute inset-0 rounded-t-rl bg-gradient-to-br from-brand-500 to-brand-700" />
+                )}
                 <span
                   className="absolute top-3.5 left-3.5 rounded-full px-3 py-1.5 font-accent text-[10.5px] font-bold z-[2]"
                   style={{ background: offer.badge.bg, color: offer.badge.color, letterSpacing: '.06em' }}
