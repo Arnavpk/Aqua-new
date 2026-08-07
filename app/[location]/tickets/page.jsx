@@ -40,8 +40,8 @@ export default function TicketsPage({ params }) {
         primaryCta={{ label: 'Book tickets from ₹599 →', href: `/${location.slug}/tickets` }}
         secondaryCta={{ label: 'Browse offers', href: '#offers' }}
       />
-      <TicketFilterBar />
-      <TicketsGrid locationSlug={location.slug} />
+      {/* <TicketFilterBar /> */}
+      {/* <TicketsGrid locationSlug={location.slug} /> */}
       <OffersGrid locationSlug={location.slug} />
       <HelpStrip locationSlug={location.slug} />
       <Footer location={location} />
