@@ -7,12 +7,15 @@ import { Reveal } from './Reveal';
 const AUTOPLAY = 8000;
 const FADE = 200;
 
-export function Testimonials() {
+export function Testimonials({ data }) {
+  const eyebrow = data?.eyebrow || "4.7 ★ · 12,400 reviews";
+  const quotes = data?.quotes?.length ? data.quotes : QUOTES;
+
   const [idx, setIdx] = useState(0);
   const [displayIdx, setDisplayIdx] = useState(0);
   const [show, setShow] = useState(true);
   const timer = useRef(null);
-  const q = QUOTES[displayIdx];
+  const q = quotes[displayIdx];
 
   useEffect(() => {
     if (idx === displayIdx) return;
@@ -22,10 +25,10 @@ export function Testimonials() {
   }, [idx, displayIdx]);
 
   const stop = useCallback(() => { if (timer.current) { clearInterval(timer.current); timer.current = null; } }, []);
-  const start = useCallback(() => { stop(); if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return; timer.current = setInterval(() => setIdx((i) => (i + 1) % QUOTES.length), AUTOPLAY); }, [stop]);
+  const start = useCallback(() => { stop(); if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return; timer.current = setInterval(() => setIdx((i) => (i + 1) % quotes.length), AUTOPLAY); }, [stop, quotes.length]);
   useEffect(() => { start(); return stop; }, [start, stop]);
 
-  const go = (i) => { setIdx(((i % QUOTES.length) + QUOTES.length) % QUOTES.length); start(); };
+  const go = (i) => { setIdx(((i % quotes.length) + quotes.length) % quotes.length); start(); };
 
   return (
     <section className="section-shell section-tight">
@@ -33,12 +36,16 @@ export function Testimonials() {
         <Reveal>
           <div className="quote-shell" onMouseEnter={stop} onMouseLeave={start}>
             <div className="relative">
-              <span className="eyebrow eyebrow-sun">4.7 ★ · 12,400 reviews</span>
+              <span className="eyebrow eyebrow-sun">{eyebrow}</span>
               <blockquote className={`quote-text ${show ? 'is-visible' : ''}`}>
                 &quot;{q.text}&quot;
               </blockquote>
               <div className="flex items-center gap-4">
-                <div className="w-14 h-14 rounded-full flex-shrink-0 transition-[background] duration-500 ease-smooth" style={{ background: `linear-gradient(135deg, ${q.c1}, ${q.c2})` }} aria-hidden="true" />
+                {q.avatar ? (
+                  <img className="w-14 h-14 rounded-full flex-shrink-0 object-cover" src={q.avatar} alt={q.name} />
+                ) : (
+                  <div className="w-14 h-14 rounded-full flex-shrink-0 transition-[background] duration-500 ease-smooth" style={{ background: `linear-gradient(135deg, ${q.c1}, ${q.c2})` }} aria-hidden="true" />
+                )}
                 <div>
                   <div className="font-semibold">{q.name}</div>
                   <div className="text-sm opacity-70">{q.city}</div>
@@ -49,7 +56,7 @@ export function Testimonials() {
                 </div>
               </div>
               <div className="flex gap-1.5 mt-8" role="tablist">
-                {QUOTES.map((_, i) => (
+                {quotes.map((_, i) => (
                   <button key={i} type="button" className={`quote-dot ${i === displayIdx ? 'is-active' : ''}`} onClick={() => go(i)} aria-label={`Testimonial ${i + 1}`} role="tab" aria-selected={i === displayIdx} />
                 ))}
               </div>
