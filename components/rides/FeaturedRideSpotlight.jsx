@@ -2,15 +2,20 @@ import Link from 'next/link';
 import { FEATURED_RIDE } from '@/lib/data/rides';
 import { Reveal } from '@/components/Reveal';
 
-export function FeaturedRideSpotlight({ locationSlug, ride }) {
-  const r = ride || FEATURED_RIDE;
+export function FeaturedRideSpotlight({ locationSlug, ride, section }) {
+  const r = section?.ridename || FEATURED_RIDE;
+  const badgeText = section?.badgeText || "⭐ FEATURED RIDE";
+  const ctaLabel = section?.ctaLabel || "View ride details →";
+  const previewLabel = section?.previewLabel || "▶ Watch preview";
+  const previewEyebrow = section?.previewEyebrow || "POV · 30-second preview";
+  const previewHeading = section?.previewHeading || "See the drop before you feel it";
 
   return (
     <section className="container-x mb-8">
       <Reveal>
         <div className="featured-ride">
           <div className="relative">
-            <span className="featured-badge">⭐ FEATURED RIDE</span>
+            <span className="featured-badge">{badgeText}</span>
             <h2 className="text-[clamp(40px,5vw,72px)] font-extrabold leading-[.95] tracking-tight m-0 mb-4">
               {r.name}.
             </h2>
@@ -25,15 +30,19 @@ export function FeaturedRideSpotlight({ locationSlug, ride }) {
             </div>
             <div className="flex gap-3 flex-wrap relative">
               <Link href={`/${locationSlug}/rides/${r.slug}`} className="btn btn-primary">
-                View ride details →
+                {ctaLabel}
               </Link>
-              <button type="button" className="btn btn-glass">▶ Watch preview</button>
+              <button type="button" className="btn btn-glass">{previewLabel}</button>
             </div>
           </div>
 
           <div className="featured-visual max-[720px]:hidden">
-            {r.image ? (
-              <img className="absolute inset-0 h-full w-full object-cover z-0" src={r.image} alt={r.name} />
+            {section?.bgImage || r.image ? (
+              <img
+                className="absolute inset-0 h-full w-full object-cover z-0"
+                src={section?.bgImage || r.image}
+                alt={r.name}
+              />
             ) : (
               <>
                 <div className="absolute inset-0 bg-gradient-to-br from-brand-700 to-brand-600" />
@@ -44,8 +53,8 @@ export function FeaturedRideSpotlight({ locationSlug, ride }) {
               ▶
             </button>
             <div className="absolute bottom-6 left-6 z-[3]">
-              <div className="font-accent text-[11px] uppercase opacity-85 font-semibold text-white" style={{ letterSpacing: '.16em' }}>POV · 30-second preview</div>
-              <div className="text-xl font-bold text-white">See the drop before you feel it</div>
+              <div className="font-accent text-[11px] uppercase opacity-85 font-semibold text-white" style={{ letterSpacing: '.16em' }}>{previewEyebrow}</div>
+              <div className="text-xl font-bold text-white">{previewHeading}</div>
             </div>
           </div>
         </div>
