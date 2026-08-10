@@ -1,6 +1,8 @@
 import { notFound } from 'next/navigation';
 import { getLocation, getAllLocationSlugs } from '@/lib/locations';
+import { getAllStrapiLocations } from '@/lib/strapi/getLocations';
 import { MobileTabBar } from '@/components/MobileTabBar';
+import { LocationPicker } from '@/components/LocationPicker';
 
 export function generateStaticParams() {
   return getAllLocationSlugs().map((slug) => ({ location: slug }));
@@ -21,10 +23,14 @@ export function generateMetadata({ params }) {
   };
 }
 
-export default function LocationLayout({ children, params }) {
+export default async function LocationLayout({ children, params }) {
   if (!getLocation(params.location)) notFound();
+
+  const strapiLocations = await getAllStrapiLocations();
+
   return (
     <>
+      <LocationPicker locations={strapiLocations} currentSlug={params.location} />
       {children}
       <MobileTabBar locationSlug={params.location} />
     </>

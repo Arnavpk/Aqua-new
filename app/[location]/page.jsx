@@ -26,6 +26,7 @@ import { CtaBanner } from '@/components/CtaBanner';
 import { extractCtaBanner } from '@/lib/extractors/ctaBannerExtractor';
 import { Footer } from '@/components/Footer';
 import { MobBook } from '@/components/MobBook';
+import { getAllStrapiLocations } from '@/lib/strapi/getLocations';
 
 export default async function LocationHome({ params }) {
   const location = getLocation(params.location);
@@ -43,11 +44,12 @@ export default async function LocationHome({ params }) {
   const ctaBanner = homePage ? extractCtaBanner(homePage) : null;
 
 
+  const strapiLocations = await getAllStrapiLocations();
 
 
   return (
     <>
-      <Navbar location={location} />
+      <Navbar location={location} locations={strapiLocations} />
       <Hero location={{ ...location, hero: hero || location.hero }} />
       <main>
         <FeaturedRides locationSlug={location.slug} data={featuredRides} />

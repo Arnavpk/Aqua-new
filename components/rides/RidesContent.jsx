@@ -6,7 +6,7 @@ import { FeaturedRideSpotlight } from './FeaturedRideSpotlight';
 import { RideSection } from './RideSection';
 import { PlanSafety } from './PlanSafety';
 
-export function RidesContent({ locationSlug, sections, featured, categories, planSafety }) {
+export function RidesContent({ locationSlug, sections, featured, categories, planSafety, featuredSection }) {
     const [activeCat, setActiveCat] = useState('all');
 
     const filteredSections =
@@ -23,7 +23,7 @@ export function RidesContent({ locationSlug, sections, featured, categories, pla
             />
 
             {activeCat === 'all' && (
-                <FeaturedRideSpotlight locationSlug={locationSlug} ride={featured} />
+                <FeaturedRideSpotlight locationSlug={locationSlug} ride={featured} section={featuredSection} />
             )}
 
             <main>
