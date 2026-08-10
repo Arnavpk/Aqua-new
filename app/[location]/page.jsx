@@ -16,13 +16,14 @@ import { ParkMap } from '@/components/ParkMap';
 import { extractParkMap } from '@/lib/extractors/parkMapExtractor';
 import { Gallery } from '@/components/Gallery';
 import { extractGallery } from '@/lib/extractors/galleryExtractor';
-
 import { Testimonials } from '@/components/Testimonials';
 import { extractTestimonials } from '@/lib/extractors/testimonialsExtractor';
-
 import { SafetyBand } from '@/components/SafetyBand';
+import { extractSafetyBand } from '@/lib/extractors/safetyBandExtractor';
 import { FAQ } from '@/components/FAQ';
+import { extractFaq } from '@/lib/extractors/faqExtractor';
 import { CtaBanner } from '@/components/CtaBanner';
+import { extractCtaBanner } from '@/lib/extractors/ctaBannerExtractor';
 import { Footer } from '@/components/Footer';
 import { MobBook } from '@/components/MobBook';
 
@@ -37,6 +38,10 @@ export default async function LocationHome({ params }) {
   const planVisit = homePage ? extractPlanVisit(homePage) : null;
   const gallery = homePage ? extractGallery(homePage) : null;
   const testimonials = homePage ? extractTestimonials(homePage) : null;
+  const safetyBand = homePage ? extractSafetyBand(homePage) : null;
+  const faq = homePage ? extractFaq(homePage) : null;
+  const ctaBanner = homePage ? extractCtaBanner(homePage) : null;
+
 
 
 
@@ -53,9 +58,9 @@ export default async function LocationHome({ params }) {
         <ParkMap data={parkMap} />
         <Gallery locationSlug={location.slug} data={gallery} />
         <Testimonials data={testimonials} />
-        <SafetyBand />
-        <FAQ />
-        <CtaBanner locationSlug={location.slug} />
+        <SafetyBand data={safetyBand} />
+        <FAQ data={faq} />
+        <CtaBanner locationSlug={location.slug} data={ctaBanner} />
       </main>
       <Footer location={location} />
       <MobBook location={location} />

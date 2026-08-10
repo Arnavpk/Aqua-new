@@ -4,15 +4,15 @@ import { useState } from 'react';
 import { RIDE_CATEGORIES } from '@/lib/data/rides';
 import { Reveal } from '@/components/Reveal';
 
-export function CategoryNav() {
+export function CategoryNav({ categories }) {
+  const cats = categories?.length ? categories : RIDE_CATEGORIES;
   const [active, setActive] = useState('all');
 
   return (
     <section style={{ padding: '56px 0 20px' }}>
       <div className="container-x">
-        {/* Desktop: 6-col grid */}
         <Reveal className="cat-nav-desktop">
-          {RIDE_CATEGORIES.map((c) => (
+          {cats.map((c) => (
             <button
               key={c.key}
               type="button"
@@ -26,9 +26,8 @@ export function CategoryNav() {
           ))}
         </Reveal>
 
-        {/* Mobile: horizontal scroll */}
         <Reveal className="cat-nav-mobile">
-          {RIDE_CATEGORIES.map((c) => (
+          {cats.map((c) => (
             <button
               key={c.key}
               type="button"
