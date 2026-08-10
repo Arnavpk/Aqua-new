@@ -6,7 +6,7 @@ import { FeaturedRideSpotlight } from './FeaturedRideSpotlight';
 import { RideSection } from './RideSection';
 import { PlanSafety } from './PlanSafety';
 
-export function RidesContent({ locationSlug, sections, featured, categories }) {
+export function RidesContent({ locationSlug, sections, featured, categories, planSafety }) {
     const [activeCat, setActiveCat] = useState('all');
 
     const filteredSections =
@@ -55,7 +55,7 @@ export function RidesContent({ locationSlug, sections, featured, categories }) {
                     </section>
                 )}
 
-                <PlanSafety locationSlug={locationSlug} />
+                <PlanSafety locationSlug={locationSlug} data={planSafety} />
             </main>
         </>
     );
