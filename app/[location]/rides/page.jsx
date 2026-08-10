@@ -5,11 +5,12 @@ import { Navbar } from '@/components/Navbar';
 import { Footer } from '@/components/Footer';
 import { MobBook } from '@/components/MobBook';
 import { RidesHero } from '@/components/rides/RidesHero';
-import { CategoryNav } from '@/components/rides/CategoryNav';
-import { FeaturedRideSpotlight } from '@/components/rides/FeaturedRideSpotlight';
-import { RideSection } from '@/components/rides/RideSection';
-import { PlanSafety } from '@/components/rides/PlanSafety';
+// import { CategoryNav } from '@/components/rides/CategoryNav';
+// import { FeaturedRideSpotlight } from '@/components/rides/FeaturedRideSpotlight';
+// import { RideSection } from '@/components/rides/RideSection';
+// import { PlanSafety } from '@/components/rides/PlanSafety';
 import { RIDE_SECTIONS, RIDE_CATEGORIES, FEATURED_RIDE } from '@/lib/data/rides';
+import { RidesContent } from '@/components/rides/RidesContent';
 
 export function generateMetadata({ params }) {
   const loc = getLocation(params.location);
@@ -31,14 +32,20 @@ export default async function RidesPage({ params }) {
     <>
       <Navbar location={location} />
       <RidesHero locationSlug={location.slug} />
-      <CategoryNav categories={categories} />
+      {/* <CategoryNav categories={categories} />
       <FeaturedRideSpotlight locationSlug={location.slug} ride={featured} />
       <main>
         {sections.map((section) => (
           <RideSection key={section.key} section={section} locationSlug={location.slug} />
         ))}
         <PlanSafety locationSlug={location.slug} />
-      </main>
+      </main> */}
+       <RidesContent
+        locationSlug={location.slug}
+        sections={sections}
+        featured={featured}
+        categories={categories}
+      />
       <Footer location={location} />
       <MobBook location={location} />
     </>
