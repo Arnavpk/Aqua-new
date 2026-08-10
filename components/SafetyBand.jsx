@@ -1,9 +1,13 @@
 import { Reveal } from './Reveal';
 import { SAFETY_ITEMS, SAFETY_MARQUEE } from '@/lib/data/home';
 
-export function SafetyBand() {
-  // Double the marquee items for infinite scroll effect
-  const doubled = [...SAFETY_MARQUEE, ...SAFETY_MARQUEE, ...SAFETY_MARQUEE, ...SAFETY_MARQUEE];
+export function SafetyBand({ data }) {
+  const heading = data?.heading || "Your Safety Our Priority";
+  const subtitle = data?.subtitle || "Wave pools, slides & aqua fun under the sun";
+  const items = data?.items?.length ? data.items : SAFETY_ITEMS;
+  const marquee = data?.marquee?.length ? data.marquee : SAFETY_MARQUEE;
+
+  const doubled = [...marquee, ...marquee, ...marquee, ...marquee];
 
   return (
     <section className="section-shell section-tight">
@@ -13,13 +17,14 @@ export function SafetyBand() {
             <div className="relative z-[1]">
               <div className="text-center mb-8">
                 <h2 className="h1 text-white">
-                  Your Safety Our <em className="!text-sun">Priority</em>
+                  {heading.split(" ").slice(0, -1).join(" ")}{" "}
+                  <em className="!text-sun">{heading.split(" ").slice(-1)}</em>
                 </h2>
-                <p className="text-white/80 mt-2">Wave pools, slides &amp; aqua fun under the sun</p>
+                <p className="text-white/80 mt-2">{subtitle}</p>
               </div>
 
               <div className="grid grid-cols-4 gap-4 max-[1024px]:grid-cols-2 max-[720px]:grid-cols-2 max-[720px]:gap-3">
-                {SAFETY_ITEMS.map((item) => (
+                {items.map((item) => (
                   <div key={item.title} className="safety-grid-card">
                     <div className="w-12 h-12 rounded-xl flex items-center justify-center text-2xl mb-3" style={{ background: 'linear-gradient(135deg, #EAFBFD, #A8ECF3)' }}>
                       {item.icon}

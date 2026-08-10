@@ -2,8 +2,8 @@ import Link from 'next/link';
 import { FEATURED_RIDE } from '@/lib/data/rides';
 import { Reveal } from '@/components/Reveal';
 
-export function FeaturedRideSpotlight({ locationSlug }) {
-  const r = FEATURED_RIDE;
+export function FeaturedRideSpotlight({ locationSlug, ride }) {
+  const r = ride || FEATURED_RIDE;
 
   return (
     <section className="container-x mb-8">
@@ -32,8 +32,14 @@ export function FeaturedRideSpotlight({ locationSlug }) {
           </div>
 
           <div className="featured-visual max-[720px]:hidden">
-            <div className="absolute inset-0 bg-gradient-to-br from-brand-700 to-brand-600" />
-            <div className="absolute inset-0 flex items-center justify-center text-[220px] opacity-[.35]" aria-hidden="true">🌊</div>
+            {r.image ? (
+              <img className="absolute inset-0 h-full w-full object-cover z-0" src={r.image} alt={r.name} />
+            ) : (
+              <>
+                <div className="absolute inset-0 bg-gradient-to-br from-brand-700 to-brand-600" />
+                <div className="absolute inset-0 flex items-center justify-center text-[220px] opacity-[.35]" aria-hidden="true">🌊</div>
+              </>
+            )}
             <button type="button" className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[88px] h-[88px] rounded-full bg-white/95 flex items-center justify-center text-brand-900 text-[28px] z-[3] cursor-pointer shadow-s3 hover:scale-[1.08] transition-transform" aria-label="Play preview">
               ▶
             </button>

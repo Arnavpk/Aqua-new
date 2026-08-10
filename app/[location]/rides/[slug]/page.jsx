@@ -1,6 +1,8 @@
 import Link from 'next/link';
 import { getLocation } from '@/lib/locations';
-import { getRideDetail, getRideBySlug, getAllRides } from '@/lib/data/rides';
+import { getStrapiRideBySlug } from '@/lib/strapi/getRides';
+import { extractRideDetail } from '@/lib/extractors/rideExtractor';
+import { getRideDetail as getMockDetail, getRideBySlug } from '@/lib/data/rides';
 import { Navbar } from '@/components/Navbar';
 import { Footer } from '@/components/Footer';
 import { MobBook } from '@/components/MobBook';
@@ -8,25 +10,22 @@ import { WaveDivider } from '@/components/WaveDivider';
 import { Reveal } from '@/components/Reveal';
 import { SplashDrops } from '@/components/rides/SplashDrops';
 
-export function generateMetadata({ params }) {
+export async function generateMetadata({ params }) {
   const loc = getLocation(params.location);
-  const ride = getRideBySlug(params.slug);
-  const name = ride?.name || params.slug;
+  const strapiRide = await getStrapiRideBySlug(loc.slug, params.slug);
+  const name = strapiRide?.name || params.slug;
   return {
     title: `${name} — Rides — ${loc?.displayName}`,
-    description: ride?.desc || `Experience ${name} at ${loc?.displayName}.`,
+    description: strapiRide?.description || `Experience ${name} at ${loc?.displayName}.`,
   };
 }
 
-export default function RideDetailPage({ params }) {
+export default async function RideDetailPage({ params }) {
   const location = getLocation(params.location);
-  const detail = getRideDetail(params.slug);
   const base = `/${location.slug}`;
 
-  // Related rides
-  const related = detail.relatedSlugs
-    .map((s) => getRideBySlug(s))
-    .filter(Boolean);
+  const strapiRide = await getStrapiRideBySlug(location.slug, params.slug);
+  const detail = extractRideDetail(strapiRide) || getMockDetail(params.slug);
 
   return (
     <>
@@ -34,7 +33,17 @@ export default function RideDetailPage({ params }) {
 
       {/* ===== CINEMATIC HERO ===== */}
       <header className="ride-detail-hero">
-        <div className="rh-art-bg" aria-hidden="true" />
+        {/* Video must be FIRST and behind everything */}
+        {detail.video && (
+          <video
+            className="absolute inset-0 h-full w-full object-cover z-0"
+            src={detail.video}
+            autoPlay muted loop playsInline
+            preload="metadata"
+          />
+        )}
+        {/* Background pattern — only show when no video */}
+        {!detail.video && <div className="rh-art-bg" aria-hidden="true" />}
         <SplashDrops />
         <div className="container-x relative z-[2] max-w-[820px]">
           <nav className="breadcrumb" aria-label="Breadcrumb">
@@ -57,14 +66,6 @@ export default function RideDetailPage({ params }) {
           <p className="text-[clamp(17px,1.6vw,22px)] max-w-[600px] mb-6 opacity-90 leading-relaxed font-light">
             {detail.lede}
           </p>
-
-          <div className="video-cta mb-5">
-            <span className="play-orb">▶</span>
-            <span className="flex flex-col text-left">
-              <span className="font-accent text-[10px] uppercase opacity-85 font-semibold" style={{ letterSpacing: '.14em' }}>POV Preview · 30s</span>
-              <span className="text-[15px] font-semibold">Watch the drop</span>
-            </span>
-          </div>
 
           <div className="flex gap-3 flex-wrap mb-0">
             <Link href={`${base}/tickets`} className="btn btn-primary">Book tickets →</Link>
@@ -113,42 +114,46 @@ export default function RideDetailPage({ params }) {
             </Reveal>
 
             {/* Gallery */}
-            <Reveal>
-              <div className="content-block">
-                <span className="eyebrow mb-3 block">Ride gallery</span>
-                <h2>See it before you feel it.</h2>
-                <div className="grid grid-cols-4 auto-rows-[140px] gap-3 mt-5 max-[720px]:grid-cols-2">
-                  {[
-                    { cls: 'col-span-2 row-span-2', bg: 'linear-gradient(135deg,#0A5566,#00A5C8)', tag: 'TOWER · AERIAL' },
-                    { bg: 'linear-gradient(135deg,#00A5C8,#5FDDEA)', tag: 'FIRST DROP' },
-                    { bg: 'linear-gradient(135deg,#5FDDEA,#A8ECF3)', tag: 'GROUP POV' },
-                    { bg: 'linear-gradient(135deg,#0E7A93,#22C4DE)', tag: '30-SEC POV', play: true },
-                    { bg: 'linear-gradient(135deg,#22C4DE,#5FDDEA)', tag: 'SPLASH FINALE' },
-                    { cls: 'col-span-2', bg: 'linear-gradient(135deg,#0A5566,#22C4DE)', tag: 'RIDE AT SUNSET' },
-                  ].map((t, i) => (
-                    <div key={i} className={`gal-tile ${t.cls || ''}`} style={{ background: t.bg }}>
-                      {t.play && <div className="absolute top-3 right-3 w-8 h-8 rounded-full bg-white/95 flex items-center justify-center text-brand-900 text-xs z-[2]">▶</div>}
-                      <span className="gal-tag">{t.tag}</span>
-                    </div>
-                  ))}
+            {detail.gallery?.length > 0 && (
+              <Reveal>
+                <div className="content-block">
+                  <span className="eyebrow mb-3 block">Ride gallery</span>
+                  <h2>See it before you feel it.</h2>
+                  <div className="grid grid-cols-4 auto-rows-[140px] gap-3 mt-5 max-[720px]:grid-cols-2">
+                    {detail.gallery.map((g, i) => {
+                      const spanCls = g.span === 'big' ? 'col-span-2 row-span-2' : '';
+                      return (
+                        <div key={i} className={`gal-tile ${spanCls} relative overflow-hidden`}>
+                          {g.image ? (
+                            <img className="absolute inset-0 h-full w-full object-cover" src={g.image} alt={g.tag || `Gallery ${i + 1}`} />
+                          ) : (
+                            <div className="absolute inset-0 bg-gradient-to-br from-brand-600 to-brand-900" />
+                          )}
+                          {g.tag && <span className="gal-tag">{g.tag}</span>}
+                        </div>
+                      );
+                    })}
+                  </div>
                 </div>
-              </div>
-            </Reveal>
+              </Reveal>
+            )}
 
             {/* Safety */}
-            <Reveal>
-              <div className="content-block">
-                <span className="eyebrow mb-3 block">Safety &amp; guidelines</span>
-                <h2>Before you ride.</h2>
-                <ul className="safety-list">
-                  {detail.safety.map((s, i) => (
-                    <li key={i} className={s.type !== 'ok' ? s.type : ''}>
-                      <span dangerouslySetInnerHTML={{ __html: s.text.replace(/(\d+ cm|\d+'[^"]*")/g, '<strong>$1</strong>') }} />
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            </Reveal>
+            {detail.safety?.length > 0 && (
+              <Reveal>
+                <div className="content-block">
+                  <span className="eyebrow mb-3 block">Safety &amp; guidelines</span>
+                  <h2>Before you ride.</h2>
+                  <ul className="safety-list">
+                    {detail.safety.map((s, i) => (
+                      <li key={i} className={s.type !== 'ok' ? s.type : ''}>
+                        <span dangerouslySetInnerHTML={{ __html: s.text.replace(/(\d+ cm|\d+'[^"]*")/g, '<strong>$1</strong>') }} />
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              </Reveal>
+            )}
 
             {/* CTA */}
             <Reveal>
@@ -157,7 +162,7 @@ export default function RideDetailPage({ params }) {
                   Ready to ride the {detail.name} {detail.nameEm}?
                 </h3>
                 <p className="relative text-white/90 mb-7 text-base">
-                  Grab a Skip-the-Queue ticket and ride first. The queue at 2pm on weekends is a very real thing.
+                  Grab a Skip-the-Queue ticket and ride first.
                 </p>
                 <div className="relative flex gap-3 flex-wrap">
                   <button type="button" className="btn btn-primary">Book Skip-Queue →</button>
@@ -173,10 +178,6 @@ export default function RideDetailPage({ params }) {
               <div className="book-card">
                 <h3 className="text-xl font-bold tracking-tight mb-1">{detail.name} {detail.nameEm} · included with any park ticket</h3>
                 <p className="text-[13px] text-ink-2 mb-5">Full-day access · all rides · single QR entry.</p>
-                <div className="queue-status">
-                  <span className="w-2 h-2 rounded-full bg-[#1F7A44] animate-pulse" />
-                  <span>Queue right now: <strong>~8 min</strong></span>
-                </div>
                 <div className="py-4 border-t border-b border-dashed border-line">
                   <div className="font-accent text-[12px] text-ink-2 font-semibold uppercase" style={{ letterSpacing: '.16em' }}>Starting from</div>
                   <div className="text-[44px] font-extrabold tracking-tight text-brand-700 leading-none mt-2 mb-1.5">
@@ -184,77 +185,77 @@ export default function RideDetailPage({ params }) {
                   </div>
                   <div className="text-[13px] text-ink-2">Weekday · online booking</div>
                 </div>
-                <ul className="list-none m-0 p-0 my-4">
-                  {['Full-park access, all 14 rides', "Free entry for kids under 3'3\"", 'Free cancellation up to 48h', 'Instant e-ticket to your inbox'].map((f) => (
-                    <li key={f} className="relative text-sm text-ink-2 py-2 pl-6">
-                      <span className="absolute left-0 top-2 w-4 h-4 rounded-full bg-leaf text-white text-[10px] font-bold flex items-center justify-center">✓</span>
-                      {f}
-                    </li>
-                  ))}
-                </ul>
-                <Link href={`${base}/tickets`} className="btn btn-primary w-full text-center">Book now →</Link>
-                <div className="text-center text-[12px] text-ink-2 mt-3">🔒 Secure checkout · Instant confirmation</div>
+                <Link href={`${base}/tickets`} className="btn btn-primary w-full text-center mt-4">Book now →</Link>
               </div>
             </Reveal>
 
-            <Reveal>
-              <div className="location-card">
-                <h4 className="font-accent text-[11px] uppercase font-semibold text-brand-600 mb-3.5" style={{ letterSpacing: '.24em' }}>Find it in the park</h4>
-                <div className="flex items-center gap-3 p-3 rounded-[14px] bg-brand-50 mb-3">
-                  <div className="w-9 h-9 rounded-xl bg-brand-900 text-sun flex items-center justify-center font-bold">{detail.zone.letter}</div>
-                  <div>
-                    <h5 className="text-sm font-semibold mb-0.5">{detail.zone.name}</h5>
-                    <p className="text-[12px] text-ink-2 m-0">{detail.zone.distance}</p>
+            {detail.zone.name && (
+              <Reveal>
+                <div className="location-card">
+                  <h4 className="font-accent text-[11px] uppercase font-semibold text-brand-600 mb-3.5" style={{ letterSpacing: '.24em' }}>Find it in the park</h4>
+                  <div className="flex items-center gap-3 p-3 rounded-[14px] bg-brand-50 mb-3">
+                    <div className="w-9 h-9 rounded-xl bg-brand-900 text-sun flex items-center justify-center font-bold">{detail.zone.letter}</div>
+                    <div>
+                      <h5 className="text-sm font-semibold mb-0.5">{detail.zone.name}</h5>
+                      <p className="text-[12px] text-ink-2 m-0">{detail.zone.distance}</p>
+                    </div>
                   </div>
                 </div>
-                <a href="#" className="btn btn-outline w-full text-center">Open in park map →</a>
-              </div>
-            </Reveal>
+              </Reveal>
+            )}
 
-            <Reveal>
-              <div className="location-card">
-                <h4 className="font-accent text-[11px] uppercase font-semibold text-brand-600 mb-3.5" style={{ letterSpacing: '.24em' }}>Ride hours</h4>
-                <div className="text-sm text-ink-2 leading-[1.9]">
-                  {detail.hours.map((h) => (
-                    <div key={h.days} className="flex justify-between">
-                      <span>{h.days}</span>
-                      <strong className="text-ink">{h.time}</strong>
-                    </div>
-                  ))}
+            {detail.hours?.length > 0 && (
+              <Reveal>
+                <div className="location-card">
+                  <h4 className="font-accent text-[11px] uppercase font-semibold text-brand-600 mb-3.5" style={{ letterSpacing: '.24em' }}>Ride hours</h4>
+                  <div className="text-sm text-ink-2 leading-[1.9]">
+                    {detail.hours.map((h) => (
+                      <div key={h.days} className="flex justify-between">
+                        <span>{h.days}</span>
+                        <strong className="text-ink">{h.time}</strong>
+                      </div>
+                    ))}
+                  </div>
                 </div>
-              </div>
-            </Reveal>
+              </Reveal>
+            )}
           </aside>
         </div>
       </div>
 
       {/* ===== RELATED RIDES ===== */}
-      <section style={{ padding: '60px 0 20px' }}>
-        <div className="container-x">
-          <Reveal className="flex justify-between items-end mb-8 gap-5">
-            <div>
-              <span className="eyebrow mb-3 block">Nearby in Zone {detail.zone.letter}</span>
-              <h2 className="h1">Rides in <em>walking distance.</em></h2>
-            </div>
-            <Link href={`${base}/rides`} className="btn btn-outline max-[720px]:hidden">See all rides →</Link>
-          </Reveal>
+      {detail.related?.length > 0 && (
+        <section style={{ padding: '60px 0 20px' }}>
+          <div className="container-x">
+            <Reveal className="flex justify-between items-end mb-8 gap-5">
+              <div>
+                <span className="eyebrow mb-3 block">Nearby in Zone {detail.zone.letter}</span>
+                <h2 className="h1">Rides in <em>walking distance.</em></h2>
+              </div>
+              <Link href={`${base}/rides`} className="btn btn-outline max-[720px]:hidden">See all rides →</Link>
+            </Reveal>
 
-          <Reveal className="grid grid-cols-3 gap-5 max-[720px]:grid-cols-1">
-            {related.map((r) => (
-              <Link key={r.slug} href={`${base}/rides/${r.slug}`} className="ride-card-list">
-                <div className="ride-media">
-                  <div className={`ride-art ${r.art}`} data-emoji={r.emoji} />
-                  <span className="ride-tag">{r.tag}</span>
-                  <div className="ride-info"><h3>{r.name}</h3></div>
-                </div>
-                <div className="ride-body">
-                  <p className="ride-desc">{r.desc}</p>
-                </div>
-              </Link>
-            ))}
-          </Reveal>
-        </div>
-      </section>
+            <Reveal className="grid grid-cols-3 gap-5 max-[720px]:grid-cols-1">
+              {detail.related.map((r) => (
+                <Link key={r.slug} href={`${base}/rides/${r.slug}`} className="ride-card-list">
+                  <div className="ride-media relative overflow-hidden">
+                    {r.image ? (
+                      <img className="absolute inset-0 h-full w-full object-cover" src={r.image} alt={r.name} />
+                    ) : (
+                      <div className="ride-art bg-gradient-to-br from-brand-900 to-brand-600" />
+                    )}
+                    <span className="ride-tag">{r.tag}</span>
+                    <div className="ride-info"><h3>{r.name}</h3></div>
+                  </div>
+                  <div className="ride-body">
+                    <p className="ride-desc">{r.desc}</p>
+                  </div>
+                </Link>
+              ))}
+            </Reveal>
+          </div>
+        </section>
+      )}
 
       <Footer location={location} />
       <MobBook location={location} />

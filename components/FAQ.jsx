@@ -11,11 +11,15 @@ const TABS = [
   { key: 'rides', label: 'Rides' },
 ];
 
-export function FAQ() {
-  const [cat, setCat] = useState('all');
-  const [openIdx, setOpenIdx] = useState(1); // second item open by default per design
+export function FAQ({ data }) {
+  const eyebrow = data?.eyebrow || "Still curious?";
+  const heading = data?.heading || "Frequently asked questions.";
+  const faqs = data?.faqs?.length ? data.faqs : FAQS;
 
-  const filtered = cat === 'all' ? FAQS : FAQS.filter((f) => f.cat === cat);
+  const [cat, setCat] = useState('all');
+  const [openIdx, setOpenIdx] = useState(1);
+
+  const filtered = cat === 'all' ? faqs : faqs.filter((f) => f.cat === cat);
 
   return (
     <section className="section-shell section-tight">
@@ -23,16 +27,12 @@ export function FAQ() {
         <Reveal>
           <div className="faq-wrap">
             <div className="grid grid-cols-[1fr_1.3fr] gap-12 max-[720px]:grid-cols-1 max-[720px]:gap-6">
-              {/* Left — heading */}
               <div>
-                <span className="eyebrow" style={{ color: 'var(--brand-900)' }}>Still curious?</span>
-                <h2 className="h1 mt-3.5">
-                  Frequently asked<br />questions.
-                </h2>
+                <span className="eyebrow" style={{ color: 'var(--brand-900)' }}>{eyebrow}</span>
+                <h2 className="h1 mt-3.5" style={{ whiteSpace: 'pre-line' }}>{heading}</h2>
                 <span className="underline-deco" style={{ background: 'var(--brand-600)' }} />
               </div>
 
-              {/* Right — tabs + accordion */}
               <div>
                 <div className="flex gap-2 mb-4 flex-wrap">
                   {TABS.map((tab) => (
