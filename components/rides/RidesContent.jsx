@@ -22,7 +22,6 @@ export function RidesContent({ locationSlug, sections, featured, categories, pla
                 onSelect={setActiveCat}
             />
 
-            {/* Featured spotlight only shows when viewing all rides */}
             {activeCat === 'all' && (
                 <FeaturedRideSpotlight locationSlug={locationSlug} ride={featured} />
             )}
