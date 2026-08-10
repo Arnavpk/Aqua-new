@@ -1,7 +1,18 @@
 import Link from 'next/link';
 import { Reveal } from '@/components/Reveal';
 
-export function PlanSafety({ locationSlug }) {
+const DEFAULTS = {
+  planHeading: "Turn your ride list into a day.",
+  planDescription: "Pick your favourites, drop them into your itinerary, and we'll build the shortest walking route between them — with queue estimates baked in.",
+  planCtaLabel: "Build my itinerary →",
+  safetyHeading: "Certified safe. Lifeguards everywhere.",
+  safetyDescription: "ISO 9001-certified operations, 40+ trained lifeguards on duty, and every ride inspected daily before opening. Height & medical guidelines are enforced.",
+  safetyBadges: ["ISO 9001", "IAAPA member", "First aid on-site"],
+};
+
+export function PlanSafety({ locationSlug, data }) {
+  const d = { ...DEFAULTS, ...data };
+
   return (
     <section className="section-shell" style={{ paddingTop: 20 }}>
       <div className="container-x">
@@ -9,14 +20,14 @@ export function PlanSafety({ locationSlug }) {
           <div className="plan-card">
             <span className="eyebrow eyebrow-sun relative">Plan your visit</span>
             <h3 className="text-[clamp(28px,3vw,42px)] font-bold tracking-tight mt-4 mb-3 leading-tight relative">
-              Turn your ride list into a day.
+              {d.planHeading}
             </h3>
             <p className="text-base text-white/90 leading-relaxed max-w-[420px] mb-7 relative">
-              Pick your favourites, drop them into your itinerary, and we&apos;ll build the shortest walking route between them — with queue estimates baked in.
+              {d.planDescription}
             </p>
             <div className="flex gap-3 flex-wrap relative">
-              <button type="button" className="btn btn-primary">Build my itinerary →</button>
-              <Link href={`/${locationSlug}/tickets`} className="btn btn-glass">See tickets</Link>
+              <button type="button" className="btn btn-primary">{d.planCtaLabel}</button>
+              <Link href={d.planCtaUrl || `/${locationSlug}/tickets`} className="btn btn-glass">See tickets</Link>
             </div>
           </div>
 
@@ -29,15 +40,15 @@ export function PlanSafety({ locationSlug }) {
             </div>
             <span className="eyebrow">Safety first</span>
             <h3 className="text-[22px] font-bold tracking-tight mt-3 mb-1">
-              Certified safe. Lifeguards everywhere.
+              {d.safetyHeading}
             </h3>
             <p className="text-sm text-ink-2 leading-relaxed">
-              ISO 9001-certified operations, 40+ trained lifeguards on duty, and every ride inspected daily before opening. Height &amp; medical guidelines are enforced.
+              {d.safetyDescription}
             </p>
             <div className="flex gap-2 flex-wrap mt-auto">
-              <span className="chip chip-green">ISO 9001</span>
-              <span className="chip chip-green">IAAPA member</span>
-              <span className="chip chip-green">First aid on-site</span>
+              {d.safetyBadges.map((badge) => (
+                <span key={badge} className="chip chip-green">{badge}</span>
+              ))}
             </div>
           </div>
         </Reveal>
