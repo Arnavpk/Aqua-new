@@ -9,6 +9,7 @@ import { MobBook } from '@/components/MobBook';
 import { WaveDivider } from '@/components/WaveDivider';
 import { Reveal } from '@/components/Reveal';
 import { SplashDrops } from '@/components/rides/SplashDrops';
+import { getAllStrapiLocations } from '@/lib/strapi/getLocations';
 
 export async function generateMetadata({ params }) {
   const loc = getLocation(params.location);
@@ -23,13 +24,13 @@ export async function generateMetadata({ params }) {
 export default async function RideDetailPage({ params }) {
   const location = getLocation(params.location);
   const base = `/${location.slug}`;
-
+  const strapiLocations = await getAllStrapiLocations();
   const strapiRide = await getStrapiRideBySlug(location.slug, params.slug);
   const detail = extractRideDetail(strapiRide) || getMockDetail(params.slug);
 
   return (
     <>
-      <Navbar location={location} />
+      <Navbar location={location} locations={strapiLocations} />
 
       {/* ===== CINEMATIC HERO ===== */}
       <header className="ride-detail-hero">

@@ -2,7 +2,7 @@ import { getLocation } from '@/lib/locations';
 import { getPage } from '@/lib/strapi/getPage';
 import { getAllStrapiRides, getRideCategories } from '@/lib/strapi/getRides';
 import { extractRideSections, extractFeaturedSpotlight, extractRideCategories, extractMosaicTiles, extractRidesHero, extractPlanSafety, extractFeaturedSpotlightSection } from '@/lib/extractors/rideExtractor';
-
+import { getAllStrapiLocations } from '@/lib/strapi/getLocations';
 
 import { Navbar } from '@/components/Navbar';
 import { Footer } from '@/components/Footer';
@@ -26,7 +26,7 @@ export default async function RidesPage({ params }) {
 
   const ridesPage = await getPage(location.slug, 'pages', 'rides');
   const strapiRides = await getAllStrapiRides(location.slug);
-
+  console.log("LOCATION:", location.slug, "RIDES COUNT:", strapiRides.length);
   const sections = extractRideSections(strapiRides, strapiCategories) || RIDE_SECTIONS;
   const categories = extractRideCategories(strapiRides, strapiCategories) || RIDE_CATEGORIES;
   // const featured = extractFeaturedSpotlight(strapiRides) || FEATURED_RIDE;
@@ -36,15 +36,16 @@ export default async function RidesPage({ params }) {
   const ridesHero = extractRidesHero(ridesPage);
   const planSafety = extractPlanSafety(ridesPage);
   const mosaicTiles = extractMosaicTiles(strapiRides);
-
+  const strapiLocations = await getAllStrapiLocations();
 
 
 
 
   return (
     <>
-      <Navbar location={location} />
+      <Navbar location={location} locations={strapiLocations} />
       <RidesHero locationSlug={location.slug} data={ridesHero} mosaic={mosaicTiles} />
+
       <RidesContent
         locationSlug={location.slug}
         sections={sections}
