@@ -1,37 +1,48 @@
 import Link from 'next/link';
 import { getLocation } from '@/lib/locations';
-import { getOfferDetail, getOfferBySlug, OFFERS } from '@/lib/data/tickets';
+import { getOfferBySlug as getStrapiOffer } from '@/lib/strapi/getTickets';
+import { extractOfferDetail } from '@/lib/extractors/ticketExtractor';
+import { getOfferDetail as getMockDetail, getOfferBySlug, OFFERS } from '@/lib/data/tickets';
+import { getAllStrapiLocations } from '@/lib/strapi/getLocations';
 import { Navbar } from '@/components/Navbar';
 import { Footer } from '@/components/Footer';
 import { MobBook } from '@/components/MobBook';
 import { WaveDivider } from '@/components/WaveDivider';
 import { Reveal } from '@/components/Reveal';
 
-export function generateMetadata({ params }) {
+export async function generateMetadata({ params }) {
   const loc = getLocation(params.location);
-  const offer = getOfferBySlug(params.slug);
+  const strapiOffer = await getStrapiOffer(loc.slug, params.slug);
+  const name = strapiOffer?.name || params.slug;
   return {
-    title: `${offer?.name || params.slug} — ${loc?.displayName}`,
-    description: offer?.name || `Offer detail at ${loc?.displayName}`,
+    title: `${name} — ${loc?.displayName}`,
+    description: strapiOffer?.lede || `Offer detail at ${loc?.displayName}`,
   };
 }
 
-export default function OfferDetailPage({ params }) {
+export default async function OfferDetailPage({ params }) {
   const location = getLocation(params.location);
   const base = `/${location.slug}`;
-  const detail = getOfferDetail(params.slug);
-  const sb = detail.sidebar;
+  const strapiLocations = await getAllStrapiLocations();
 
-  const related = detail.relatedSlugs
-    .map((s) => OFFERS.find((o) => o.slug === s))
-    .filter(Boolean);
+  const strapiOffer = await getStrapiOffer(location.slug, params.slug);
+  const detail = extractOfferDetail(strapiOffer) || getMockDetail(params.slug);
+  const sb = detail.sidebar;
 
   return (
     <>
-      <Navbar location={location} />
+      <Navbar location={location} locations={strapiLocations} />
 
       {/* ===== OFFER HERO ===== */}
-      <header className="offer-hero" style={{ background: detail.gradient }} data-emoji={detail.emoji}>
+      <header className="offer-hero relative overflow-hidden">
+        {detail.image ? (
+          <>
+            <img className="absolute inset-0 h-full w-full object-cover z-0" src={detail.image} alt={detail.name} />
+            <div className="absolute inset-0 z-[1] bg-black/40" />
+          </>
+        ) : (
+          <div className="absolute inset-0 z-0" style={{ background: 'linear-gradient(135deg, #FF7A9C, #FFD84D)' }} />
+        )}
         <div className="container-x relative z-[3]">
           <nav className="breadcrumb" aria-label="Breadcrumb">
             <Link href={base}>Home</Link>
@@ -40,7 +51,7 @@ export default function OfferDetailPage({ params }) {
             <span className="sep">›</span>
             <span className="text-white">{detail.name} {detail.nameEm}</span>
           </nav>
-          <span className="offer-badge-hero">{detail.badge}</span>
+          {detail.badge && <span className="offer-badge-hero">{detail.badge}</span>}
           <h1>
             {detail.name} <em>{detail.nameEm}</em> {detail.nameSuffix}
           </h1>
@@ -48,17 +59,19 @@ export default function OfferDetailPage({ params }) {
             {detail.lede}
           </p>
           <div className="flex gap-3 flex-wrap">
-            <button type="button" className="btn btn-dark">Book now — save 50% →</button>
+            <button type="button" className="btn btn-dark">Book now — save {detail.medallion.big} →</button>
             <Link href={`${base}/tickets`} className="btn btn-glass">← All offers</Link>
           </div>
-          <div className="offer-meta">
-            {detail.meta.map((m) => (
-              <div key={m.k} className="offer-meta-item">
-                <span className="k">{m.k}</span>
-                <span className="v">{m.v}</span>
-              </div>
-            ))}
-          </div>
+          {detail.meta.length > 0 && (
+            <div className="offer-meta">
+              {detail.meta.map((m) => (
+                <div key={m.k} className="offer-meta-item">
+                  <span className="k">{m.k}</span>
+                  <span className="v">{m.v}</span>
+                </div>
+              ))}
+            </div>
+          )}
         </div>
         <div className="medallion" aria-hidden="true">
           <div className="big">{detail.medallion.big}</div>
@@ -73,56 +86,71 @@ export default function OfferDetailPage({ params }) {
         <div className="detail-layout">
           <div className="flex flex-col gap-8">
             {/* About offer */}
-            <Reveal>
-              <div className="content-block">
-                <span className="eyebrow mb-3 block">About this offer</span>
-                <h2>
-                  {detail.story.heading}
-                  <br />
-                  <em>{detail.story.headingEm}</em>
-                </h2>
-                <p className="lead" dangerouslySetInnerHTML={{ __html: detail.story.lead }} />
-                <p>{detail.story.body}</p>
+            {(detail.story.heading || detail.story.lead) && (
+              <Reveal>
+                <div className="content-block">
+                  <span className="eyebrow mb-3 block">About this offer</span>
+                  <h2>
+                    {detail.story.heading}
+                    {detail.story.headingEm && (
+                      <>
+                        <br />
+                        <em>{detail.story.headingEm}</em>
+                      </>
+                    )}
+                  </h2>
+                  {detail.story.lead && (
+                    <p className="lead" dangerouslySetInnerHTML={{ __html: detail.story.lead }} />
+                  )}
+                  {detail.story.body && <p>{detail.story.body}</p>}
 
-                <div className="grid grid-cols-3 gap-4 mt-6 max-[720px]:grid-cols-1">
-                  {detail.highlights.map((h) => (
-                    <div key={h.title} className="highlight">
-                      <div className="h-icon">{h.icon}</div>
-                      <div>
-                        <h4>{h.title}</h4>
-                        <p>{h.desc}</p>
-                      </div>
+                  {detail.highlights.length > 0 && (
+                    <div className="grid grid-cols-3 gap-4 mt-6 max-[720px]:grid-cols-1">
+                      {detail.highlights.map((h) => (
+                        <div key={h.title} className="highlight">
+                          <div className="h-icon">{h.icon}</div>
+                          <div>
+                            <h4>{h.title}</h4>
+                            <p>{h.desc}</p>
+                          </div>
+                        </div>
+                      ))}
                     </div>
-                  ))}
+                  )}
                 </div>
-              </div>
-            </Reveal>
+              </Reveal>
+            )}
 
             {/* Terms */}
-            <Reveal>
-              <div className="content-block">
-                <span className="eyebrow mb-3 block">Terms &amp; conditions</span>
-                <h2>The fine print.</h2>
-                <ul className="terms-list mt-5">
-                  {detail.terms.map((t, i) => (
-                    <li key={i}>{t}</li>
-                  ))}
-                </ul>
-              </div>
-            </Reveal>
+            {detail.terms.length > 0 && (
+              <Reveal>
+                <div className="content-block">
+                  <span className="eyebrow mb-3 block">Terms &amp; conditions</span>
+                  <h2>The fine print.</h2>
+                  <ul className="terms-list mt-5">
+                    {detail.terms.map((t, i) => (
+                      <li key={i}>{t}</li>
+                    ))}
+                  </ul>
+                </div>
+              </Reveal>
+            )}
 
+            {/* CTA */}
             {/* CTA */}
             <Reveal>
               <div className="cta-block">
                 <h3 className="text-[36px] font-extrabold tracking-tight leading-none mb-4 relative">
-                  Ready to make a splash?
+                  {detail.detailCta.heading}
                 </h3>
                 <p className="relative text-white/90 mb-7 text-base">
-                  The offer ends soon and tickets are moving fast. Lock your date now — pay in full at checkout, keep the memories forever.
+                  {detail.detailCta.description}
                 </p>
                 <div className="relative flex gap-3 flex-wrap">
-                  <button type="button" className="btn btn-primary">Book my group →</button>
-                  <a href="tel:02269660000" className="btn btn-glass">📞 Call to book</a>
+                  <a href={detail.detailCta.url || detail.bookCtaUrl || "#"} className="btn btn-primary">
+                    {detail.detailCta.label}
+                  </a>
+                  <a href={detail.help.phoneUrl} className="btn btn-glass">📞 Call to book</a>
                 </div>
               </div>
             </Reveal>
@@ -135,29 +163,37 @@ export default function OfferDetailPage({ params }) {
                 <div className="flex justify-between items-start gap-4 mb-4">
                   <div>
                     <h3 className="text-xl font-bold tracking-tight mb-1">{sb.title}</h3>
-                    <p className="text-[13px] text-ink-2 m-0">{sb.subtitle}</p>
+                    <p className="text-[13px] text-ink-2 m-0">{sb.unit}</p>
                   </div>
-                  <span className="inline-flex rounded-full bg-coral text-white font-accent text-[11px] font-bold px-3 py-1.5 flex-shrink-0" style={{ letterSpacing: '.06em' }}>
-                    {sb.save}
-                  </span>
+                  {sb.save && (
+                    <span className="inline-flex rounded-full bg-coral text-white font-accent text-[11px] font-bold px-3 py-1.5 flex-shrink-0" style={{ letterSpacing: '.06em' }}>
+                      {sb.save}
+                    </span>
+                  )}
                 </div>
                 <div className="py-4 border-t border-b border-dashed border-line">
                   <div className="font-accent text-[12px] text-ink-2 font-semibold uppercase" style={{ letterSpacing: '.16em' }}>Starting from</div>
                   <div className="text-[44px] font-extrabold tracking-tight text-brand-700 leading-none mt-2 mb-1.5">
                     {sb.price}
-                    <span className="text-[15px] text-ink-2 font-medium line-through ml-2">{sb.priceStrike}</span>
+                    {sb.priceStrike && (
+                      <span className="text-[15px] text-ink-2 font-medium line-through ml-2">{sb.priceStrike}</span>
+                    )}
                   </div>
                   <div className="text-[13px] text-ink-2">{sb.unit}</div>
                 </div>
-                <ul className="list-none m-0 p-0 my-4">
-                  {sb.features.map((f) => (
-                    <li key={f} className="relative text-sm text-ink-2 py-2 pl-6">
-                      <span className="absolute left-0 top-2 w-4 h-4 rounded-full bg-leaf text-white text-[10px] font-bold flex items-center justify-center">✓</span>
-                      {f}
-                    </li>
-                  ))}
-                </ul>
-                <button type="button" className="btn btn-primary w-full text-center">Book now →</button>
+                {sb.features.length > 0 && (
+                  <ul className="list-none m-0 p-0 my-4">
+                    {sb.features.map((f) => (
+                      <li key={f} className="relative text-sm text-ink-2 py-2 pl-6">
+                        <span className="absolute left-0 top-2 w-4 h-4 rounded-full bg-leaf text-white text-[10px] font-bold flex items-center justify-center">✓</span>
+                        {f}
+                      </li>
+                    ))}
+                  </ul>
+                )}
+                <a href={detail.bookCtaUrl || "#"} className="btn btn-primary w-full text-center">
+                  {detail.bookCtaLabel}
+                </a>
                 <div className="text-center text-[12px] text-ink-2 mt-3">🔒 Secure checkout · Instant confirmation</div>
               </div>
             </Reveal>
@@ -178,10 +214,10 @@ export default function OfferDetailPage({ params }) {
             <Reveal>
               <div className="location-card">
                 <h4 className="font-accent text-[11px] uppercase font-semibold text-brand-600 mb-3" style={{ letterSpacing: '.24em' }}>
-                  Need help booking?
+                  {detail.help.heading}
                 </h4>
-                <p className="text-sm text-ink-2 mb-4">Our booking team is available every day 9am–9pm.</p>
-                <a href="tel:02269660000" className="btn btn-outline w-full text-center">📞 022-69660000</a>
+                <p className="text-sm text-ink-2 mb-4">{detail.help.description}</p>
+                <a href={detail.help.phoneUrl} className="btn btn-outline w-full text-center">📞 {detail.help.phone}</a>
               </div>
             </Reveal>
           </aside>
@@ -189,33 +225,40 @@ export default function OfferDetailPage({ params }) {
       </div>
 
       {/* ===== RELATED OFFERS ===== */}
-      <section style={{ padding: '60px 0 20px' }}>
-        <div className="container-x">
-          <Reveal className="flex justify-between items-end mb-8 gap-5">
-            <div>
-              <span className="eyebrow mb-3 block">More ways to save</span>
-              <h2 className="h1">You might also like.</h2>
-            </div>
-            <Link href={`${base}/tickets`} className="btn btn-outline max-[720px]:hidden">See all offers →</Link>
-          </Reveal>
+      {detail.related.length > 0 && (
+        <section style={{ padding: '60px 0 20px' }}>
+          <div className="container-x">
+            <Reveal className="flex justify-between items-end mb-8 gap-5">
+              <div>
+                <span className="eyebrow mb-3 block">More ways to save</span>
+                <h2 className="h1">You might also like.</h2>
+              </div>
+              <Link href={`${base}/tickets`} className="btn btn-outline max-[720px]:hidden">See all offers →</Link>
+            </Reveal>
 
-          <Reveal className="grid grid-cols-3 gap-5 max-[1180px]:grid-cols-2 max-[720px]:grid-cols-1">
-            {related.map((r) => (
-              <Link key={r.slug} href={`${base}/tickets/${r.slug}`} className="rel-card">
-                <div className="rel-media">
-                  <div className={`absolute inset-0 ${r.art}`} />
-                  <div className="absolute inset-0 flex items-center justify-center text-[80px] opacity-30" data-emoji={r.emoji}>{r.emoji}</div>
-                  <span className="rel-tag">{r.tag}</span>
-                </div>
-                <div className="rel-body">
-                  <h4>{r.name}</h4>
-                  <p className="text-[13px] text-ink-2 leading-relaxed m-0">{r.features[0]}</p>
-                </div>
-              </Link>
-            ))}
-          </Reveal>
-        </div>
-      </section>
+            <Reveal className="grid grid-cols-3 gap-5 max-[1180px]:grid-cols-2 max-[720px]:grid-cols-1">
+              {detail.related.map((r) => (
+                <Link key={r.slug} href={`${base}/tickets/${r.slug}`} className="rel-card">
+                  <div className="rel-media relative overflow-hidden">
+                    {r.image ? (
+                      <img className="absolute inset-0 h-full w-full object-cover" src={r.image} alt={r.name} />
+                    ) : (
+                      <div className="absolute inset-0 bg-gradient-to-br from-brand-700 to-brand-400" />
+                    )}
+                    <span className="rel-tag">{r.tag}</span>
+                  </div>
+                  <div className="rel-body">
+                    <h4>{r.name}</h4>
+                    <p className="text-[13px] text-ink-2 leading-relaxed m-0">
+                      {r.discount} {r.discountSub}
+                    </p>
+                  </div>
+                </Link>
+              ))}
+            </Reveal>
+          </div>
+        </section>
+      )}
 
       <Footer location={location} />
       <MobBook location={location} />

@@ -8,6 +8,8 @@ export function PageHero({
   stats = [],
   primaryCta = null,
   secondaryCta = null,
+  bgImage = null,
+  mobileImage = null,
   fill = '#EAFBFD',
 }) {
   return (
@@ -18,14 +20,31 @@ export function PageHero({
         padding: '140px 0 180px',
       }}
     >
-      <div
-        className="absolute inset-0"
-        style={{
-          background:
-            'radial-gradient(600px 300px at 80% 10%, rgba(255,255,255,.4), transparent 60%)',
-        }}
-        aria-hidden="true"
-      />
+      {bgImage && (
+        <>
+          <img
+            className="absolute inset-0 h-full w-full object-cover z-0 hidden md:block"
+            src={bgImage}
+            alt=""
+          />
+          <img
+            className="absolute inset-0 h-full w-full object-cover z-0 md:hidden"
+            src={mobileImage || bgImage}
+            alt=""
+          />
+          <div className="absolute inset-0 z-[1] bg-black/40" />
+        </>
+      )}
+      {!bgImage && (
+        <div
+          className="absolute inset-0"
+          style={{
+            background:
+              'radial-gradient(600px 300px at 80% 10%, rgba(255,255,255,.4), transparent 60%)',
+          }}
+          aria-hidden="true"
+        />
+      )}
       <div className="container-x relative z-[3]">
         {breadcrumbs.length > 0 && (
           <nav className="breadcrumb" aria-label="Breadcrumb">

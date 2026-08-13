@@ -2,7 +2,9 @@ import Link from 'next/link';
 import { Reveal } from '@/components/Reveal';
 import { TICKETS } from '@/lib/data/tickets';
 
-export function TicketsGrid({ locationSlug }) {
+export function TicketsGrid({ locationSlug, data }) {
+  const tickets = data?.length ? data : TICKETS;
+
   return (
     <section className="section-shell" id="tickets" style={{ paddingBottom: 80 }}>
       <div className="container-x">
@@ -15,7 +17,7 @@ export function TicketsGrid({ locationSlug }) {
         </Reveal>
 
         <Reveal className="grid grid-cols-4 gap-5 max-[1180px]:grid-cols-2 max-[720px]:grid-cols-1">
-          {TICKETS.map((t) => (
+          {tickets.map((t) => (
             <div key={t.slug} className={`ticket-card ${t.featured ? 'featured' : ''}`}>
               {t.badge && (
                 <span className="badge-abs" style={{ background: 'var(--sun)', color: 'var(--ink)' }}>
@@ -24,7 +26,7 @@ export function TicketsGrid({ locationSlug }) {
               )}
               <div
                 className="w-11 h-11 rounded-[14px] flex items-center justify-center text-[26px] mb-5"
-                style={{ background: t.iconBg, ...(t.featured ? {} : {}) }}
+                style={{ background: t.iconBg }}
               >
                 {t.icon}
               </div>
@@ -40,10 +42,10 @@ export function TicketsGrid({ locationSlug }) {
                 {t.unit}
               </div>
               <Link
-                href={`/${locationSlug}/tickets`}
+                href={t.ctaUrl || `/${locationSlug}/tickets`}
                 className={`btn ${t.featured ? 'btn-primary' : 'btn-dark'} w-full text-center mt-auto`}
               >
-                {t.featured ? `Book ${t.name.toLowerCase()} →` : 'Book →'}
+                {t.ctaLabel || (t.featured ? `Book ${t.name.toLowerCase()} →` : 'Book →')}
               </Link>
             </div>
           ))}
