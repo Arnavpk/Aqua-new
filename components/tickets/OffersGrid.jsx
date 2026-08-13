@@ -2,7 +2,9 @@ import Link from 'next/link';
 import { Reveal } from '@/components/Reveal';
 import { OFFERS } from '@/lib/data/tickets';
 
-export function OffersGrid({ locationSlug }) {
+export function OffersGrid({ locationSlug, data }) {
+  const offers = data?.length ? data : OFFERS;
+
   return (
     <section className="section-shell" id="offers" style={{ paddingTop: 20, paddingBottom: 80 }}>
       <div className="container-x">
@@ -17,12 +19,18 @@ export function OffersGrid({ locationSlug }) {
         </Reveal>
 
         <Reveal className="grid grid-cols-4 gap-4 max-[1180px]:grid-cols-2 max-[720px]:grid-cols-1">
-          {OFFERS.map((offer) => (
+          {offers.map((offer) => (
             <article key={offer.slug} className="offer-card">
               <div className="offer-media">
-                <div className={`art ${offer.art}`} data-emoji={offer.emoji} />
+                {offer.image ? (
+                  <div className="art relative overflow-hidden">
+                    <img className="absolute inset-0 h-full w-full object-cover" src={offer.image} alt={offer.name} />
+                  </div>
+                ) : (
+                  <div className={`art ${offer.art || 'bg-gradient-to-br from-brand-700 to-brand-400'}`} data-emoji={offer.emoji} />
+                )}
                 <span className="offer-tag">{offer.tag}</span>
-                {offer.badge && <span className={`offer-badge ${offer.badgeCls}`}>{offer.badge}</span>}
+                {offer.badge && <span className="offer-badge badge-hot">{offer.badge}</span>}
                 <div className="offer-discount">
                   <div className="big">{offer.discount}</div>
                   <div className="small">{offer.discountSub}</div>
@@ -37,11 +45,11 @@ export function OffersGrid({ locationSlug }) {
                   ))}
                 </ul>
                 <div className="offer-cta">
-                  <Link href={`/${locationSlug}/tickets/${offer.slug}`} className="btn btn-outline">
-                    View offer
+                  <Link href={offer.viewCtaUrl || `/${locationSlug}/tickets/${offer.slug}`} className="btn btn-outline">
+                    {offer.viewCtaLabel || "View offer"}
                   </Link>
-                  <Link href={`/${locationSlug}/tickets`} className="btn btn-primary">
-                    Book now →
+                  <Link href={offer.bookCtaUrl || `/${locationSlug}/tickets`} className="btn btn-primary">
+                    {offer.bookCtaLabel || "Book now →"}
                   </Link>
                 </div>
               </div>
