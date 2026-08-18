@@ -10,6 +10,8 @@ import { MobBook } from '@/components/MobBook';
 import { TicketsGrid } from '@/components/tickets/TicketsGrid';
 import { OffersGrid } from '@/components/tickets/OffersGrid';
 import { HelpStrip } from '@/components/tickets/HelpStrip';
+import { getNavItems } from '@/lib/strapi/getNav';
+
 
 export function generateMetadata({ params }) {
   const loc = getLocation(params.location);
@@ -31,10 +33,12 @@ export default async function TicketsPage({ params }) {
   const helpStrip = extractHelpStrip(ticketsPage);
   const tickets = extractTickets(strapiTickets);
   const offers = extractOffers(strapiOffers);
+  const navItems = await getNavItems(location.slug);
+
 
   return (
     <>
-      <Navbar location={location} locations={strapiLocations} />
+      <Navbar location={location} locations={strapiLocations} navItems={navItems} />
       <PageHero
         eyebrow={pageHero?.eyebrow || "Save more · splash more"}
         title={pageHero?.heading ? (

@@ -137,7 +137,7 @@ export function FeaturedRides({ locationSlug, data }) {
                   <div className="absolute inset-0 bg-gradient-to-t from-black/75 via-black/10 to-transparent" />
                 </div>
 
-                <div className="absolute top-3 left-3 right-3 flex justify-between z-[2]">
+                <div className="absolute top-3 left-3 right-3 flex justify-between z-[2], text-[#FFD84D]">
                   {ride.badges.map((b) => (
                     <span key={b.label} className={`chip ${b.cls}`}>{b.label}</span>
                   ))}
@@ -145,7 +145,7 @@ export function FeaturedRides({ locationSlug, data }) {
 
                 <div className="absolute left-4 right-4 bottom-4 text-white z-[2]">
                   <div className="font-accent text-[9px] opacity-70 mb-1" style={{ letterSpacing: '.14em' }}>
-                    {ride.index} · {ride.category}
+                    {ride.category}
                   </div>
                   <div className="text-[18px] font-bold leading-tight" style={{ letterSpacing: '-.02em' }}>
                     {ride.name}

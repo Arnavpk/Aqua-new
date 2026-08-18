@@ -9,6 +9,9 @@ import { PageHero } from '@/components/PageHero';
 import { Footer } from '@/components/Footer';
 import { MobBook } from '@/components/MobBook';
 import { Reveal } from '@/components/Reveal';
+import { getNavItems } from '@/lib/strapi/getNav';
+
+
 
 export async function generateMetadata({ params }) {
   const loc = getLocation(params.location);
@@ -32,10 +35,11 @@ export default async function RestaurantDetailPage({ params }) {
   const allStrapiRestaurants = await getAllRestaurants(location.slug);
   const allRestaurants = extractRestaurants(allStrapiRestaurants) || RESTAURANTS;
   const related = allRestaurants.filter((x) => x.slug !== r.slug).slice(0, 3);
+  const navItems = await getNavItems(location.slug);
 
   return (
     <>
-      <Navbar location={location} locations={strapiLocations} />
+      <Navbar location={location} locations={strapiLocations} navItems={navItems} />
       <PageHero
         eyebrow={r.cuisine}
         title={r.name}

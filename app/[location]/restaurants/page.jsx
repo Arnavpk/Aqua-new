@@ -11,6 +11,8 @@ import { PageHero } from '@/components/PageHero';
 import { Footer } from '@/components/Footer';
 import { MobBook } from '@/components/MobBook';
 import { Reveal } from '@/components/Reveal';
+import { getNavItems } from '@/lib/strapi/getNav';
+
 
 export function generateMetadata({ params }) {
   const loc = getLocation(params.location);
@@ -30,10 +32,12 @@ export default async function RestaurantsPage({ params }) {
 
   const pageHero = extractPageHero(restaurantsPage);
   const restaurants = extractRestaurants(strapiRestaurants) || RESTAURANTS;
+  const navItems = await getNavItems(location.slug);
+
 
   return (
     <>
-      <Navbar location={location} locations={strapiLocations} />
+      <Navbar location={location} locations={strapiLocations} navItems={navItems} />
       <PageHero
         eyebrow={pageHero?.eyebrow || "Dining inside the park"}
         title={pageHero?.heading ? (

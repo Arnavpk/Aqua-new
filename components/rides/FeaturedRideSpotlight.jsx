@@ -3,7 +3,7 @@ import { FEATURED_RIDE } from '@/lib/data/rides';
 import { Reveal } from '@/components/Reveal';
 
 export function FeaturedRideSpotlight({ locationSlug, ride, section }) {
-  const r = section?.ridename || FEATURED_RIDE;
+  const r = ride || FEATURED_RIDE;
   const badgeText = section?.badgeText || "⭐ FEATURED RIDE";
   const ctaLabel = section?.ctaLabel || "View ride details →";
   const previewLabel = section?.previewLabel || "▶ Watch preview";

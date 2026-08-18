@@ -10,6 +10,8 @@ import { Navbar } from '@/components/Navbar';
 import { PageHero } from '@/components/PageHero';
 import { Footer } from '@/components/Footer';
 import { Reveal } from '@/components/Reveal';
+import { getNavItems } from '@/lib/strapi/getNav';
+
 
 export function generateMetadata({ params }) {
   const loc = getLocation(params.location);
@@ -28,13 +30,14 @@ export default async function RetailShopPage({ params }) {
   const pageHero = extractPageHero(retailPage);
   const helpStrip = extractHelpStrip(retailPage);
   const retailData = extractRetailProducts(retailPage);
+  const navItems = await getNavItems(location.slug);
 
   const products = retailData?.products || RETAIL_PRODUCTS;
   const costume = retailData?.costume;
 
   return (
     <>
-      <Navbar location={location} locations={strapiLocations} />
+      <Navbar location={location} locations={strapiLocations} navItems={navItems} />
       <PageHero
         eyebrow={pageHero?.eyebrow || "Inside the park"}
         title={pageHero?.heading ? (

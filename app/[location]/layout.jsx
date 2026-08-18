@@ -1,6 +1,7 @@
 import { notFound } from 'next/navigation';
 import { getLocation, getAllLocationSlugs } from '@/lib/locations';
 import { getAllStrapiLocations } from '@/lib/strapi/getLocations';
+import { getNavItems } from '@/lib/strapi/getNav';
 import { MobileTabBar } from '@/components/MobileTabBar';
 import { LocationPicker } from '@/components/LocationPicker';
 
@@ -14,12 +15,6 @@ export function generateMetadata({ params }) {
   return {
     title: `${loc.displayName} — India's Premier Water Park`,
     description: `${loc.displayName} — 14 signature rides, 3 pools. Book tickets from ${loc.pricing.currency}${loc.pricing.from}.`,
-    openGraph: {
-      title: `${loc.displayName} — Make a splash this summer`,
-      description: loc.hero.subtitle,
-      siteName: 'Aqua Imagicaa',
-      type: 'website',
-    },
   };
 }
 
@@ -27,10 +22,19 @@ export default async function LocationLayout({ children, params }) {
   if (!getLocation(params.location)) notFound();
 
   const strapiLocations = await getAllStrapiLocations();
+  const navItems = await getNavItems(params.location);
 
   return (
     <>
       <LocationPicker locations={strapiLocations} currentSlug={params.location} />
+      {/* Pass navItems and locations via data attributes or context */}
+      <script
+        id="nav-data"
+        type="application/json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({ navItems, locations: strapiLocations }),
+        }}
+      />
       {children}
       <MobileTabBar locationSlug={params.location} />
     </>

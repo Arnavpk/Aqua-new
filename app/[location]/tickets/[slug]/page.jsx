@@ -9,6 +9,8 @@ import { Footer } from '@/components/Footer';
 import { MobBook } from '@/components/MobBook';
 import { WaveDivider } from '@/components/WaveDivider';
 import { Reveal } from '@/components/Reveal';
+import { getNavItems } from '@/lib/strapi/getNav';
+
 
 export async function generateMetadata({ params }) {
   const loc = getLocation(params.location);
@@ -28,10 +30,12 @@ export default async function OfferDetailPage({ params }) {
   const strapiOffer = await getStrapiOffer(location.slug, params.slug);
   const detail = extractOfferDetail(strapiOffer) || getMockDetail(params.slug);
   const sb = detail.sidebar;
+  const navItems = await getNavItems(location.slug);
+
 
   return (
     <>
-      <Navbar location={location} locations={strapiLocations} />
+      <Navbar location={location} locations={strapiLocations} navItems={navItems} />
 
       {/* ===== OFFER HERO ===== */}
       <header className="offer-hero relative overflow-hidden">

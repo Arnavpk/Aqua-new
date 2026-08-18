@@ -10,6 +10,8 @@ import { WaveDivider } from '@/components/WaveDivider';
 import { Reveal } from '@/components/Reveal';
 import { SplashDrops } from '@/components/rides/SplashDrops';
 import { getAllStrapiLocations } from '@/lib/strapi/getLocations';
+import { getNavItems } from '@/lib/strapi/getNav';
+
 
 export async function generateMetadata({ params }) {
   const loc = getLocation(params.location);
@@ -27,10 +29,12 @@ export default async function RideDetailPage({ params }) {
   const strapiLocations = await getAllStrapiLocations();
   const strapiRide = await getStrapiRideBySlug(location.slug, params.slug);
   const detail = extractRideDetail(strapiRide) || getMockDetail(params.slug);
+  const navItems = await getNavItems(location.slug);
+
 
   return (
     <>
-      <Navbar location={location} locations={strapiLocations} />
+      <Navbar location={location} locations={strapiLocations} navItems={navItems} />
 
       {/* ===== CINEMATIC HERO ===== */}
       <header className="ride-detail-hero">
