@@ -9,6 +9,8 @@ import { Navbar } from '@/components/Navbar';
 import { PageHero } from '@/components/PageHero';
 import { Footer } from '@/components/Footer';
 import { Reveal } from '@/components/Reveal';
+import { getNavItems } from '@/lib/strapi/getNav';
+
 
 export function generateMetadata({ params }) {
   const loc = getLocation(params.location);
@@ -26,13 +28,14 @@ export default async function DosAndDontsPage({ params }) {
   const ddPage = await getPage(location.slug, 'pages', 'dos-donts');
   const pageHero = extractPageHero(ddPage);
   const ddData = extractDosDonts(ddPage);
+  const navItems = await getNavItems(location.slug);
 
   const dos = ddData?.dos || DOS;
   const donts = ddData?.donts || DONTS;
 
   return (
     <>
-      <Navbar location={location} locations={strapiLocations} />
+      <Navbar location={location} locations={strapiLocations} navItems={navItems} />
       <PageHero
         eyebrow={pageHero?.eyebrow || "Park guidelines"}
         title={pageHero?.heading || "DOs & DON'Ts."}

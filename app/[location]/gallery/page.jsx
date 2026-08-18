@@ -8,6 +8,8 @@ import { Navbar } from '@/components/Navbar';
 import { PageHero } from '@/components/PageHero';
 import { Footer } from '@/components/Footer';
 import { Reveal } from '@/components/Reveal';
+import { getNavItems } from '@/lib/strapi/getNav';
+
 
 const CATEGORIES = [
   { key: 'all', label: 'All' },
@@ -33,17 +35,20 @@ const GALLERY_ITEMS = [
   { cat: 'rides', gradient: 'linear-gradient(135deg, #FF7A9C, #0E7A93)', tag: 'Aqua Twister' },
 ];
 
+const navItems = await getNavItems(location.slug);
+
 export default function GalleryPage() {
   const params = useParams();
   const location = getLocation(params.location);
   const base = `/${location.slug}`;
   const [filter, setFilter] = useState('all');
 
+
   const filtered = filter === 'all' ? GALLERY_ITEMS : GALLERY_ITEMS.filter((g) => g.cat === filter);
 
   return (
     <>
-      <Navbar location={location} />
+      <Navbar location={location} locations={strapiLocations} navItems={navItems} />
       <PageHero
         eyebrow="#AquaImagicaa"
         title={<>Gallery</>}

@@ -3,7 +3,7 @@
 import { useState, useRef, useEffect } from 'react';
 import { useRouter, usePathname } from 'next/navigation';
 
-export function LocationSwitcher({ locations, currentSlug, currentName }) {
+export function LocationSwitcher({ locations, currentSlug, currentName, solid }) {
     const [open, setOpen] = useState(false);
     const ref = useRef(null);
     const router = useRouter();

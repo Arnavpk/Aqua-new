@@ -27,6 +27,8 @@ import { extractCtaBanner } from '@/lib/extractors/ctaBannerExtractor';
 import { Footer } from '@/components/Footer';
 import { MobBook } from '@/components/MobBook';
 import { getAllStrapiLocations } from '@/lib/strapi/getLocations';
+import { getNavItems } from '@/lib/strapi/getNav';
+
 
 export default async function LocationHome({ params }) {
   const location = getLocation(params.location);
@@ -42,6 +44,8 @@ export default async function LocationHome({ params }) {
   const safetyBand = homePage ? extractSafetyBand(homePage) : null;
   const faq = homePage ? extractFaq(homePage) : null;
   const ctaBanner = homePage ? extractCtaBanner(homePage) : null;
+  const navItems = await getNavItems(location.slug);
+
 
 
   const strapiLocations = await getAllStrapiLocations();
@@ -49,8 +53,7 @@ export default async function LocationHome({ params }) {
 
   return (
     <>
-      <Navbar location={location} locations={strapiLocations} />
-      <Hero location={{ ...location, hero: hero || location.hero }} />
+      <Navbar location={location} locations={strapiLocations} navItems={navItems} />      <Hero location={{ ...location, hero: hero || location.hero }} />
       <main>
         <FeaturedRides locationSlug={location.slug} data={featuredRides} />
         {/* <Categories /> */}

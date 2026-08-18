@@ -1,30 +1,54 @@
 import Link from 'next/link';
 import { getLocation } from '@/lib/locations';
+import { getArticleBySlug, getAllArticles } from '@/lib/strapi/getArticles';
+import { extractArticleDetail, extractArticles } from '@/lib/extractors/articleExtractor';
+import { getAllStrapiLocations } from '@/lib/strapi/getLocations';
 import { BLOG_DETAIL, BLOGS } from '@/lib/data/about';
 import { Navbar } from '@/components/Navbar';
 import { Footer } from '@/components/Footer';
 import { MobBook } from '@/components/MobBook';
 import { Reveal } from '@/components/Reveal';
+import { getNavItems } from '@/lib/strapi/getNav';
 
-export function generateMetadata({ params }) {
+
+export async function generateMetadata({ params }) {
   const loc = getLocation(params.location);
-  return { title: `${BLOG_DETAIL.title} — ${loc?.displayName}`, description: BLOG_DETAIL.intro };
+  const article = await getArticleBySlug(loc.slug, params.slug);
+  return {
+    title: `${article?.title || params.slug} — ${loc?.displayName}`,
+    description: article?.intro || article?.description || "",
+  };
 }
 
-export default function BlogDetailPage({ params }) {
+export default async function BlogDetailPage({ params }) {
   const location = getLocation(params.location);
   const base = `/${location.slug}`;
-  const blog = BLOG_DETAIL;
-  const related = BLOGS.filter((b) => b.slug !== blog.slug).slice(0, 4);
+  const strapiLocations = await getAllStrapiLocations();
+
+  const strapiArticle = await getArticleBySlug(location.slug, params.slug);
+  const blog = extractArticleDetail(strapiArticle) || BLOG_DETAIL;
+  const navItems = await getNavItems(location.slug);
+
+  const allStrapiArticles = await getAllArticles(location.slug);
+  const allBlogs = extractArticles(allStrapiArticles) || BLOGS;
+  const related = allBlogs.filter((b) => b.slug !== blog.slug).slice(0, 4);
 
   return (
     <>
-      <Navbar location={location} />
-
+      <Navbar location={location} locations={strapiLocations} navItems={navItems} />
       {/* Hero banner */}
-      <div className="blog-hero-placeholder">
-        <div className="absolute inset-0 flex items-center justify-center text-[120px] opacity-20" aria-hidden="true">📝</div>
-        <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent" />
+      <div className="blog-hero-placeholder relative overflow-hidden">
+        {blog.cover ? (
+          <>
+            <img className="absolute inset-0 h-full w-full object-cover z-0" src={blog.cover} alt={blog.title} />
+            <div className="absolute inset-0 z-[1] bg-black/40" />
+          </>
+        ) : (
+          <>
+            <div className="absolute inset-0 flex items-center justify-center text-[120px] opacity-20" aria-hidden="true">📝</div>
+            <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent" />
+          </>
+        )}
         <div className="container-x absolute bottom-8 left-0 right-0 z-[2]">
           <nav className="breadcrumb text-white/80" aria-label="Breadcrumb">
             <Link href={base} className="!text-white/80 hover:!text-white">Home</Link>
@@ -51,7 +75,11 @@ export default function BlogDetailPage({ params }) {
                   </h1>
                   <div className="flex items-center gap-4 text-sm text-ink-2">
                     <div className="flex items-center gap-2.5">
-                      <div className="w-8 h-8 rounded-full bg-gradient-to-br from-brand-300 to-brand-600" />
+                      {blog.authorAvatar ? (
+                        <img className="w-8 h-8 rounded-full object-cover" src={blog.authorAvatar} alt={blog.author} />
+                      ) : (
+                        <div className="w-8 h-8 rounded-full bg-gradient-to-br from-brand-300 to-brand-600" />
+                      )}
                       <span className="font-medium text-ink">{blog.author}</span>
                     </div>
                     <span>{blog.date}</span>
@@ -60,21 +88,14 @@ export default function BlogDetailPage({ params }) {
                 </div>
 
                 <div className="prose">
-                  <p>{blog.intro}</p>
+                  {blog.intro && <p>{blog.intro}</p>}
                   {blog.sections.map((s, i) => (
                     <div key={i}>
-                      <h2>{i + 1}. {s.heading}</h2>
+                      {s.heading && <h2>{i + 1}. {s.heading}</h2>}
                       <p>{s.body}</p>
-                      {i === 1 && <div className="prose-img" />}
-                      {i === 4 && (
-                        <blockquote>
-                          Pro tip: Our changing rooms have hot showers, so you can freshen up properly before heading home.
-                        </blockquote>
-                      )}
                     </div>
                   ))}
-                  <div className="prose-img" />
-                  <p>{blog.outro}</p>
+                  {blog.outro && <p>{blog.outro}</p>}
                 </div>
 
                 <div className="share-bar">
@@ -87,31 +108,35 @@ export default function BlogDetailPage({ params }) {
             </Reveal>
 
             <div className="mt-6 flex gap-3">
-              <Link href={`${base}/about`} className="btn btn-outline btn-sm">← Back to blog</Link>
+              <Link href={`${base}/about/blog`} className="btn btn-outline btn-sm">← Back to blog</Link>
               <Link href={`${base}/tickets`} className="btn btn-primary btn-sm">Book your visit →</Link>
             </div>
           </main>
 
           {/* Sidebar */}
           <aside>
-            <Reveal>
-              <div className="side-card">
-                <h4>In this article</h4>
-                {blog.toc.map((item) => (
-                  <a key={item} href="#" className="toc-item">{item}</a>
-                ))}
-              </div>
-            </Reveal>
-            <Reveal>
-              <div className="side-card">
-                <h4>Categories</h4>
-                <div>
-                  {blog.categories.map((c) => (
-                    <a key={c} href="#" className="cat-pill">{c}</a>
+            {blog.toc.length > 0 && (
+              <Reveal>
+                <div className="side-card">
+                  <h4>In this article</h4>
+                  {blog.toc.map((item) => (
+                    <a key={item} href="#" className="toc-item">{item}</a>
                   ))}
                 </div>
-              </div>
-            </Reveal>
+              </Reveal>
+            )}
+            {blog.categories.length > 0 && (
+              <Reveal>
+                <div className="side-card">
+                  <h4>Categories</h4>
+                  <div>
+                    {blog.categories.map((c) => (
+                      <a key={c} href="#" className="cat-pill">{c}</a>
+                    ))}
+                  </div>
+                </div>
+              </Reveal>
+            )}
             <Reveal>
               <div className="side-card !border-0" style={{ background: 'linear-gradient(135deg, var(--brand-400), var(--brand-300))', color: 'white' }}>
                 <h4 style={{ color: 'rgba(255,255,255,.8)' }}>Plan your visit</h4>
@@ -124,30 +149,38 @@ export default function BlogDetailPage({ params }) {
       </div>
 
       {/* Related articles */}
-      <section style={{ padding: '40px 0 20px' }}>
-        <div className="container-x">
-          <Reveal className="flex justify-between items-end mb-6 gap-4">
-            <div>
-              <span className="eyebrow mb-2 block">Keep reading</span>
-              <h2 className="h2">Related articles.</h2>
-            </div>
-            <Link href={`${base}/about`} className="btn btn-outline btn-sm max-[720px]:hidden">All articles →</Link>
-          </Reveal>
-          <Reveal className="grid grid-cols-4 gap-4 max-[1024px]:grid-cols-2 max-[720px]:grid-cols-1">
-            {related.map((b) => (
-              <Link key={b.slug} href={`${base}/about/blog/${b.slug}`} className="blog-card">
-                <div className="blog-media"><div className="absolute inset-0" style={{ background: b.gradient }} /></div>
-                <div className="blog-body">
-                  <div className="cat">{b.cat}</div>
-                  <h4>{b.title}</h4>
-                  <p>{b.desc}</p>
-                  <div className="blog-meta-row"><span>{b.date}</span><span>{b.readTime}</span></div>
-                </div>
-              </Link>
-            ))}
-          </Reveal>
-        </div>
-      </section>
+      {related.length > 0 && (
+        <section style={{ padding: '40px 0 20px' }}>
+          <div className="container-x">
+            <Reveal className="flex justify-between items-end mb-6 gap-4">
+              <div>
+                <span className="eyebrow mb-2 block">Keep reading</span>
+                <h2 className="h2">Related articles.</h2>
+              </div>
+              <Link href={`${base}/about/blog`} className="btn btn-outline btn-sm max-[720px]:hidden">All articles →</Link>
+            </Reveal>
+            <Reveal className="grid grid-cols-4 gap-4 max-[1024px]:grid-cols-2 max-[720px]:grid-cols-1">
+              {related.map((b) => (
+                <Link key={b.slug} href={`${base}/about/blog/${b.slug}`} className="blog-card">
+                  <div className="blog-media relative overflow-hidden">
+                    {b.cover ? (
+                      <img className="absolute inset-0 h-full w-full object-cover" src={b.cover} alt={b.title} />
+                    ) : (
+                      <div className="absolute inset-0" style={{ background: b.gradient || 'linear-gradient(135deg, #00A5C8, #5FDDEA)' }} />
+                    )}
+                  </div>
+                  <div className="blog-body">
+                    <div className="cat">{b.cat}</div>
+                    <h4>{b.title}</h4>
+                    <p>{b.desc}</p>
+                    <div className="blog-meta-row"><span>{b.date}</span><span>{b.readTime}</span></div>
+                  </div>
+                </Link>
+              ))}
+            </Reveal>
+          </div>
+        </section>
+      )}
 
       <Footer location={location} />
       <MobBook location={location} />

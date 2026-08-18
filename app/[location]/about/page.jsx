@@ -12,6 +12,10 @@ import { Footer } from '@/components/Footer';
 import { MobBook } from '@/components/MobBook';
 import { Reveal } from '@/components/Reveal';
 import { AboutContent } from '@/components/AboutContent';
+import { getAllArticles } from '@/lib/strapi/getArticles';
+import { extractArticles } from '@/lib/extractors/articleExtractor'
+import { getNavItems } from '@/lib/strapi/getNav';
+
 
 export default async function AboutPage({ params }) {
   const location = getLocation(params.location);
@@ -28,10 +32,14 @@ export default async function AboutPage({ params }) {
   const timeline = extractAboutTimeline(aboutPage);
   const faqData = extractFaq(aboutPage);
   const aboutCta = extractAboutCta(aboutPage);
+  const strapiArticles = await getAllArticles(location.slug);
+  const blogs = extractArticles(strapiArticles) || BLOGS;
+  const navItems = await getNavItems(location.slug);
+
 
   return (
     <>
-      <Navbar location={location} locations={strapiLocations} />
+      <Navbar location={location} locations={strapiLocations} navItems={navItems} />
       <PageHero
         eyebrow={pageHero?.eyebrow || "Gujarat's favourite water park"}
         title={pageHero?.heading ? (
@@ -232,12 +240,18 @@ export default async function AboutPage({ params }) {
         <div className="container-x">
           <Reveal className="section-head">
             <div><span className="eyebrow mb-2 block">From the blog</span><h2 className="h2">Stories & tips.</h2></div>
-            <Link href={`${base}/about/blog/10-things-to-pack`} className="btn btn-outline btn-sm max-[720px]:hidden">All articles →</Link>
+            <Link href={`${base}/about/blog`} className="btn btn-outline btn-sm max-[720px]:hidden">All articles →</Link>
           </Reveal>
           <Reveal className="grid grid-cols-4 gap-4 max-[1024px]:grid-cols-2 max-[720px]:grid-cols-1">
-            {BLOGS.map((b) => (
+            {blogs.slice(0, 4).map((b) => (
               <Link key={b.slug} href={`${base}/about/blog/${b.slug}`} className="blog-card">
-                <div className="blog-media"><div className="absolute inset-0" style={{ background: b.gradient }} /></div>
+                <div className="blog-media relative overflow-hidden">
+                  {b.cover ? (
+                    <img className="absolute inset-0 h-full w-full object-cover" src={b.cover} alt={b.title} />
+                  ) : (
+                    <div className="absolute inset-0" style={{ background: b.gradient || 'linear-gradient(135deg, #00A5C8, #5FDDEA)' }} />
+                  )}
+                </div>
                 <div className="blog-body">
                   <div className="cat">{b.cat}</div>
                   <h4>{b.title}</h4>
