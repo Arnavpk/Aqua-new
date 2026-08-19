@@ -27,7 +27,7 @@ export default async function RidesPage({ params }) {
 
   const ridesPage = await getPage(location.slug, 'pages', 'rides');
   const strapiRides = await getAllStrapiRides(location.slug);
-  console.log("LOCATION:", location.slug, "RIDES COUNT:", strapiRides.length);
+  // console.log("LOCATION:", location.slug, "RIDES COUNT:", strapiRides.length);
   const sections = extractRideSections(strapiRides, strapiCategories) || RIDE_SECTIONS;
   const categories = extractRideCategories(strapiRides, strapiCategories) || RIDE_CATEGORIES;
   const featured = extractFeaturedSpotlight(strapiRides) || FEATURED_RIDE;
