@@ -37,7 +37,9 @@ export function OffersGrid({ locationSlug, data }) {
                 </div>
               </div>
               <div className="offer-body">
-                <h3>{offer.name}</h3>
+                <h3>
+                  {offer.name}{offer.nameEm ? <> <em>{offer.nameEm}</em></> : null}{offer.nameSuffix ? ` ${offer.nameSuffix}` : null}
+                </h3>
                 <span className="offer-validity">{offer.validity}</span>
                 <ul>
                   {offer.features.map((f) => (
