@@ -59,7 +59,7 @@ export default async function LocationHome({ params }) {
         {/* <Categories /> */}
         <HotOffers locationSlug={location.slug} data={hotOffers} />
         <EventsSplit data={eventsSplit} />
-        <PlanVisit locationSlug={location.slug} data={planVisit} />
+        {/* <PlanVisit locationSlug={location.slug} data={planVisit} /> */}
         <ParkMap data={parkMap} />
         <Gallery locationSlug={location.slug} data={gallery} />
         <Testimonials data={testimonials} />
@@ -67,7 +67,7 @@ export default async function LocationHome({ params }) {
         <FAQ data={faq} />
         <CtaBanner locationSlug={location.slug} data={ctaBanner} />
       </main>
-      <Footer location={location} />
+      <Footer location={location} navItems={navItems} />
       <MobBook location={location} />
     </>
   );

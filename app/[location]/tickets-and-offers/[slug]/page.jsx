@@ -32,16 +32,27 @@ export default async function OfferDetailPage({ params }) {
   const sb = detail.sidebar;
   const navItems = await getNavItems(location.slug);
 
-
+  console.log("deeeeeetail:", detail);
   return (
     <>
       <Navbar location={location} locations={strapiLocations} navItems={navItems} />
 
       {/* ===== OFFER HERO ===== */}
       <header className="offer-hero relative overflow-hidden">
-        {detail.image ? (
+        {(detail.bImage || detail.image) ? (
           <>
-            <img className="absolute inset-0 h-full w-full object-cover z-0" src={detail.image} alt={detail.name} />
+            {/* Desktop banner */}
+            <img
+              className="hidden md:block absolute inset-0 h-full w-full object-cover z-0"
+              src={detail.bImage || detail.image}
+              alt={detail.name}
+            />
+            {/* Mobile banner */}
+            <img
+              className="block md:hidden absolute inset-0 h-full w-full object-cover z-0"
+              src={detail.bImageMobile || detail.bImage || detail.image}
+              alt={detail.name}
+            />
             <div className="absolute inset-0 z-[1] bg-black/40" />
           </>
         ) : (
@@ -64,7 +75,7 @@ export default async function OfferDetailPage({ params }) {
           </p>
           <div className="flex gap-3 flex-wrap">
             <button type="button" className="btn btn-dark">Book now — save {detail.medallion.big} →</button>
-            <Link href={`${base}/tickets`} className="btn btn-glass">← All offers</Link>
+            <Link href={`${base}/tickets-and-offers`} className="btn btn-glass">← All offers</Link>
           </div>
           {detail.meta.length > 0 && (
             <div className="offer-meta">
@@ -145,7 +156,7 @@ export default async function OfferDetailPage({ params }) {
             <Reveal>
               <div className="cta-block">
                 <h3 className="text-[36px] font-extrabold tracking-tight leading-none mb-4 relative">
-                  {detail.detailCta.heading}
+                  {detail.detailCta?.heading}
                 </h3>
                 <p className="relative text-white/90 mb-7 text-base">
                   {detail.detailCta.description}
@@ -202,7 +213,7 @@ export default async function OfferDetailPage({ params }) {
               </div>
             </Reveal>
 
-            <Reveal>
+            {/* <Reveal>
               <div className="share-card">
                 <h4 className="font-accent text-[11px] uppercase font-semibold text-brand-600 mb-4" style={{ letterSpacing: '.24em' }}>
                   Share this offer
@@ -213,7 +224,7 @@ export default async function OfferDetailPage({ params }) {
                   ))}
                 </div>
               </div>
-            </Reveal>
+            </Reveal> */}
 
             <Reveal>
               <div className="location-card">
