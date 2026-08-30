@@ -86,7 +86,7 @@ export function FeaturedRides({ locationSlug, data }) {
               <button type="button" className="arrow-btn" onClick={prev} aria-label="Previous">←</button>
               <button type="button" className="arrow-btn arrow-btn-primary" onClick={next} aria-label="Next">→</button>
             </div>
-            <Link href={`/${locationSlug}/rides`} className="btn btn-outline btn-sm">
+            <Link href={`/${locationSlug}/water-park/rides-and-attractions`} className="btn btn-outline btn-sm">
               All rides →
             </Link>
           </div>

@@ -57,7 +57,7 @@ export function HotOffers({ locationSlug, data }) {
                 <p className="text-[12px] text-ink-2 leading-relaxed mb-4">{offer.desc}</p>
                 <div className="flex justify-between items-center">
                   <span className="text-[11.5px] text-ink-2 font-semibold">{offer.validity}</span>
-                  <Link href={`/${locationSlug}/tickets/${offer.slug}`} className="btn btn-dark btn-sm">
+                  <Link href={`/${locationSlug}/tickets-and-offers/${offer.slug}`} className="btn btn-dark btn-sm">
                     View offer →
                   </Link>
                 </div>

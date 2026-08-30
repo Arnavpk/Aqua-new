@@ -148,7 +148,7 @@ export default async function AboutPage({ params }) {
       </section>
 
       {/* Timeline */}
-      <section className="section-shell">
+      {/* <section className="section-shell">
         <div className="container-x">
           <Reveal className="grid grid-cols-2 gap-12 items-start max-[1024px]:grid-cols-1">
             <div>
@@ -183,7 +183,7 @@ export default async function AboutPage({ params }) {
             </div>
           </Reveal>
         </div>
-      </section>
+      </section> */}
 
       {/* Contact — uses local location data */}
       <section className="section-shell">
@@ -197,8 +197,8 @@ export default async function AboutPage({ params }) {
               <div className="c-row"><span className="icon">✉️</span><div><a href={`mailto:${location.contact.email}`}>{location.contact.email}</a></div></div>
               <div className="c-row"><span className="icon">⏰</span><div><strong>Park timings:</strong> {location.hours.open} – {location.hours.close} daily</div></div>
               <div className="flex gap-2.5 mt-4">
-                <Link href={`${base}/tickets`} className="btn btn-primary btn-sm">Book tickets →</Link>
-                <Link href={`${base}/rides`} className="btn btn-outline btn-sm">Explore rides</Link>
+                <Link href={`${base}/tickets-and-offers`} className="btn btn-primary btn-sm">Book tickets →</Link>
+                <Link href={`${base}/water-park/rides-and-attractions`} className="btn btn-outline btn-sm">Explore rides</Link>
               </div>
             </div>
             <div className="rounded-rx overflow-hidden aspect-[4/3]" style={{ background: 'linear-gradient(135deg, #0A5566, #0E7A93)' }}>
@@ -222,12 +222,12 @@ export default async function AboutPage({ params }) {
                 {aboutCta?.primaryCta ? (
                   <Link href={aboutCta.primaryCta.href} className="btn btn-primary">{aboutCta.primaryCta.label}</Link>
                 ) : (
-                  <Link href={`${base}/tickets`} className="btn btn-primary">Book tickets →</Link>
+                  <Link href={`${base}/tickets-and-offers`} className="btn btn-primary">Book tickets →</Link>
                 )}
                 {aboutCta?.secondaryCta ? (
                   <Link href={aboutCta.secondaryCta.href} className="btn btn-glass">{aboutCta.secondaryCta.label}</Link>
                 ) : (
-                  <Link href={`${base}/rides`} className="btn btn-glass">Explore rides</Link>
+                  <Link href={`${base}/water-park/rides-and-attractions`} className="btn btn-glass">Explore rides</Link>
                 )}
               </div>
             </div>

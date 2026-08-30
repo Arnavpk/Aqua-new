@@ -3,6 +3,7 @@ import { getAllLocations, DEFAULT_LOCATION } from '@/lib/locations';
 
 export default function NotFound() {
   const locations = getAllLocations();
+  // console.log('locations', locations);
   return (
     <main className="min-h-screen flex items-center justify-center px-6 bg-brand-50">
       <div className="text-center max-w-md">

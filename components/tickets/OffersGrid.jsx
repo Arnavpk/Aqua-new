@@ -3,7 +3,7 @@ import { Reveal } from '@/components/Reveal';
 import { OFFERS } from '@/lib/data/tickets';
 
 export function OffersGrid({ locationSlug, data }) {
-  const offers = data?.length ? data : OFFERS;
+  const offers = data?.length && data;
 
   return (
     <section className="section-shell" id="offers" style={{ paddingTop: 20, paddingBottom: 80 }}>
@@ -14,7 +14,7 @@ export function OffersGrid({ locationSlug, data }) {
             <h2 className="h1">Exclusive <em>offers.</em></h2>
           </div>
           <span className="body-lg max-w-[360px] max-[720px]:hidden">
-            Save up to 70% on your visit — the best time to book is right now.
+            The best time to book is right now.
           </span>
         </Reveal>
 
@@ -47,10 +47,10 @@ export function OffersGrid({ locationSlug, data }) {
                   ))}
                 </ul>
                 <div className="offer-cta">
-                  <Link href={offer.viewCtaUrl || `/${locationSlug}/tickets/${offer.slug}`} className="btn btn-outline">
+                  <Link href={offer.viewCtaUrl || `/${locationSlug}/tickets-and-offers/${offer.slug}`} className="btn btn-outline">
                     {offer.viewCtaLabel || "View offer"}
                   </Link>
-                  <Link href={offer.bookCtaUrl || `/${locationSlug}/tickets`} className="btn btn-primary">
+                  <Link href={offer.bookCtaUrl || `/${locationSlug}/tickets-and-offers/${offer.slug}`} className="btn btn-primary">
                     {offer.bookCtaLabel || "Book now →"}
                   </Link>
                 </div>

@@ -54,7 +54,7 @@ export default async function RideDetailPage({ params }) {
           <nav className="breadcrumb" aria-label="Breadcrumb">
             <Link href={base}>Home</Link>
             <span className="sep">›</span>
-            <Link href={`${base}/rides`}>Rides &amp; Attractions</Link>
+            <Link href={`${base}/water-park/rides-and-attractions`}>Rides &amp; Attractions</Link>
             <span className="sep">›</span>
             <span className="text-white">{detail.name} {detail.nameEm}</span>
           </nav>
@@ -73,8 +73,8 @@ export default async function RideDetailPage({ params }) {
           </p>
 
           <div className="flex gap-3 flex-wrap mb-0">
-            <Link href={`${base}/tickets`} className="btn btn-primary">Book tickets →</Link>
-            <Link href={`${base}/rides`} className="btn btn-glass">← All rides</Link>
+            <Link href={`${base}/tickets-and-offers`} className="btn btn-primary">Book tickets →</Link>
+            <Link href={`${base}/water-park/rides-and-attractions`} className="btn btn-glass">← All rides</Link>
           </div>
 
           <div className="spec-strip">

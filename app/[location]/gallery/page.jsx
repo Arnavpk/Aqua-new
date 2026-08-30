@@ -42,6 +42,7 @@ export default async function GalleryPage({ params }) {
   const navItems = await getNavItems(location.slug);
 
   const galleryPage = await getPage(location.slug, 'pages', 'gallery');
+  
   const pageHero = extractPageHero(galleryPage);
   const galleryData = extractGalleryPage(galleryPage);
   const ctaData = extractAboutCta(galleryPage);

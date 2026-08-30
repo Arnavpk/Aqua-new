@@ -41,6 +41,7 @@ export function Navbar({ location, locations, navItems }) {
     return pathname.startsWith(full);
   };
 
+   
   return (
     <>
       <nav className="nav-shell group" data-solid={solid} aria-label="Primary">
