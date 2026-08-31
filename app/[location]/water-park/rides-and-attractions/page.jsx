@@ -11,6 +11,7 @@ import { MobBook } from '@/components/MobBook';
 import { RidesHero } from '@/components/rides/RidesHero';
 import { RidesContent } from '@/components/rides/RidesContent';
 import { RIDE_SECTIONS, RIDE_CATEGORIES, FEATURED_RIDE } from '@/lib/data/rides';
+import { RidesContent1 } from '@/components/rides/RidesContent1';
 
 export function generateMetadata({ params }) {
   const loc = getLocation(params.location);
@@ -41,14 +42,12 @@ export default async function RidesPage({ params }) {
   const navItems = await getNavItems(location.slug);
 
 
-
-
-
   return (
     <>
       <Navbar location={location} locations={strapiLocations} navItems={navItems} />
       <RidesHero locationSlug={location.slug} data={ridesHero} mosaic={mosaicTiles} />
-
+     
+      {location.slug == "ahmedabad" && (<RidesContent1 params={params} />)}
       <RidesContent
         locationSlug={location.slug}
         sections={sections}
@@ -57,6 +56,7 @@ export default async function RidesPage({ params }) {
         planSafety={planSafety}
         featuredSection={featuredSection}
       />
+      
       <Footer location={location} />
       <MobBook location={location} />
     </>

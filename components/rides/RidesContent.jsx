@@ -22,9 +22,9 @@ export function RidesContent({ locationSlug, sections, featured, categories, pla
                 onSelect={setActiveCat}
             />
 
-            {activeCat === 'all' && (
+            {/* {activeCat === 'all' && (
                 <FeaturedRideSpotlight locationSlug={locationSlug} ride={featured} section={featuredSection} />
-            )}
+            )} */}
 
             <main>
                 {filteredSections.length > 0 ? (
