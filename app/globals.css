@@ -3071,3 +3071,44 @@
     display: none;
   }
 }
+
+/* ---- Ride Details Table ---- */
+  .ride-table {
+    @apply w-full text-left border-collapse;
+    font-size: 14px;
+  }
+
+  .ride-table thead tr {
+    @apply border-b-2 border-brand-600/20;
+  }
+
+  .ride-table th {
+    @apply py-3 pr-4 font-accent text-ink-2 uppercase;
+    font-size: 11px;
+    letter-spacing: .16em;
+    white-space: nowrap;
+  }
+
+  .ride-table tbody tr {
+    @apply border-b border-line/60 transition-colors;
+  }
+
+  .ride-table tbody tr:hover {
+    background: rgba(var(--brand-50-rgb, 0,165,200), .04);
+  }
+
+  .ride-table td {
+    @apply py-3 pr-4 text-ink-2;
+    font-size: 13px;
+  }
+
+  .ride-zone-cell {
+    @apply font-semibold text-brand-600 align-top;
+    font-size: 13px;
+    white-space: nowrap;
+  }
+
+  .ride-closed-badge {
+    @apply inline-flex rounded-full bg-red-100 text-red-600 font-accent text-[10px] font-bold px-2 py-0.5 ml-2;
+    letter-spacing: .06em;
+  }

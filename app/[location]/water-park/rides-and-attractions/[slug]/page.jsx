@@ -171,7 +171,7 @@ export default async function RideDetailPage({ params }) {
                 </p>
                 <div className="relative flex gap-3 flex-wrap">
                   <button type="button" className="btn btn-primary">Book Skip-Queue →</button>
-                  <Link href={`${base}/tickets`} className="btn btn-glass">See ticket options</Link>
+                  <Link href={`${base}/tickets-and-offers`} className="btn btn-glass">See ticket options</Link>
                 </div>
               </div>
             </Reveal>
@@ -190,7 +190,7 @@ export default async function RideDetailPage({ params }) {
                   </div>
                   <div className="text-[13px] text-ink-2">Weekday · online booking</div>
                 </div>
-                <Link href={`${base}/tickets`} className="btn btn-primary w-full text-center mt-4">Book now →</Link>
+                <Link href={`${base}/tickets-and-offers`} className="btn btn-primary w-full text-center mt-4">Book now →</Link>
               </div>
             </Reveal>
 
@@ -237,12 +237,12 @@ export default async function RideDetailPage({ params }) {
                 <span className="eyebrow mb-3 block">Nearby in Zone {detail.zone.letter}</span>
                 <h2 className="h1">Rides in <em>walking distance.</em></h2>
               </div>
-              <Link href={`${base}/rides`} className="btn btn-outline max-[720px]:hidden">See all rides →</Link>
+              <Link href={`${base}/water-park/rides-and-attractions`} className="btn btn-outline max-[720px]:hidden">See all rides →</Link>
             </Reveal>
 
             <Reveal className="grid grid-cols-3 gap-5 max-[720px]:grid-cols-1">
               {detail.related.map((r) => (
-                <Link key={r.slug} href={`${base}/rides/${r.slug}`} className="ride-card-list">
+                <Link key={r.slug} href={`${base}/water-park/rides-and-attractions/${r.slug}`} className="ride-card-list">
                   <div className="ride-media relative overflow-hidden">
                     {r.image ? (
                       <img className="absolute inset-0 h-full w-full object-cover" src={r.image} alt={r.name} />

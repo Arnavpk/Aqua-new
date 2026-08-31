@@ -23,7 +23,7 @@ export function RideSection({ section, locationSlug }) {
           {section.rides.map((ride) => (
             <Link
               key={ride.slug}
-              href={`/${locationSlug}/rides/${ride.slug}`}
+              href={`/${locationSlug}/water-park/rides-and-attractions/${ride.slug}`}
               className="ride-card-list"
             >
               <div className="ride-media">

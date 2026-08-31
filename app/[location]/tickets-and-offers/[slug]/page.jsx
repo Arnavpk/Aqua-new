@@ -159,13 +159,13 @@ export default async function OfferDetailPage({ params }) {
                   {detail.detailCta?.heading}
                 </h3>
                 <p className="relative text-white/90 mb-7 text-base">
-                  {detail.detailCta.description}
+                  {detail.detailCta?.description}
                 </p>
                 <div className="relative flex gap-3 flex-wrap">
-                  <a href={detail.detailCta.url || detail.bookCtaUrl || "#"} className="btn btn-primary">
-                    {detail.detailCta.label}
+                  <a href={detail.detailCta?.url || detail.bookCtaUrl || "#"} className="btn btn-primary">
+                    {detail.detailCta?.label}
                   </a>
-                  <a href={detail.help.phoneUrl} className="btn btn-glass">📞 Call to book</a>
+                  <a href={detail.help?.phoneUrl} className="btn btn-glass">📞 Call to book</a>
                 </div>
               </div>
             </Reveal>
