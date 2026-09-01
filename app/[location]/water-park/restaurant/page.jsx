@@ -86,7 +86,7 @@ export default async function RestaurantsPage({ params }) {
                   </div>
                   <div className="flex justify-between items-center text-[12px] text-ink-2">
                     <span>{r.hours}</span>
-                    <Link href={`${base}/restaurants/${r.slug}`} className="btn btn-outline btn-sm">
+                    <Link href={`${base}/water-park/restaurant/${r.slug}`} className="btn btn-outline btn-sm">
                       {r.viewCtaLabel || "View details →"}
                     </Link>
                   </div>
