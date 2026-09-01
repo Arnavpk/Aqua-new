@@ -55,12 +55,13 @@ export default async function LocationHome({ params }) {
     <>
       <Navbar location={location} locations={strapiLocations} navItems={navItems} />      <Hero location={{ ...location, hero: hero || location.hero }} />
       <main>
-        <FeaturedRides locationSlug={location.slug} data={featuredRides} />
+        {location.slug == "ahmedabad" && (<FeaturedRides locationSlug={location.slug} data={featuredRides} />)}
+        
         {/* <Categories /> */}
         <HotOffers locationSlug={location.slug} data={hotOffers} />
         <EventsSplit data={eventsSplit} />
         {/* <PlanVisit locationSlug={location.slug} data={planVisit} /> */}
-        <ParkMap data={parkMap} />
+        {/* <ParkMap data={parkMap} /> */}
         <Gallery locationSlug={location.slug} data={gallery} />
         <Testimonials data={testimonials} />
         <SafetyBand data={safetyBand} />
