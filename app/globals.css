@@ -3112,3 +3112,337 @@
     @apply inline-flex rounded-full bg-red-100 text-red-600 font-accent text-[10px] font-bold px-2 py-0.5 ml-2;
     letter-spacing: .06em;
   }
+
+ /* ================================================================
+   LANDING PAGE — Location Chooser
+   ================================================================ */
+.lp-shell {
+  min-height: 100vh;
+  min-height: 100dvh;
+  position: relative;
+  overflow: hidden;
+  background: linear-gradient(165deg, #0A5566 0%, #0E7A93 40%, #00A5C8 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.lp-bg {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+}
+
+.lp-wave {
+  position: absolute;
+  width: 200%;
+  height: 200px;
+  border-radius: 45%;
+  opacity: .08;
+}
+
+.lp-wave-1 {
+  bottom: -60px;
+  left: -50%;
+  background: #5FDDEA;
+  animation: lpWave 12s ease-in-out infinite;
+}
+
+.lp-wave-2 {
+  bottom: -40px;
+  left: -50%;
+  background: #22C4DE;
+  animation: lpWave 15s ease-in-out infinite reverse;
+}
+
+.lp-wave-3 {
+  bottom: -80px;
+  left: -50%;
+  background: #A8ECF3;
+  animation: lpWave 18s ease-in-out infinite 2s;
+}
+
+@keyframes lpWave {
+  0%, 100% { transform: translateX(0) rotate(0deg); }
+  50% { transform: translateX(2%) rotate(3deg); }
+}
+
+.lp-inner {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 48px 24px;
+}
+
+.lp-header {
+  text-align: center;
+  margin-bottom: 28px;
+}
+
+.lp-logo {
+  width: 160px;
+  height: 160px;
+  margin: 0 auto 8px;
+  border-radius: 0;
+  background: none;
+  backdrop-filter: none;
+  box-shadow: none;
+}
+
+.lp-logo img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.lp-title {
+  font-size: clamp(32px, 5vw, 52px);
+  font-weight: 800;
+  color: white;
+  letter-spacing: -0.03em;
+  line-height: 1.1;
+  margin: 0 0 4px;
+  text-shadow: 0 2px 20px rgba(10, 85, 102, .3);
+}
+
+.lp-subtitle {
+  font-size: clamp(15px, 2vw, 18px);
+  color: rgba(255,255,255,.7);
+  margin: 0;
+  font-weight: 400;
+}
+
+.lp-prompt {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  margin-bottom: 28px;
+  font-size: 14px;
+  color: rgba(255,255,255,.55);
+  font-weight: 500;
+  letter-spacing: .04em;
+  text-transform: uppercase;
+}
+
+.lp-prompt-icon {
+  font-size: 16px;
+}
+
+.lp-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+}
+
+@media (max-width: 900px) {
+  .lp-grid {
+    grid-template-columns: 1fr;
+    max-width: 480px;
+    margin: 0 auto;
+  }
+}
+
+/* Card — full background image */
+.lp-card {
+  position: relative;
+  border-radius: 24px;
+  overflow: hidden;
+  min-height: 480px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  transition: transform .4s ease, box-shadow .4s ease;
+  cursor: pointer;
+}
+
+.lp-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 30px 80px rgba(10, 85, 102, .5);
+}
+
+.lp-card-soon {
+  opacity: .75;
+}
+
+.lp-card-soon:hover {
+  transform: translateY(-4px);
+}
+
+/* Background image */
+.lp-card-bg {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+}
+
+.lp-card-bg img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform .6s ease;
+}
+
+.lp-card:hover .lp-card-bg img {
+  transform: scale(1.08);
+}
+
+.lp-card-bg-placeholder {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 80px;
+  opacity: .3;
+}
+
+/* Gradient overlay — bottom heavy for text readability */
+.lp-card-overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background: linear-gradient(
+    to top,
+    rgba(10, 85, 102, .95) 0%,
+    rgba(10, 85, 102, .75) 35%,
+    rgba(10, 85, 102, .3) 60%,
+    rgba(10, 85, 102, .05) 100%
+  );
+}
+
+/* Content sits on top */
+.lp-card-content {
+  position: relative;
+  z-index: 2;
+  padding: 32px 28px;
+  text-align: left;
+}
+
+.lp-card-city {
+  font-size: 36px;
+  font-weight: 800;
+  color: white;
+  letter-spacing: -0.02em;
+  margin: 0 0 2px;
+  line-height: 1.1;
+  text-shadow: 0 2px 12px rgba(0,0,0,.2);
+}
+
+.lp-card-state {
+  font-size: 13px;
+  color: rgba(255,255,255,.55);
+  margin: 0 0 12px;
+  font-weight: 500;
+  letter-spacing: .03em;
+}
+
+.lp-card-tagline {
+  font-size: 15px;
+  color: rgba(255,255,255,.8);
+  margin: 0 0 16px;
+  line-height: 1.5;
+}
+
+.lp-card-stats {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 13px;
+  color: rgba(255,255,255,.55);
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+}
+
+.lp-dot {
+  opacity: .4;
+}
+
+/* Buttons */
+.lp-card-actions {
+  display: flex;
+  gap: 10px;
+}
+
+.lp-btn-primary {
+  display: inline-block;
+  padding: 13px 28px;
+  border-radius: 14px;
+  background: #FFD84D;
+  color: #0A5566;
+  font-size: 15px;
+  font-weight: 700;
+  text-align: center;
+  text-decoration: none;
+  letter-spacing: .01em;
+  transition: box-shadow .2s, transform .2s;
+  box-shadow: 0 4px 16px rgba(255, 216, 77, .3);
+}
+
+.lp-btn-primary:hover {
+  transform: scale(1.03);
+  box-shadow: 0 8px 28px rgba(255, 216, 77, .5);
+}
+
+.lp-btn-secondary {
+  display: inline-block;
+  padding: 12px 24px;
+  border-radius: 14px;
+  border: 1.5px solid rgba(255,255,255,.25);
+  color: rgba(255,255,255,.85);
+  font-size: 14px;
+  font-weight: 600;
+  text-align: center;
+  text-decoration: none;
+  transition: border-color .2s, color .2s, background .2s;
+}
+
+.lp-btn-secondary:hover {
+  border-color: rgba(255,255,255,.5);
+  color: white;
+  background: rgba(255,255,255,.1);
+}
+
+.lp-badge-soon {
+  display: inline-block;
+  padding: 10px 24px;
+  border-radius: 100px;
+  background: rgba(255, 216, 77, .15);
+  color: #FFD84D;
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: .06em;
+}
+
+/* Footer */
+.lp-footer {
+  margin-top: 48px;
+  text-align: center;
+}
+
+.lp-footer-links {
+  display: flex;
+  justify-content: center;
+  gap: 24px;
+  margin-bottom: 12px;
+}
+
+.lp-footer-links a {
+  color: rgba(255,255,255,.45);
+  font-size: 13px;
+  text-decoration: none;
+  transition: color .2s;
+}
+
+.lp-footer-links a:hover {
+  color: rgba(255,255,255,.8);
+}
+
+.lp-copyright {
+  font-size: 12px;
+  color: rgba(255,255,255,.25);
+  margin: 0;
+}
