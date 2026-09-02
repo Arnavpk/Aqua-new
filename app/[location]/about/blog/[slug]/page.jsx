@@ -9,6 +9,7 @@ import { Footer } from '@/components/Footer';
 import { MobBook } from '@/components/MobBook';
 import { Reveal } from '@/components/Reveal';
 import { getNavItems } from '@/lib/strapi/getNav';
+import Image from 'next/image';
 
 
 export async function generateMetadata({ params }) {
@@ -40,7 +41,7 @@ export default async function BlogDetailPage({ params }) {
       <div className="blog-hero-placeholder relative overflow-hidden">
         {blog.cover ? (
           <>
-            <img className="absolute inset-0 h-full w-full object-cover z-0" src={blog.cover} alt={blog.title} />
+            <Image height={200} width={400} className="absolute inset-0 h-full w-full object-cover z-0" src={blog.cover} alt={blog.title} />
             <div className="absolute inset-0 z-[1] bg-black/40" />
           </>
         ) : (
@@ -76,7 +77,7 @@ export default async function BlogDetailPage({ params }) {
                   <div className="flex items-center gap-4 text-sm text-ink-2">
                     <div className="flex items-center gap-2.5">
                       {blog.authorAvatar ? (
-                        <img className="w-8 h-8 rounded-full object-cover" src={blog.authorAvatar} alt={blog.author} />
+                        <Image height={200} width={400} className="w-8 h-8 rounded-full object-cover" src={blog.authorAvatar} alt={blog.author} />
                       ) : (
                         <div className="w-8 h-8 rounded-full bg-gradient-to-br from-brand-300 to-brand-600" />
                       )}
@@ -164,7 +165,7 @@ export default async function BlogDetailPage({ params }) {
                 <Link key={b.slug} href={`${base}/about/blog/${b.slug}`} className="blog-card">
                   <div className="blog-media relative overflow-hidden">
                     {b.cover ? (
-                      <img className="absolute inset-0 h-full w-full object-cover" src={b.cover} alt={b.title} />
+                      <Image height={200} width={400} className="absolute inset-0 h-full w-full object-cover" src={b.cover} alt={b.title} />
                     ) : (
                       <div className="absolute inset-0" style={{ background: b.gradient || 'linear-gradient(135deg, #00A5C8, #5FDDEA)' }} />
                     )}

@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import { Reveal } from './Reveal';
 import { HOT_OFFERS } from '@/lib/data/home';
+import Image from 'next/image';
 
 export function HotOffers({ locationSlug, data }) {
   const eyebrow = data?.eyebrow || "Save more, splash more";
@@ -28,12 +29,14 @@ export function HotOffers({ locationSlug, data }) {
               <div className="relative" style={{ aspectRatio: '16/10' }}>
                 {offer.image ? (
                   <>
-                    <img
+                    <Image
+                    height={200} width={400}
                       className="absolute inset-0 h-full w-full object-cover rounded-t-rl hidden md:block"
                       src={offer.image}
                       alt={offer.title}
                     />
-                    <img
+                    <Image
+                    height={200} width={400}
                       className="absolute inset-0 h-full w-full object-cover rounded-t-rl md:hidden"
                       src={offer.mobileImage || offer.image}
                       alt={offer.title}

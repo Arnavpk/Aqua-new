@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { NAV_LINKS, DRAWER_SECTIONS } from '@/lib/data/nav';
 import { LocationSwitcher } from './LocationSwitcher';
+import Image from 'next/image';
 
 export function Navbar({ location, locations, navItems }) {
   const [solid, setSolid] = useState(false);
@@ -50,7 +51,7 @@ export function Navbar({ location, locations, navItems }) {
             <div className="flex items-center gap-4">
               <Link href={base} className="flex items-center gap-2.5 font-bold tracking-tight text-inherit hover:text-inherit" aria-label={`${location.displayName} — Home`}>
                 {logo ? (
-                  <img src={logo} alt={location.displayName} className="h-12 w-auto" />
+                  <Image height={200} width={400} src={logo} alt={location.displayName} className="h-12 w-auto" />
                 ) : (
                   <span className="nav-mark" aria-hidden="true" />
                 )}
@@ -109,7 +110,7 @@ export function Navbar({ location, locations, navItems }) {
 
             <div className="flex items-center gap-2.5">
               <a href={location.contact.phoneHref} className={`nav-phone ${solid ? 'text-ink' : 'text-white'}`}>📞 {location.contact.phone}</a>
-              <Link href={`${base}/tickets`} className="btn btn-primary btn-sm max-[720px]:hidden">Book now →</Link>
+              <Link href={`${base}/tickets-and-offers`} className="btn btn-primary btn-sm max-[720px]:hidden">Book now →</Link>
               <button type="button" className="nav-burger" aria-label="Open menu" aria-expanded={drawerOpen} onClick={() => setDrawerOpen(true)}>
                 <span /><span /><span />
               </button>
@@ -124,7 +125,7 @@ export function Navbar({ location, locations, navItems }) {
         <div className="flex justify-between items-center mb-4">
           <Link href={base} className="flex items-center gap-2.5 font-bold text-ink hover:text-ink" onClick={() => setDrawerOpen(false)}>
             {logo ? (
-              <img src={logo} alt={location.displayName} className="h-10 w-auto" />
+              <Image height={200} width={400} src={logo} alt={location.displayName} className="h-10 w-auto" />
             ) : (
               <span className="nav-mark" aria-hidden="true" />
             )}
@@ -171,7 +172,7 @@ export function Navbar({ location, locations, navItems }) {
         </div>
 
         <div className="mt-5">
-          <Link href={`${base}/tickets`} className="btn btn-primary w-full text-center" onClick={() => setDrawerOpen(false)}>Book now →</Link>
+          <Link href={`${base}/tickets-and-offers`} className="btn btn-primary w-full text-center" onClick={() => setDrawerOpen(false)}>Book now →</Link>
           <a href={location.contact.phoneHref} className="block text-center mt-3 text-ink-2 text-sm">
             📞 {location.contact.phone} · {location.contact.phoneHours}
           </a>

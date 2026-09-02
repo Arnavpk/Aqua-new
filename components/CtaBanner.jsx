@@ -1,3 +1,4 @@
+import Image from 'next/image';
 import { Reveal } from './Reveal';
 
 export function CtaBanner({ locationSlug, data }) {
@@ -14,12 +15,15 @@ export function CtaBanner({ locationSlug, data }) {
             {/* Background image */}
             {data?.bgImage && (
               <>
-                <img
+                <Image
+                height={200} width={400}
+                
                   className="absolute inset-0 h-full w-full object-cover z-0 hidden md:block"
                   src={data.bgImage}
                   alt=""
                 />
-                <img
+                <Image
+                height={200} width={400}
                   className="absolute inset-0 h-full w-full object-cover z-0 md:hidden"
                   src={data.mobileBg || data.bgImage}
                   alt=""

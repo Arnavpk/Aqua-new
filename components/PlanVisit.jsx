@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import { Reveal } from './Reveal';
+import Image from 'next/image';
 
 const DEFAULT_TILES = [
   { icon: '🗺️', title: 'Park Essentials', desc: 'Map, timings, and entry guidelines', gradient: 'linear-gradient(135deg, #22C4DE, #5FDDEA)', href: '/about#essentials' },
@@ -33,7 +34,8 @@ export function PlanVisit({ locationSlug, data }) {
             <div className="plan-hero-card relative overflow-hidden">
               {hero.image && (
                 <>
-                  <img
+                  <Image
+                  height={200} width={400}
                     className="absolute inset-0 h-full w-full object-cover z-0"
                     src={hero.image}
                     alt={hero.title}

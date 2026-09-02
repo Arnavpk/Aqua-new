@@ -10,6 +10,7 @@ import { MobBook } from '@/components/MobBook';
 import { WaveDivider } from '@/components/WaveDivider';
 import { Reveal } from '@/components/Reveal';
 import { getNavItems } from '@/lib/strapi/getNav';
+import Image from 'next/image';
 
 
 export async function generateMetadata({ params }) {
@@ -42,13 +43,15 @@ export default async function OfferDetailPage({ params }) {
         {(detail.bImage || detail.image) ? (
           <>
             {/* Desktop banner */}
-            <img
+            <Image
+            height={200} width={400}
               className="hidden md:block absolute inset-0 h-full w-full object-cover z-0"
               src={detail.bImage || detail.image}
               alt={detail.name}
             />
             {/* Mobile banner */}
-            <img
+            <Image
+            height={200} width={400}
               className="block md:hidden absolute inset-0 h-full w-full object-cover z-0"
               src={detail.bImageMobile || detail.bImage || detail.image}
               alt={detail.name}
@@ -256,7 +259,7 @@ export default async function OfferDetailPage({ params }) {
                 <Link key={r.slug} href={`${base}/tickets/${r.slug}`} className="rel-card">
                   <div className="rel-media relative overflow-hidden">
                     {r.image ? (
-                      <img className="absolute inset-0 h-full w-full object-cover" src={r.image} alt={r.name} />
+                      <Image height={200} width={400} className="absolute inset-0 h-full w-full object-cover" src={r.image} alt={r.name} />
                     ) : (
                       <div className="absolute inset-0 bg-gradient-to-br from-brand-700 to-brand-400" />
                     )}

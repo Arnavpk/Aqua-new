@@ -1,3 +1,4 @@
+import Image from 'next/image';
 import { WaveDivider } from './WaveDivider';
 
 export function PageHero({
@@ -22,12 +23,14 @@ export function PageHero({
     >
       {bgImage && (
         <>
-          <img
+          <Image
+          height={200} width={400}
             className="absolute inset-0 h-full w-full object-cover z-0 hidden md:block"
             src={bgImage}
             alt=""
           />
-          <img
+          <Image
+          height={200} width={400}
             className="absolute inset-0 h-full w-full object-cover z-0 md:hidden"
             src={mobileImage || bgImage}
             alt=""

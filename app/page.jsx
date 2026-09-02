@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import { getAllLocations } from '@/lib/locations';
+import Image from 'next/image';
 
 const LOCATION_META = {
   surat: {
@@ -50,7 +51,7 @@ export default function RootPage() {
       <div className="lp-inner">
         <header className="lp-header">
           <div className="lp-logo" aria-hidden="true" >
-            <img src="https://www.aquaimagicaa.com/assets/images/Aquamagicaa-logo.png" alt="logo" />
+            <Image height={200} width={400} src="https://www.aquaimagicaa.com/assets/images/Aquamagicaa-logo.png" alt="logo" />
           </div>
           
           <p className="lp-subtitle">India's Most Loved Water Park Experience</p>
@@ -71,7 +72,7 @@ export default function RootPage() {
                 {/* Full background image */}
                 <div className="lp-card-bg">
                   {meta.image ? (
-                    <img src={meta.image} alt={loc.displayName} />
+                    <Image height={200} width={400} src={meta.image} alt={loc.displayName} />
                   ) : (
                     <div
                       className="lp-card-bg-placeholder"

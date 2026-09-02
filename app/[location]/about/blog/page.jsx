@@ -10,6 +10,7 @@ import { Navbar } from '@/components/Navbar';
 import { PageHero } from '@/components/PageHero';
 import { Footer } from '@/components/Footer';
 import { Reveal } from '@/components/Reveal';
+import Image from 'next/image';
 
 export function generateMetadata({ params }) {
   const loc = getLocation(params.location);
@@ -47,7 +48,7 @@ export default async function BlogListingPage({ params }) {
               <Link href={`${base}/about/blog/${featured.slug}`} className="blog-featured">
                 <div className="bf-media relative overflow-hidden">
                   {featured.cover ? (
-                    <img className="absolute inset-0 h-full w-full object-cover" src={featured.cover} alt={featured.title} />
+                    <Image height={200} width={400} className="absolute inset-0 h-full w-full object-cover" src={featured.cover} alt={featured.title} />
                   ) : (
                     <div className="absolute inset-0" style={{ background: featured.gradient || 'linear-gradient(135deg, #FFD84D, #FF7A9C)' }} />
                   )}
@@ -84,7 +85,7 @@ export default async function BlogListingPage({ params }) {
               <Link key={blog.slug} href={`${base}/about/blog/${blog.slug}`} className="blog-card">
                 <div className="blog-media relative overflow-hidden">
                   {blog.cover ? (
-                    <img className="absolute inset-0 h-full w-full object-cover" src={blog.cover} alt={blog.title} />
+                    <Image height={200} width={400} className="absolute inset-0 h-full w-full object-cover" src={blog.cover} alt={blog.title} />
                   ) : (
                     <div className="absolute inset-0" style={{ background: blog.gradient || 'linear-gradient(135deg, #00A5C8, #5FDDEA)' }} />
                   )}

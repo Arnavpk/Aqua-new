@@ -15,6 +15,7 @@ import { AboutContent } from '@/components/AboutContent';
 import { getAllArticles } from '@/lib/strapi/getArticles';
 import { extractArticles } from '@/lib/extractors/articleExtractor'
 import { getNavItems } from '@/lib/strapi/getNav';
+import Image from 'next/image';
 
 
 export default async function AboutPage({ params }) {
@@ -86,7 +87,7 @@ export default async function AboutPage({ params }) {
             </div>
             <div className="rounded-rx overflow-hidden aspect-[4/3] relative">
               {story?.image ? (
-                <img className="absolute inset-0 h-full w-full object-cover" src={story.image} alt={story.heading} />
+                <Image height={200} width={400} className="absolute inset-0 h-full w-full object-cover" src={story.image} alt={story.heading} />
               ) : (
                 <div className="absolute inset-0" style={{ background: 'linear-gradient(135deg, #22C4DE, #5FDDEA)' }} />
               )}
@@ -176,7 +177,7 @@ export default async function AboutPage({ params }) {
             </div>
             <div className="rounded-rx overflow-hidden aspect-[4/3] sticky top-[110px] relative">
               {timeline?.image ? (
-                <img className="absolute inset-0 h-full w-full object-cover" src={timeline.image} alt="Timeline" />
+                <Image height={200} width={400} className="absolute inset-0 h-full w-full object-cover" src={timeline.image} alt="Timeline" />
               ) : (
                 <div className="absolute inset-0" style={{ background: 'linear-gradient(135deg, #FFD84D, #FF7A9C)' }} />
               )}
@@ -247,7 +248,7 @@ export default async function AboutPage({ params }) {
               <Link key={b.slug} href={`${base}/about/blog/${b.slug}`} className="blog-card">
                 <div className="blog-media relative overflow-hidden">
                   {b.cover ? (
-                    <img className="absolute inset-0 h-full w-full object-cover" src={b.cover} alt={b.title} />
+                    <Image height={200} width={400} className="absolute inset-0 h-full w-full object-cover" src={b.cover} alt={b.title} />
                   ) : (
                     <div className="absolute inset-0" style={{ background: b.gradient || 'linear-gradient(135deg, #00A5C8, #5FDDEA)' }} />
                   )}

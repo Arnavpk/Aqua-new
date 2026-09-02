@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import { Reveal } from '@/components/Reveal';
+import Image from 'next/image';
 
 export function RideSection({ section, locationSlug }) {
   return (
@@ -29,7 +30,7 @@ export function RideSection({ section, locationSlug }) {
               <div className="ride-media">
                 {ride.image ? (
                   <div className="ride-art relative overflow-hidden">
-                    <img className="absolute inset-0 h-full w-full object-cover" src={ride.image} alt={ride.name} />
+                    <Image className="absolute inset-0 h-full w-full object-cover" src={ride.image} alt={ride.name} />
                   </div>
                 ) : (
                   <div className={`ride-art ${ride.art || 'bg-gradient-to-br from-brand-900 to-brand-600'}`} data-emoji={ride.emoji} />

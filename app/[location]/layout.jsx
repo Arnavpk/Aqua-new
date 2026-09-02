@@ -4,6 +4,7 @@ import { getAllStrapiLocations } from '@/lib/strapi/getLocations';
 import { getNavItems } from '@/lib/strapi/getNav';
 import { MobileTabBar } from '@/components/MobileTabBar';
 import { LocationPicker } from '@/components/LocationPicker';
+import { GTMHead, GTMNoScript, MetaPixelHead, MetaPixelNoScript } from '@/components/GTM';
 
 export function generateStaticParams() {
   return getAllLocationSlugs().map((slug) => ({ location: slug }));
@@ -20,6 +21,7 @@ export function generateMetadata({ params }) {
 
 export default async function LocationLayout({ children, params }) {
   if (!getLocation(params.location)) notFound();
+  const location = getLocation(params.location);
 
   const strapiLocations = await getAllStrapiLocations();
   const navItems = await getNavItems(params.location);
@@ -35,6 +37,12 @@ export default async function LocationLayout({ children, params }) {
           __html: JSON.stringify({ navItems, locations: strapiLocations }),
         }}
       />
+      <GTMHead gtmId={location?.gtmId} />
+      <GTMNoScript gtmId={location?.gtmId} />
+       <MetaPixelHead pixelId={location.metaPixelId} />
+      <MetaPixelNoScript pixelId={location.metaPixelId} />
+      
+
       {children}
       <MobileTabBar locationSlug={params.location} />
     </>
