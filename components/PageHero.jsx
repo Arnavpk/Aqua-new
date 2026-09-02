@@ -23,14 +23,12 @@ export function PageHero({
     >
       {bgImage && (
         <>
-          <Image
-          height={200} width={400}
+          <Image height={200} width={400}
             className="absolute inset-0 h-full w-full object-cover z-0 hidden md:block"
             src={bgImage}
             alt=""
           />
-          <Image
-          height={200} width={400}
+          <Image height={200} width={400}
             className="absolute inset-0 h-full w-full object-cover z-0 md:hidden"
             src={mobileImage || bgImage}
             alt=""

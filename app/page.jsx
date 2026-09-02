@@ -4,9 +4,9 @@ import Image from 'next/image';
 
 const LOCATION_META = {
   surat: {
-    tagline: 'Gujarat\'s favourite water park',
-    rides: '14 signature rides',
-    highlight: '3 pools · 6 restaurants',
+    tagline: 'Best Water Park Experience in Surat',
+    rides: '14+ signature rides',
+    highlight: '1 pools · 5 restaurants',
     status: 'open',
     ctaLabel: 'Explore Surat →',
     bookLabel: 'Book Now',
@@ -14,9 +14,9 @@ const LOCATION_META = {
     image: '	https://www.aquaimagicaa.com/assets/images/surat-bg.jpg',
   },
   indore: {
-    tagline: 'Central India\'s biggest water park',
-    rides: '12 signature rides',
-    highlight: '3 pools · 4 restaurants',
+    tagline: 'MP\'s biggest water park',
+    rides: '16+ signature rides',
+    highlight: '1 pool · 6 restaurants',
     status: 'open',
     ctaLabel: 'Explore Indore →',
     bookLabel: 'Book Now',
@@ -51,10 +51,10 @@ export default function RootPage() {
       <div className="lp-inner">
         <header className="lp-header">
           <div className="lp-logo" aria-hidden="true" >
-            <Image height={200} width={400} src="https://www.aquaimagicaa.com/assets/images/Aquamagicaa-logo.png" alt="logo" />
+            <Image height={400} width={200} src="https://www.aquaimagicaa.com/assets/images/Aquamagicaa-logo.png" alt="logo" />
           </div>
           
-          <p className="lp-subtitle">India's Most Loved Water Park Experience</p>
+          <p className="lp-subtitle">India&apos;s Most Loved Water Park Experience</p>
         </header>
 
         <div className="lp-prompt">
@@ -72,7 +72,7 @@ export default function RootPage() {
                 {/* Full background image */}
                 <div className="lp-card-bg">
                   {meta.image ? (
-                    <Image height={200} width={400} src={meta.image} alt={loc.displayName} />
+                    <Image height={200} width={400}  src={meta.image} alt={loc.displayName} />
                   ) : (
                     <div
                       className="lp-card-bg-placeholder"

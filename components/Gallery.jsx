@@ -37,7 +37,7 @@ export function Gallery({ locationSlug, data }) {
               <div key={i} className={`gal-tile ${spanCls} relative overflow-hidden`}>
                 {tile.image ? (
                   <Image
-                  height={200} width={400}
+                  fill
                     className="absolute inset-0 h-full w-full object-cover"
                     src={tile.image}
                     alt={tile.tag || `Gallery image ${i + 1}`}
@@ -59,8 +59,7 @@ export function Gallery({ locationSlug, data }) {
               return (
                 <div key={i} className={`gal-tile ${cls} relative overflow-hidden`}>
                   {tile.mobileImage || tile.image ? (
-                    <Image
-                    height={200} width={400}
+                    <Image height={200} width={400}
                       className="absolute inset-0 h-full w-full object-cover"
                       src={tile.mobileImage || tile.image}
                       alt={tile.tag || `Gallery image ${i + 1}`}

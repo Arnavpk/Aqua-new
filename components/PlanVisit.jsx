@@ -34,8 +34,7 @@ export function PlanVisit({ locationSlug, data }) {
             <div className="plan-hero-card relative overflow-hidden">
               {hero.image && (
                 <>
-                  <Image
-                  height={200} width={400}
+                  <Image height={200} width={400}
                     className="absolute inset-0 h-full w-full object-cover z-0"
                     src={hero.image}
                     alt={hero.title}

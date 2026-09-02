@@ -44,14 +44,14 @@ export default async function OfferDetailPage({ params }) {
           <>
             {/* Desktop banner */}
             <Image
-            height={200} width={400}
+            fill
               className="hidden md:block absolute inset-0 h-full w-full object-cover z-0"
               src={detail.bImage || detail.image}
               alt={detail.name}
             />
             {/* Mobile banner */}
             <Image
-            height={200} width={400}
+            fill
               className="block md:hidden absolute inset-0 h-full w-full object-cover z-0"
               src={detail.bImageMobile || detail.bImage || detail.image}
               alt={detail.name}

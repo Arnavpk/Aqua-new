@@ -41,8 +41,7 @@ export function GalleryContent({ tiles }) {
                             className={`gal-tile gallery-page-tile ${item.span === 'big' ? 'gallery-big' : ''} relative overflow-hidden`}
                         >
                             {item.image ? (
-                                <Image
-                                height={200} width={400}
+                                <Image height={200} width={400}
                                     className="absolute inset-0 h-full w-full object-cover"
                                     src={item.image}
                                     alt={item.tag || `Gallery ${i + 1}`}
