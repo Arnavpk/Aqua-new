@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import { Reveal } from '@/components/Reveal';
 import { OFFERS } from '@/lib/data/tickets';
+import Image from 'next/image';
 
 export function OffersGrid({ locationSlug, data }) {
   const offers = data?.length && data;
@@ -24,7 +25,7 @@ export function OffersGrid({ locationSlug, data }) {
               <div className="offer-media">
                 {offer.image ? (
                   <div className="art relative overflow-hidden">
-                    <img className="absolute inset-0 h-full w-full object-cover" src={offer.image} alt={offer.name} />
+                    <Image height={200} width={400} className="absolute inset-0 h-full w-full object-cover" src={offer.image} alt={offer.name} />
                   </div>
                 ) : (
                   <div className={`art ${offer.art || 'bg-gradient-to-br from-brand-700 to-brand-400'}`} data-emoji={offer.emoji} />

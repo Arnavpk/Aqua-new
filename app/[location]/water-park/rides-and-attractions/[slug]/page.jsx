@@ -11,6 +11,7 @@ import { Reveal } from '@/components/Reveal';
 import { SplashDrops } from '@/components/rides/SplashDrops';
 import { getAllStrapiLocations } from '@/lib/strapi/getLocations';
 import { getNavItems } from '@/lib/strapi/getNav';
+import Image from 'next/image';
 
 
 export async function generateMetadata({ params }) {
@@ -130,7 +131,7 @@ export default async function RideDetailPage({ params }) {
                       return (
                         <div key={i} className={`gal-tile ${spanCls} relative overflow-hidden`}>
                           {g.image ? (
-                            <img className="absolute inset-0 h-full w-full object-cover" src={g.image} alt={g.tag || `Gallery ${i + 1}`} />
+                            <Image height={200} width={400} className="absolute inset-0 h-full w-full object-cover" src={g.image} alt={g.tag || `Gallery ${i + 1}`} />
                           ) : (
                             <div className="absolute inset-0 bg-gradient-to-br from-brand-600 to-brand-900" />
                           )}
@@ -245,7 +246,7 @@ export default async function RideDetailPage({ params }) {
                 <Link key={r.slug} href={`${base}/water-park/rides-and-attractions/${r.slug}`} className="ride-card-list">
                   <div className="ride-media relative overflow-hidden">
                     {r.image ? (
-                      <img className="absolute inset-0 h-full w-full object-cover" src={r.image} alt={r.name} />
+                      <Image height={200} width={400} className="absolute inset-0 h-full w-full object-cover" src={r.image} alt={r.name} />
                     ) : (
                       <div className="ride-art bg-gradient-to-br from-brand-900 to-brand-600" />
                     )}

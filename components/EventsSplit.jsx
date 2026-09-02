@@ -1,3 +1,4 @@
+import Image from 'next/image';
 import { Reveal } from './Reveal';
 import { EVENTS } from '@/lib/data/home';
 
@@ -12,7 +13,8 @@ export function EventsSplit({ data }) {
             <article key={i} className={`split-card ${ev.variant === 'dark' ? 'split-dark' : 'split-yellow'} relative overflow-hidden`}>
               {ev.image && (
                 <>
-                  <img
+                  <Image
+                  height={200} width={400}
                     className="absolute inset-0 h-full w-full object-cover z-0"
                     src={ev.image}
                     alt={ev.title}

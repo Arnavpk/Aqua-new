@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import { WaveDivider } from '@/components/WaveDivider';
+import Image from 'next/image';
 
 const DEFAULT_STATS = [
   { n: '14', l: 'Signature rides' },
@@ -36,12 +37,14 @@ export function RidesHero({ locationSlug, data, mosaic }) {
     <header className="rides-hero">
       {data?.bgImage && (
         <>
-          <img
+          <Image
+          height={200} width={400}
             className="absolute inset-0 h-full w-full object-cover z-0 hidden md:block"
             src={data.bgImage}
             alt=""
           />
-          <img
+          <Image
+          height={200} width={400}
             className="absolute inset-0 h-full w-full object-cover z-0 md:hidden"
             src={data.mobileImage || data.bgImage}
             alt=""
@@ -86,7 +89,8 @@ export function RidesHero({ locationSlug, data, mosaic }) {
                 style={{ position: 'absolute', ...TILE_STYLES[i], background: tile.gradient }}
               >
                 {tile.image && (
-                  <img
+                  <Image
+                  height={200} width={400}
                     className="absolute inset-0 h-full w-full object-cover z-0"
                     src={tile.image}
                     alt={tile.label}

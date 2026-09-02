@@ -3,6 +3,7 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { QUOTES } from '@/lib/data/home';
 import { Reveal } from './Reveal';
+import Image from 'next/image';
 
 const AUTOPLAY = 8000;
 const FADE = 200;
@@ -42,7 +43,7 @@ export function Testimonials({ data }) {
               </blockquote>
               <div className="flex items-center gap-4">
                 {q.avatar ? (
-                  <img className="w-14 h-14 rounded-full flex-shrink-0 object-cover" src={q.avatar} alt={q.name} />
+                  <Image height={200} width={400} className="w-14 h-14 rounded-full flex-shrink-0 object-cover" src={q.avatar} alt={q.name} />
                 ) : (
                   <div className="w-14 h-14 rounded-full flex-shrink-0 transition-[background] duration-500 ease-smooth" style={{ background: `linear-gradient(135deg, ${q.c1}, ${q.c2})` }} aria-hidden="true" />
                 )}

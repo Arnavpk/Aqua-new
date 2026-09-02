@@ -11,6 +11,7 @@ import { PageHero } from '@/components/PageHero';
 import { Footer } from '@/components/Footer';
 import { Reveal } from '@/components/Reveal';
 import { getNavItems } from '@/lib/strapi/getNav';
+import Image from 'next/image';
 
 
 export function generateMetadata({ params }) {
@@ -99,7 +100,7 @@ export default async function RetailShopPage({ params }) {
               <div key={p.name} className="product-card">
                 <div className="product-media relative overflow-hidden">
                   {p.image ? (
-                    <img className="absolute inset-0 h-full w-full object-cover" src={p.image} alt={p.name} />
+                    <Image height={200} width={400} className="absolute inset-0 h-full w-full object-cover" src={p.image} alt={p.name} />
                   ) : (
                     <div className="absolute inset-0" style={{ background: p.gradient || 'linear-gradient(135deg, #00A5C8, #5FDDEA)' }} />
                   )}

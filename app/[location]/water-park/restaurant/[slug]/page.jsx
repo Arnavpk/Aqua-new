@@ -10,6 +10,7 @@ import { Footer } from '@/components/Footer';
 import { MobBook } from '@/components/MobBook';
 import { Reveal } from '@/components/Reveal';
 import { getNavItems } from '@/lib/strapi/getNav';
+import Image from 'next/image';
 
 
 
@@ -144,7 +145,7 @@ export default async function RestaurantDetailPage({ params }) {
                 <Link key={x.slug} href={`${base}/restaurants/${x.slug}`} className="rest-card no-underline text-inherit hover:text-inherit">
                   <div className="rest-media relative overflow-hidden">
                     {x.image ? (
-                      <img className="absolute inset-0 h-full w-full object-cover" src={x.image} alt={x.name} />
+                      <Image height={200} width={400} className="absolute inset-0 h-full w-full object-cover" src={x.image} alt={x.name} />
                     ) : (
                       <div className="absolute inset-0" style={{ background: x.gradient || 'linear-gradient(135deg, #0A5566, #00A5C8)' }} />
                     )}

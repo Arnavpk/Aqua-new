@@ -1,3 +1,4 @@
+import Image from 'next/image';
 import { Reveal } from './Reveal';
 
 export function ParkMap({ data }) {
@@ -12,12 +13,14 @@ export function ParkMap({ data }) {
             {/* Background map image */}
             {data?.mapImage ? (
               <>
-                <img
+                <Image
+                height={200} width={400}
                   className="absolute inset-0 h-full w-full object-cover z-0 hidden md:block"
                   src={data.mapImage}
                   alt={title}
                 />
-                <img
+                <Image
+                height={200} width={400}
                   className="absolute inset-0 h-full w-full object-cover z-0 md:hidden"
                   src={data.mobileMapImage || data.mapImage}
                   alt={title}

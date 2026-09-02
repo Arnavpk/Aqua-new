@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import { FEATURED_RIDE } from '@/lib/data/rides';
 import { Reveal } from '@/components/Reveal';
+import Image from 'next/image';
 
 export function FeaturedRideSpotlight({ locationSlug, ride, section }) {
   const r = ride || FEATURED_RIDE;
@@ -38,7 +39,8 @@ export function FeaturedRideSpotlight({ locationSlug, ride, section }) {
 
           <div className="featured-visual max-[720px]:hidden">
             {section?.bgImage || r.image ? (
-              <img
+              <Image
+              height={200} width={400}
                 className="absolute inset-0 h-full w-full object-cover z-0"
                 src={section?.bgImage || r.image}
                 alt={r.name}

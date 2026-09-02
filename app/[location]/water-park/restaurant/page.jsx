@@ -12,6 +12,7 @@ import { Footer } from '@/components/Footer';
 import { MobBook } from '@/components/MobBook';
 import { Reveal } from '@/components/Reveal';
 import { getNavItems } from '@/lib/strapi/getNav';
+import Image from 'next/image';
 
 
 export function generateMetadata({ params }) {
@@ -71,7 +72,7 @@ export default async function RestaurantsPage({ params }) {
               <article key={r.slug} className="rest-card">
                 <div className="rest-media relative overflow-hidden">
                   {r.image ? (
-                    <img className="absolute inset-0 h-full w-full object-cover" src={r.image} alt={r.name} />
+                    <Image height={200} width={400} className="absolute inset-0 h-full w-full object-cover" src={r.image} alt={r.name} />
                   ) : (
                     <div className="absolute inset-0" style={{ background: r.gradient || 'linear-gradient(135deg, #0A5566, #00A5C8)' }} />
                   )}
