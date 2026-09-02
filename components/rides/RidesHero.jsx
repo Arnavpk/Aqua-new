@@ -37,14 +37,12 @@ export function RidesHero({ locationSlug, data, mosaic }) {
     <header className="rides-hero">
       {data?.bgImage && (
         <>
-          <Image
-          height={200} width={400}
+          <Image height={200} width={400}
             className="absolute inset-0 h-full w-full object-cover z-0 hidden md:block"
             src={data.bgImage}
             alt=""
           />
-          <Image
-          height={200} width={400}
+          <Image height={200} width={400}
             className="absolute inset-0 h-full w-full object-cover z-0 md:hidden"
             src={data.mobileImage || data.bgImage}
             alt=""
@@ -89,8 +87,7 @@ export function RidesHero({ locationSlug, data, mosaic }) {
                 style={{ position: 'absolute', ...TILE_STYLES[i], background: tile.gradient }}
               >
                 {tile.image && (
-                  <Image
-                  height={200} width={400}
+                  <Image height={200} width={400}
                     className="absolute inset-0 h-full w-full object-cover z-0"
                     src={tile.image}
                     alt={tile.label}

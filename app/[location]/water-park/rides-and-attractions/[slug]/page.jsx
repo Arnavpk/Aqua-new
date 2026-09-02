@@ -131,7 +131,7 @@ export default async function RideDetailPage({ params }) {
                       return (
                         <div key={i} className={`gal-tile ${spanCls} relative overflow-hidden`}>
                           {g.image ? (
-                            <Image height={200} width={400} className="absolute inset-0 h-full w-full object-cover" src={g.image} alt={g.tag || `Gallery ${i + 1}`} />
+                            <Image width={400} height={200} className="absolute inset-0 h-full w-full object-cover" src={g.image} alt={g.tag || `Gallery ${i + 1}`} />
                           ) : (
                             <div className="absolute inset-0 bg-gradient-to-br from-brand-600 to-brand-900" />
                           )}

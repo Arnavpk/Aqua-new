@@ -30,7 +30,7 @@ export function RideSection({ section, locationSlug }) {
               <div className="ride-media">
                 {ride.image ? (
                   <div className="ride-art relative overflow-hidden">
-                    <Image className="absolute inset-0 h-full w-full object-cover" src={ride.image} alt={ride.name} />
+                    <Image height={200} width={400} className="absolute inset-0 h-full w-full object-cover" src={ride.image} alt={ride.name} />
                   </div>
                 ) : (
                   <div className={`ride-art ${ride.art || 'bg-gradient-to-br from-brand-900 to-brand-600'}`} data-emoji={ride.emoji} />

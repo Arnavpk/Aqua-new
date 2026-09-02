@@ -39,8 +39,7 @@ export function FeaturedRideSpotlight({ locationSlug, ride, section }) {
 
           <div className="featured-visual max-[720px]:hidden">
             {section?.bgImage || r.image ? (
-              <Image
-              height={200} width={400}
+              <Image height={200} width={400}
                 className="absolute inset-0 h-full w-full object-cover z-0"
                 src={section?.bgImage || r.image}
                 alt={r.name}

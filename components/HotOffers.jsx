@@ -29,14 +29,12 @@ export function HotOffers({ locationSlug, data }) {
               <div className="relative" style={{ aspectRatio: '16/10' }}>
                 {offer.image ? (
                   <>
-                    <Image
-                    height={200} width={400}
+                    <Image height={200} width={400}
                       className="absolute inset-0 h-full w-full object-cover rounded-t-rl hidden md:block"
                       src={offer.image}
                       alt={offer.title}
                     />
-                    <Image
-                    height={200} width={400}
+                    <Image height={200} width={400}
                       className="absolute inset-0 h-full w-full object-cover rounded-t-rl md:hidden"
                       src={offer.mobileImage || offer.image}
                       alt={offer.title}
