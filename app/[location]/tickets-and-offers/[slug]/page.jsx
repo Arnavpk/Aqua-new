@@ -11,6 +11,7 @@ import { WaveDivider } from '@/components/WaveDivider';
 import { Reveal } from '@/components/Reveal';
 import { getNavItems } from '@/lib/strapi/getNav';
 import Image from 'next/image';
+import { FAQ } from '@/components/FAQ';
 
 
 export async function generateMetadata({ params }) {
@@ -43,13 +44,13 @@ export default async function OfferDetailPage({ params }) {
         {(detail.bImage || detail.image) ? (
           <>
             {/* Desktop banner */}
-            <Image fill
+            <img
               className="hidden md:block absolute inset-0 h-full w-full object-cover z-0"
               src={detail.bImage || detail.image}
               alt={detail.name}
             />
             {/* Mobile banner */}
-            <Image fill
+            <img
               className="block md:hidden absolute inset-0 h-full w-full object-cover z-0"
               src={detail.bImageMobile || detail.bImage || detail.image}
               alt={detail.name}
@@ -75,7 +76,7 @@ export default async function OfferDetailPage({ params }) {
             {detail.lede}
           </p>
           <div className="flex gap-3 flex-wrap">
-            <button type="button" className="btn btn-dark">Book now — save {detail.medallion.big} →</button>
+            {/* <button type="button" className="btn btn-dark">Book now — save {detail.medallion.big} →</button> */}
             <Link href={`${base}/tickets-and-offers`} className="btn btn-glass">← All offers</Link>
           </div>
           {detail.meta.length > 0 && (
@@ -142,7 +143,7 @@ export default async function OfferDetailPage({ params }) {
               <Reveal>
                 <div className="content-block">
                   <span className="eyebrow mb-3 block">Terms &amp; conditions</span>
-                  <h2>The fine print.</h2>
+                  {/* <h2>The fine print.</h2> */}
                   <ul className="terms-list mt-5">
                     {detail.terms.map((t, i) => (
                       <li key={i}>{t}</li>
@@ -154,22 +155,22 @@ export default async function OfferDetailPage({ params }) {
 
             {/* CTA */}
             {/* CTA */}
-            <Reveal>
+            {/* <Reveal>
               <div className="cta-block">
                 <h3 className="text-[36px] font-extrabold tracking-tight leading-none mb-4 relative">
                   {detail.detailCta?.heading}
                 </h3>
                 <p className="relative text-white/90 mb-7 text-base">
-                  {detail.detailCta?.description}
+                  {detail.detailCta.description}
                 </p>
                 <div className="relative flex gap-3 flex-wrap">
-                  <a href={detail.detailCta?.url || detail.bookCtaUrl || "#"} className="btn btn-primary">
-                    {detail.detailCta?.label}
+                  <a href={detail.detailCta.url || detail.bookCtaUrl || "#"} className="btn btn-primary">
+                    {detail.detailCta.label}
                   </a>
-                  <a href={detail.help?.phoneUrl} className="btn btn-glass">📞 Call to book</a>
+                  <a href={detail.help.phoneUrl} className="btn btn-glass">📞 Call to book</a>
                 </div>
               </div>
-            </Reveal>
+            </Reveal> */}
           </div>
 
           {/* ===== ASIDE ===== */}
@@ -188,7 +189,7 @@ export default async function OfferDetailPage({ params }) {
                   )}
                 </div>
                 <div className="py-4 border-t border-b border-dashed border-line">
-                  <div className="font-accent text-[12px] text-ink-2 font-semibold uppercase" style={{ letterSpacing: '.16em' }}>Starting from</div>
+                  <div className="font-accent text-[12px] text-ink-2 font-semibold uppercase" style={{ letterSpacing: '.16em' }}>Tickets At</div>
                   <div className="text-[44px] font-extrabold tracking-tight text-brand-700 leading-none mt-2 mb-1.5">
                     {sb.price}
                     {sb.priceStrike && (
@@ -240,6 +241,8 @@ export default async function OfferDetailPage({ params }) {
         </div>
       </div>
 
+      <FAQ />
+
       {/* ===== RELATED OFFERS ===== */}
       {detail.related.length > 0 && (
         <section style={{ padding: '60px 0 20px' }}>
@@ -257,7 +260,7 @@ export default async function OfferDetailPage({ params }) {
                 <Link key={r.slug} href={`${base}/tickets/${r.slug}`} className="rel-card">
                   <div className="rel-media relative overflow-hidden">
                     {r.image ? (
-                      <Image height={200} width={400} className="absolute inset-0 h-full w-full object-cover" src={r.image} alt={r.name} />
+                      <img className="absolute inset-0 h-full w-full object-cover" src={r.image} alt={r.name} />
                     ) : (
                       <div className="absolute inset-0 bg-gradient-to-br from-brand-700 to-brand-400" />
                     )}

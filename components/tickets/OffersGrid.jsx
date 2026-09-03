@@ -30,12 +30,12 @@ export function OffersGrid({ locationSlug, data }) {
                 ) : (
                   <div className={`art ${offer.art || 'bg-gradient-to-br from-brand-700 to-brand-400'}`} data-emoji={offer.emoji} />
                 )}
-                <span className="offer-tag">{offer.tag}</span>
-                {offer.badge && <span className="offer-badge badge-hot">{offer.badge}</span>}
-                <div className="offer-discount">
-                  <div className="big">{offer.discount}</div>
-                  <div className="small">{offer.discountSub}</div>
-                </div>
+                {/* <span className="offer-tag">{offer.tag}</span> */}
+                {/* {offer.badge && <span className="offer-badge badge-hot">{offer.badge}</span>} */}
+                {/* <div className="offer-discount"> */}
+                {/* <div className="big">{offer.discount}</div> */}
+                {/* <div className="small">{offer.discountSub}</div> */}
+                {/* </div> */}
               </div>
               <div className="offer-body">
                 <h3>
