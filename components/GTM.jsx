@@ -1,3 +1,4 @@
+import Image from 'next/image';
 import Script from 'next/script';
 
 export function GTMHead({ gtmId }) {
@@ -61,9 +62,8 @@ export function MetaPixelNoScript({ pixelId }) {
 
   return (
     <noscript>
-      <img
-        height="1"
-        width="1"
+      <Image
+        height={200} width={400}
         style={{ display: 'none' }}
         src={`https://www.facebook.com/tr?id=${pixelId}&ev=PageView&noscript=1`}
         alt=""

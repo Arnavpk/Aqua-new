@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import { Reveal } from './Reveal';
+import Image from 'next/image';
 
 const CATEGORIES = [
     { key: 'all', label: 'All' },
