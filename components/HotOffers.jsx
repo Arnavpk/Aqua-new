@@ -44,10 +44,14 @@ export function HotOffers({ locationSlug, data }) {
                   <div className="absolute inset-0 rounded-t-rl bg-gradient-to-br from-brand-500 to-brand-700" />
                 )}
                 <span
-                  className="absolute top-3.5 left-3.5 rounded-full px-3 py-1.5 font-accent text-[10.5px] font-bold z-[2]"
-                  style={{ background: offer.badge.bg, color: offer.badge.color, letterSpacing: '.06em' }}
+                  className="absolute top-3.5 left-3.5 z-[2] rounded-full px-3 py-1.5 font-accent text-[10.5px] font-bold"
+                  style={{
+                    background: "#ffd84d",
+                    color: "var(--ink)",
+                    letterSpacing: ".06em",
+                  }}
                 >
-                  {offer.badge.label}
+                  {offer.badge}
                 </span>
                 <div className="absolute bottom-3.5 right-3.5 bg-white/[.97] rounded-2xl px-3.5 py-2.5 text-right z-[2] shadow-s3">
                   <div className="text-[22px] font-extrabold text-coral leading-none">{offer.discount}</div>

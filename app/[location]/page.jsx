@@ -50,13 +50,14 @@ export default async function LocationHome({ params }) {
 
   const strapiLocations = await getAllStrapiLocations();
 
+  // console.log("STRAPI BADGE:", hotOffers.offers.map((offer) => offer.badge));
 
   return (
     <>
       <Navbar location={location} locations={strapiLocations} navItems={navItems} />      <Hero location={{ ...location, hero: hero || location.hero }} />
       <main>
         {location.slug == "ahmedabad" && (<FeaturedRides locationSlug={location.slug} data={featuredRides} />)}
-        
+
         {/* <Categories /> */}
         <HotOffers locationSlug={location.slug} data={hotOffers} />
         <EventsSplit data={eventsSplit} />
