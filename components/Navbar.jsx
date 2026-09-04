@@ -3,16 +3,16 @@
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { NAV_LINKS, DRAWER_SECTIONS } from '@/lib/data/nav';
+import { NAV_LINKS } from '@/lib/data/nav';
 import { LocationSwitcher } from './LocationSwitcher';
 import Image from 'next/image';
 
 export function Navbar({ location, locations, navItems }) {
   const [solid, setSolid] = useState(false);
   const [drawerOpen, setDrawerOpen] = useState(false);
+  const [openMobileDropdown, setOpenMobileDropdown] = useState(null);
   const pathname = usePathname();
 
-  // Use Strapi nav items or fallback to hardcoded
   const links = navItems?.length ? navItems : NAV_LINKS;
 
   useEffect(() => {
@@ -37,12 +37,32 @@ export function Navbar({ location, locations, navItems }) {
   const logo = currentLoc?.logo;
 
   const isActive = (href) => {
+    if (href === '' || href === '/') {
+      return pathname === base || pathname === base + '/';
+    }
+    if (!href) return false;
     const full = base + href;
-    if (full === base || full === base + '/') return pathname === base || pathname === base + '/';
     return pathname.startsWith(full);
   };
 
-   
+  // Render nav link or non-clickable parent
+  const NavLabel = ({ link, className }) => {
+    if (link.isParentOnly) {
+      return (
+        <span className={className} style={{ cursor: 'default' }}>
+          {link.label}
+          {link.dropdown && <span className="caret-down" aria-hidden="true" />}
+        </span>
+      );
+    }
+    return (
+      <Link href={base + link.href} className={className}>
+        {link.label}
+        {link.dropdown && <span className="caret-down" aria-hidden="true" />}
+      </Link>
+    );
+  };
+
   return (
     <>
       <nav className="nav-shell group" data-solid={solid} aria-label="Primary">
@@ -66,6 +86,7 @@ export function Navbar({ location, locations, navItems }) {
               />
             </div>
 
+            {/* Desktop nav */}
             <div className={`nav-links-hide flex gap-1.5 text-sm font-medium ${solid ? 'text-ink' : 'text-white'}`}>
               {links.map((link) => (
                 <div
@@ -74,13 +95,7 @@ export function Navbar({ location, locations, navItems }) {
                 >
                   {link.dropdown ? (
                     <>
-                      <Link
-                        href={base + link.href}
-                        className={isActive(link.href) ? 'is-active' : ''}
-                      >
-                        {link.label}
-                        <span className="caret-down" aria-hidden="true" />
-                      </Link>
+                      <NavLabel link={link} className={isActive(link.href) ? 'is-active' : ''} />
                       <div className="nav-dropdown">
                         {link.dropdown.map((group, gi) => (
                           <div key={gi}>
@@ -97,12 +112,7 @@ export function Navbar({ location, locations, navItems }) {
                       </div>
                     </>
                   ) : (
-                    <Link
-                      href={base + link.href}
-                      className={isActive(link.href) ? 'is-active' : ''}
-                    >
-                      {link.label}
-                    </Link>
+                    <NavLabel link={link} className={isActive(link.href) ? 'is-active' : ''} />
                   )}
                 </div>
               ))}
@@ -142,31 +152,68 @@ export function Navbar({ location, locations, navItems }) {
           />
         </div>
 
-        {/* Dynamic drawer links */}
+        {/* Mobile drawer links */}
         <div className="drawer-section">
           {links.map((link) => (
             <div key={link.label}>
-              <Link
-                href={base + link.href}
-                className="block py-2 text-base font-medium"
-                onClick={() => setDrawerOpen(false)}
-              >
-                {link.label}
-              </Link>
-              {link.dropdown && link.dropdown.map((group, gi) => (
-                <div key={gi} className="pl-4">
-                  {group.links.map((dl) => (
-                    <Link
-                      key={dl.label}
-                      href={base + dl.href}
-                      className="block py-1.5 text-sm text-ink-2"
-                      onClick={() => setDrawerOpen(false)}
-                    >
-                      {dl.label}
-                    </Link>
+              {link.isParentOnly && link.dropdown ? (
+                // Parent-only: accordion toggle, no navigation
+                <button
+                  type="button"
+                  className="w-full text-left py-2 text-base font-medium flex justify-between items-center"
+                  onClick={() => setOpenMobileDropdown(openMobileDropdown === link.label ? null : link.label)}
+                >
+                  {link.label}
+                  <span className={`text-ink-2 text-xs transition-transform ${openMobileDropdown === link.label ? 'rotate-180' : ''}`}>▼</span>
+                </button>
+              ) : link.dropdown ? (
+                // Has page + dropdown: clickable link + toggle
+                <div className="flex items-center justify-between">
+                  <Link
+                    href={base + link.href}
+                    className="py-2 text-base font-medium flex-1"
+                    onClick={() => setDrawerOpen(false)}
+                  >
+                    {link.label}
+                  </Link>
+                  <button
+                    type="button"
+                    className="p-2 text-ink-2 text-xs"
+                    onClick={() => setOpenMobileDropdown(openMobileDropdown === link.label ? null : link.label)}
+                  >
+                    <span className={`inline-block transition-transform ${openMobileDropdown === link.label ? 'rotate-180' : ''}`}>▼</span>
+                  </button>
+                </div>
+              ) : (
+                // Simple link
+                <Link
+                  href={base + link.href}
+                  className="block py-2 text-base font-medium"
+                  onClick={() => setDrawerOpen(false)}
+                >
+                  {link.label}
+                </Link>
+              )}
+
+              {/* Dropdown children */}
+              {link.dropdown && (openMobileDropdown === link.label) && (
+                <div className="pl-4 pb-2">
+                  {link.dropdown.map((group, gi) => (
+                    <div key={gi}>
+                      {group.links.map((dl) => (
+                        <Link
+                          key={dl.label}
+                          href={base + dl.href}
+                          className="block py-1.5 text-sm text-ink-2"
+                          onClick={() => setDrawerOpen(false)}
+                        >
+                          {dl.label}
+                        </Link>
+                      ))}
+                    </div>
                   ))}
                 </div>
-              ))}
+              )}
             </div>
           ))}
         </div>

@@ -1,9 +1,9 @@
 import React from 'react'
 
-const page = () => {
+const InfluencersDayOut = () => {
   return (
-    <div>page</div>
+    <div>InfluencersDayOut</div>
   )
 }
 
-export default page
+export default InfluencersDayOut;
