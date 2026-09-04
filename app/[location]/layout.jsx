@@ -4,6 +4,7 @@ import { getAllStrapiLocations } from '@/lib/strapi/getLocations';
 import { getNavItems } from '@/lib/strapi/getNav';
 import { MobileTabBar } from '@/components/MobileTabBar';
 import { LocationPicker } from '@/components/LocationPicker';
+import { Navbar } from '@/components/Navbar';
 import { GTMHead, GTMNoScript, MetaPixelHead, MetaPixelNoScript } from '@/components/GTM';
 
 export function generateStaticParams() {
@@ -29,19 +30,16 @@ export default async function LocationLayout({ children, params }) {
   return (
     <>
       <LocationPicker locations={strapiLocations} currentSlug={params.location} />
-      {/* Pass navItems and locations via data attributes or context */}
-      <script
-        id="nav-data"
-        type="application/json"
-        dangerouslySetInnerHTML={{
-          __html: JSON.stringify({ navItems, locations: strapiLocations }),
-        }}
-      />
       <GTMHead gtmId={location?.gtmId} />
       <GTMNoScript gtmId={location?.gtmId} />
-       <MetaPixelHead pixelId={location.metaPixelId} />
+      <MetaPixelHead pixelId={location.metaPixelId} />
       <MetaPixelNoScript pixelId={location.metaPixelId} />
-      
+
+      <Navbar
+        location={location}
+        locations={strapiLocations}
+        navItems={navItems}
+      />
 
       {children}
       <MobileTabBar locationSlug={params.location} />
