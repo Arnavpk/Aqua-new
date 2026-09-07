@@ -15,7 +15,7 @@ export function RidesContent({ locationSlug, sections, featured, categories, pla
             : sections.filter((s) => s.key === activeCat);
 
     return (
-        <>
+        <section id="rides">
             <CategoryNav
                 categories={categories}
                 active={activeCat}
@@ -56,6 +56,6 @@ export function RidesContent({ locationSlug, sections, featured, categories, pla
 
                 <PlanSafety locationSlug={locationSlug} data={planSafety} />
             </main>
-        </>
+        </section>
     );
 }

@@ -46,9 +46,9 @@ export default async function RidesPage({ params }) {
     <>
       <Navbar location={location} locations={strapiLocations} navItems={navItems} />
       <RidesHero locationSlug={location.slug} data={ridesHero} mosaic={mosaicTiles} />
-     
+
       {location.slug == "ahmedabad" && (<RidesContent1 params={params} />)}
-      <RidesContent
+      <RidesContent id="rides"
         locationSlug={location.slug}
         sections={sections}
         featured={featured}
@@ -56,7 +56,7 @@ export default async function RidesPage({ params }) {
         planSafety={planSafety}
         featuredSection={featuredSection}
       />
-      
+
       <Footer location={location} />
       <MobBook location={location} />
     </>
