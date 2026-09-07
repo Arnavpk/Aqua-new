@@ -1,8 +1,5 @@
-"use client";
+import { redirect } from 'next/navigation';
 
-
-const InvestorRelation = () => {
-  return window.location.href = 'https://www.imagicaaworld.com/investor-relations/';
+export default function InvestorRelation() {
+  redirect('https://www.imagicaaworld.com/investor-relations/');
 }
-
-export default InvestorRelation;
