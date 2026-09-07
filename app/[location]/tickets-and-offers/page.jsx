@@ -54,12 +54,7 @@ export default async function TicketsPage({ params }) {
           { label: 'Home', href: `/${location.slug}` },
           { label: 'Tickets & Offers' },
         ]}
-        stats={pageHero?.stats || [
-          { n: '6', l: 'Live offers' },
-          { n: '70%', l: 'Max savings' },
-          { n: '4', l: 'Ticket types' },
-          { n: 'All-day', l: 'Unlimited fun' },
-        ]}
+       
         primaryCta={pageHero?.primaryCta || { label: 'Book tickets from ₹599 →', href: `/${location.slug}/tickets` }}
         secondaryCta={pageHero?.secondaryCta || { label: 'Browse offers', href: '#offers' }}
         bgImage={pageHero?.bgImage}

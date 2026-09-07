@@ -33,17 +33,18 @@ function buildFooterColumns(links) {
       heading: 'Book',
       links: [
         { label: 'Tickets', href: tickets },
-        { label: 'Combos', href: tickets },
-        { label: 'Season Pass', href: tickets },
-        { label: 'Groups', href: tickets },
+        
+        // { label: 'Combos', href: tickets },
+        // { label: 'Season Pass', href: tickets },
+        // { label: 'Groups', href: tickets },
       ],
     },
     {
       heading: 'Company',
       links: [
         { label: 'About', href: about },
-        { label: 'Careers', href: about },
-        { label: 'Press', href: about },
+        // { label: 'Careers', href: about },
+        // { label: 'Press', href: about },
         { label: 'Contact', href: '/contact-us' },
       ],
     },
@@ -52,6 +53,8 @@ function buildFooterColumns(links) {
       links: [
         { label: 'Privacy', href: '/terms-and-conditions' },
         { label: 'Terms', href: '/terms-and-conditions' },        
+        { label: 'Visitor Guide', href: '/visitor-guide' },
+        { label: 'Guest Services', href: '/guest-services' },
       ],
     },
   ];

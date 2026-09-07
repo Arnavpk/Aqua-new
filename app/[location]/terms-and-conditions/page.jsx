@@ -25,7 +25,7 @@ export default async function TermsPage({ params }) {
   const navItems = await getNavItems(location.slug);
     
   const page = await getPage(location.slug, 'pages', 'terms-and-conditions');
-  console.log("TERMS page:", page);
+  
   const pageHero = extractPageHero(page);
   
   const body = extractTermsContent(page);
