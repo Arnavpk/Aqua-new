@@ -4,7 +4,7 @@ import Image from 'next/image';
 
 const DEFAULT_STATS = [
   { n: '14', l: 'Signature rides' },
-  { n: '6', l: 'Attraction zones' },
+  // { n: '6', l: 'Attraction zones' },
   { n: '40+', l: 'Trained lifeguards' },
   { n: 'ISO', l: '9001 certified' },
 ];

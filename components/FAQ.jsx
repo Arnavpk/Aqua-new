@@ -11,7 +11,7 @@ const TABS = [
   { key: 'rides', label: 'Rides' },
 ];
 
-export function FAQ({ data }) {
+export function FAQ({ data, showTabs = true }) {
   const eyebrow = data?.eyebrow || "Still curious?";
   const heading = data?.heading || "Frequently asked questions.";
   const faqs = data?.faqs?.length ? data.faqs : FAQS;
@@ -19,7 +19,7 @@ export function FAQ({ data }) {
   const [cat, setCat] = useState('all');
   const [openIdx, setOpenIdx] = useState(1);
 
-  const filtered = cat === 'all' ? faqs : faqs.filter((f) => f.cat === cat);
+  const filtered = !showTabs || cat === 'all' ? faqs : faqs.filter((f) => f.cat === cat);
 
   return (
     <section className="section-shell section-tight">
@@ -34,18 +34,20 @@ export function FAQ({ data }) {
               </div>
 
               <div>
-                <div className="flex gap-2 mb-4 flex-wrap">
-                  {TABS.map((tab) => (
-                    <button
-                      key={tab.key}
-                      type="button"
-                      className={`faq-tab ${cat === tab.key ? 'is-active' : ''}`}
-                      onClick={() => { setCat(tab.key); setOpenIdx(-1); }}
-                    >
-                      {tab.label}
-                    </button>
-                  ))}
-                </div>
+                {showTabs && (
+                  <div className="flex gap-2 mb-4 flex-wrap">
+                    {TABS.map((tab) => (
+                      <button
+                        key={tab.key}
+                        type="button"
+                        className={`faq-tab ${cat === tab.key ? 'is-active' : ''}`}
+                        onClick={() => { setCat(tab.key); setOpenIdx(-1); }}
+                      >
+                        {tab.label}
+                      </button>
+                    ))}
+                  </div>
+                )}
 
                 {filtered.map((faq, i) => {
                   const isOpen = openIdx === i;

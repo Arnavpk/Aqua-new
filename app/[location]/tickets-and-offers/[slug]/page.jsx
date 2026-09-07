@@ -31,10 +31,11 @@ export default async function OfferDetailPage({ params }) {
 
   const strapiOffer = await getStrapiOffer(location.slug, params.slug);
   const detail = extractOfferDetail(strapiOffer) || getMockDetail(params.slug);
+  console.log('[offer detail] from strapi?', !!strapiOffer, 'help?', !!detail?.help);
   const sb = detail.sidebar;
   const navItems = await getNavItems(location.slug);
 
-  console.log("deeeeeetail:", detail);
+  // console.log("deeeeeetail:", detail);
   return (
     <>
       <Navbar location={location} locations={strapiLocations} navItems={navItems} />
@@ -241,7 +242,9 @@ export default async function OfferDetailPage({ params }) {
         </div>
       </div>
 
-      <FAQ />
+      {detail.faq?.faqs?.length > 0 && (
+        <FAQ data={detail.faq} showTabs={false} />
+      )}
 
       {/* ===== RELATED OFFERS ===== */}
       {detail.related.length > 0 && (

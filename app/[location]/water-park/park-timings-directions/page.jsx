@@ -2,7 +2,7 @@ import { notFound } from "next/navigation";
 
 import { PageHero } from "@/components/PageHero";
 import { Reveal } from "@/components/Reveal";
-import ScheduleCard from "@/components/timings/ScheduleCard";
+import ScheduleCard from "@/components/timings/Schedulecard";
 import DirectionsMap from "@/components/timings/DirectionsMap";
 import RideTimingsModal from "@/components/timings/RideTimingsModal";
 import { Navbar } from '@/components/Navbar';
