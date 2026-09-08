@@ -55,7 +55,7 @@ export default async function TicketsPage({ params }) {
           { label: 'Tickets & Offers' },
         ]}
        
-        primaryCta={pageHero?.primaryCta || { label: 'Book tickets from ₹599 →', href: `/${location.slug}/tickets` }}
+        primaryCta={pageHero?.primaryCta || { label: 'Book tickets from ₹599 →', href: `/${location.slug}/tickets-and-offers` }}
         secondaryCta={pageHero?.secondaryCta || { label: 'Browse offers', href: '#offers' }}
         bgImage={pageHero?.bgImage}
         mobileImage={pageHero?.mobileImage}
