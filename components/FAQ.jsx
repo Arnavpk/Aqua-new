@@ -9,6 +9,9 @@ const TABS = [
   { key: 'park', label: 'Park' },
   { key: 'safety', label: 'Rules & Safety' },
   { key: 'rides', label: 'Rides' },
+  { key: 'tickets', label: 'Tickets' },
+  { key: 'food', label: 'Food & Restaurants' },
+  { key: 'dress', label: 'Dressing & Retail' },
 ];
 
 export function FAQ({ data, showTabs = true }) {
