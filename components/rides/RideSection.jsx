@@ -39,7 +39,7 @@ export function RideSection({ section, locationSlug }) {
                 <span className="ride-thrill-badge">{ride.thrill}</span>
                 <span className="ride-play">▶</span>
                 <div className="ride-info">
-                  <div className="cat">{ride.cat}</div>
+                  {/* <div className="cat">{ride.cat}</div> */}
                   <h3>{ride.name}</h3>
                 </div>
               </div>
