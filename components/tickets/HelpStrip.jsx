@@ -9,7 +9,7 @@ export function HelpStrip({ locationSlug, data }) {
   const ctaEyebrow = data?.ctaEyebrow || "Ready when you are";
   const ctaHeading = data?.ctaHeading || "Your day out starts at ₹599.";
   const ctaLabel = data?.ctaLabel || "Book tickets →";
-  const ctaUrl = data?.ctaUrl || `/${locationSlug}/tickets`;
+  const ctaUrl = data?.ctaUrl || `/${locationSlug}/tickets-and-offers`;
   const phoneLabel = data?.phoneLabel || "📞 Call us";
   const phoneUrl = data?.phoneUrl || "tel:02269660000";
 
