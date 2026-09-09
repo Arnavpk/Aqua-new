@@ -65,6 +65,7 @@ export default async function LocationHome({ params }) {
         {/* About Story */}
         {story && (
           <section className="section-shell">
+
             <div className="container-x">
               <div className="grid grid-cols-2 gap-12 items-center max-[1024px]:grid-cols-1">
                 <div>
