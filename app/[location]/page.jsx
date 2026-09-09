@@ -52,6 +52,7 @@ export default async function LocationHome({ params }) {
 
   const strapiLocations = await getAllStrapiLocations();
 
+
   // console.log("STRAPI BADGE:", hotOffers.offers.map((offer) => offer.badge));
 
   return (
