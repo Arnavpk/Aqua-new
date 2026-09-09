@@ -1,6 +1,10 @@
 'use client';
 
+'use client';
+
 import { useState } from 'react';
+import Link from 'next/link';
+import { useParams } from 'next/navigation';
 import { Reveal } from './Reveal';
 import { FAQS } from '@/lib/data/home';
 
@@ -12,6 +16,7 @@ const TABS = [
   { key: 'tickets', label: 'Tickets' },
   { key: 'food', label: 'Food & Restaurants' },
   { key: 'dress', label: 'Dressing & Retail' },
+  { key: "service", label: "Service Facility FAQs" },
 ];
 
 export function FAQ({ data, showTabs = true }) {
@@ -19,9 +24,14 @@ export function FAQ({ data, showTabs = true }) {
   const heading = data?.heading || "Frequently asked questions.";
   const faqs = data?.faqs?.length ? data.faqs : FAQS;
 
+  const availableCats = new Set(faqs.map((f) => f.cat));
+  const tabs = TABS.filter((tab) => tab.key === 'all' || availableCats.has(tab.key));
+
   const [cat, setCat] = useState('all');
   const [openIdx, setOpenIdx] = useState(1);
 
+  const params = useParams();
+  const location = params?.location;
   const filtered = !showTabs || cat === 'all' ? faqs : faqs.filter((f) => f.cat === cat);
 
   return (
@@ -39,7 +49,7 @@ export function FAQ({ data, showTabs = true }) {
               <div>
                 {showTabs && (
                   <div className="flex gap-2 mb-4 flex-wrap">
-                    {TABS.map((tab) => (
+                    {tabs.map((tab) => (
                       <button
                         key={tab.key}
                         type="button"
@@ -71,6 +81,12 @@ export function FAQ({ data, showTabs = true }) {
                     </div>
                   );
                 })}
+
+                {location && (
+                  <Link href={`/${location}/faq-help`} className="faq-view-more">
+                    View More
+                  </Link>
+                )}
               </div>
             </div>
           </div>

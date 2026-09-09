@@ -1,58 +1,84 @@
 import Link from 'next/link';
+import Image from 'next/image';
 import { getLocation } from '@/lib/locations';
 import { getAllArticles } from '@/lib/strapi/getArticles';
 import { extractArticles } from '@/lib/extractors/articleExtractor';
 import { getAllStrapiLocations } from '@/lib/strapi/getLocations';
 import { getNavItems } from '@/lib/strapi/getNav';
-
 import { BLOGS } from '@/lib/data/about';
 import { Navbar } from '@/components/Navbar';
 import { PageHero } from '@/components/PageHero';
 import { Footer } from '@/components/Footer';
+import { MobBook } from '@/components/MobBook';
 import { Reveal } from '@/components/Reveal';
-import Image from 'next/image';
+import { BlogGrid } from '@/components/blog/BlogGrid';
 
 export function generateMetadata({ params }) {
   const loc = getLocation(params.location);
   return {
-    title: `Blog — ${loc?.displayName}`,
-    description: `Tips, guides and stories from ${loc?.displayName}.`,
+    title: `Blog — Aqua Imagicaa ${loc.name}`,
+    description: `Tips, guides and stories from Aqua Imagicaa ${loc.name}.`,
   };
 }
 
 export default async function BlogListingPage({ params }) {
   const location = getLocation(params.location);
   const base = `/${location.slug}`;
-  const strapiLocations = await getAllStrapiLocations();
 
-  const strapiArticles = await getAllArticles(location.slug);
+  const [strapiLocations, navItems, strapiArticles] = await Promise.all([
+    getAllStrapiLocations(),
+    getNavItems(location.slug),
+    getAllArticles(location.slug),
+  ]);
+
   const blogs = extractArticles(strapiArticles) || BLOGS;
-  const navItems = await getNavItems(location.slug);
-
   const featured = blogs[0];
   const rest = blogs.slice(1);
 
   return (
     <>
-      <Navbar location={location} locations={strapiLocations} navItems={navItems} />      <PageHero
+      <Navbar location={location} locations={strapiLocations} navItems={navItems} />
+
+      <PageHero
         eyebrow="Stories & tips"
-        title={<>From the <em>blog.</em></>}
+        title="From the blog."
         subtitle="Practical guides, insider tips and stories to help you plan the perfect day at Aqua Imagicaa."
         breadcrumbs={[{ label: 'Home', href: base }, { label: 'Blog' }]}
       />
 
+      {/* Featured article */}
       {featured && (
-        <section className="section-shell" style={{ paddingTop: 0, marginTop: -20, position: 'relative', zIndex: 3 }}>
+        <section
+          className="section-shell"
+          style={{ paddingTop: 0, marginTop: -20, position: 'relative', zIndex: 3 }}
+        >
           <div className="container-x">
             <Reveal>
-              <Link href={`${base}/about/blog/${featured.slug}`} className="blog-featured">
+              <Link
+                href={`${base}/about/blog/${featured.slug}`}
+                className="blog-featured"
+              >
                 <div className="bf-media relative overflow-hidden">
                   {featured.cover ? (
-                    <Image height={200} width={400} className="absolute inset-0 h-full w-full object-cover" src={featured.cover} alt={featured.title} />
+                    <Image
+                      src={featured.cover}
+                      alt={featured.title}
+                      fill
+                      sizes="(max-width: 1024px) 100vw, 50vw"
+                      className="object-cover"
+                    />
                   ) : (
-                    <div className="absolute inset-0" style={{ background: featured.gradient || 'linear-gradient(135deg, #FFD84D, #FF7A9C)' }} />
+                    <div
+                      className="absolute inset-0"
+                      style={{
+                        background: 'linear-gradient(135deg, #FFD84D, #FF7A9C)',
+                      }}
+                    />
                   )}
-                  <span className="absolute top-4 left-4 rounded-full font-accent text-[11px] font-bold z-[2] bg-white/95 text-ink px-3 py-1.5" style={{ letterSpacing: '.08em' }}>
+                  <span
+                    className="absolute top-4 left-4 rounded-full font-accent text-[11px] font-bold z-[2] bg-white/95 text-ink px-3 py-1.5"
+                    style={{ letterSpacing: '.08em' }}
+                  >
                     {featured.cat}
                   </span>
                 </div>
@@ -64,7 +90,9 @@ export default async function BlogListingPage({ params }) {
                     <span>{featured.date}</span>
                     <span>{featured.readTime}</span>
                   </div>
-                  <span className="btn btn-outline btn-sm self-start">Read article →</span>
+                  <span className="btn btn-outline btn-sm self-start">
+                    Read article →
+                  </span>
                 </div>
               </Link>
             </Reveal>
@@ -72,48 +100,17 @@ export default async function BlogListingPage({ params }) {
         </section>
       )}
 
+      {/* Grid with year archive — uses `rest` so featured isn't duplicated */}
       <section className="section-shell">
         <div className="container-x">
-          <Reveal className="section-head">
-            <div>
-              <span className="eyebrow mb-3 block">All articles</span>
-              <h2 className="h1">Latest <em>posts.</em></h2>
-            </div>
+          <Reveal>
+            <BlogGrid blogs={rest} base={base} />
           </Reveal>
-          <Reveal className="blog-grid">
-            {blogs.map((blog) => (
-              <Link key={blog.slug} href={`${base}/about/blog/${blog.slug}`} className="blog-card">
-                <div className="blog-media relative overflow-hidden">
-                  {blog.cover ? (
-                    <Image height={200} width={400} className="absolute inset-0 h-full w-full object-cover" src={blog.cover} alt={blog.title} />
-                  ) : (
-                    <div className="absolute inset-0" style={{ background: blog.gradient || 'linear-gradient(135deg, #00A5C8, #5FDDEA)' }} />
-                  )}
-                </div>
-                <div className="blog-body">
-                  <div className="cat">{blog.cat}</div>
-                  <h4>{blog.title}</h4>
-                  <p>{blog.desc}</p>
-                  <div className="blog-meta-row">
-                    <span>{blog.date}</span>
-                    <span>{blog.readTime}</span>
-                  </div>
-                </div>
-              </Link>
-            ))}
-          </Reveal>
-
-          {blogs.length === 0 && (
-            <div className="bg-white rounded-rx p-12 shadow-s2 text-center">
-              <div className="text-[48px] mb-4">📝</div>
-              <h3 className="h3 mb-2">No blog posts yet</h3>
-              <p className="body-lg">Check back soon for tips, guides and park stories.</p>
-            </div>
-          )}
         </div>
       </section>
 
       <Footer location={location} />
+      <MobBook location={location} />
     </>
   );
 }
