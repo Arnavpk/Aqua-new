@@ -1,62 +1,97 @@
 import Link from 'next/link';
+import Image from 'next/image';
+import { notFound } from 'next/navigation';
 import { getLocation } from '@/lib/locations';
 import { getArticleBySlug, getAllArticles } from '@/lib/strapi/getArticles';
 import { extractArticleDetail, extractArticles } from '@/lib/extractors/articleExtractor';
 import { getAllStrapiLocations } from '@/lib/strapi/getLocations';
-import { BLOG_DETAIL, BLOGS } from '@/lib/data/about';
+import { getNavItems } from '@/lib/strapi/getNav';
 import { Navbar } from '@/components/Navbar';
 import { Footer } from '@/components/Footer';
 import { MobBook } from '@/components/MobBook';
 import { Reveal } from '@/components/Reveal';
-import { getNavItems } from '@/lib/strapi/getNav';
-import Image from 'next/image';
-
+import { BlocksRenderer } from '@/components/BlocksRenderer';
 
 export async function generateMetadata({ params }) {
   const loc = getLocation(params.location);
   const article = await getArticleBySlug(loc.slug, params.slug);
+  if (!article) return { title: 'Article not found' };
   return {
-    title: `${article?.title || params.slug} — ${loc?.displayName}`,
-    description: article?.intro || article?.description || "",
+    title: `${article.title} — Aqua Imagicaa ${loc.name}`,
+    description: article.intro || article.description || '',
   };
 }
 
 export default async function BlogDetailPage({ params }) {
   const location = getLocation(params.location);
   const base = `/${location.slug}`;
-  const strapiLocations = await getAllStrapiLocations();
 
-  const strapiArticle = await getArticleBySlug(location.slug, params.slug);
-  const blog = extractArticleDetail(strapiArticle) || BLOG_DETAIL;
-  const navItems = await getNavItems(location.slug);
+  const [strapiLocations, navItems, strapiArticle] = await Promise.all([
+    getAllStrapiLocations(),
+    getNavItems(location.slug),
+    getArticleBySlug(location.slug, params.slug),
+  ]);
+
+  // console.log('RAW BLOCKS:', JSON.stringify(strapiArticle?.blocks, null, 2));
+  const blog = extractArticleDetail(strapiArticle);
+  if (!blog) notFound();
+
+  // console.log('BLOCKS:', JSON.stringify(blog.blocks, null, 2));
 
   const allStrapiArticles = await getAllArticles(location.slug);
-  const allBlogs = extractArticles(allStrapiArticles) || BLOGS;
+  const allBlogs = extractArticles(allStrapiArticles) || [];
   const related = allBlogs.filter((b) => b.slug !== blog.slug).slice(0, 4);
 
   return (
     <>
       <Navbar location={location} locations={strapiLocations} navItems={navItems} />
+
       {/* Hero banner */}
       <div className="blog-hero-placeholder relative overflow-hidden">
         {blog.cover ? (
           <>
-            <Image height={200} width={400} className="absolute inset-0 h-full w-full object-cover z-0" src={blog.cover} alt={blog.title} />
+            <Image
+              src={blog.cover}
+              alt={blog.title}
+              fill
+              priority
+              sizes="100vw"
+              className="object-cover"
+            />
             <div className="absolute inset-0 z-[1] bg-black/40" />
           </>
         ) : (
           <>
-            <div className="absolute inset-0 flex items-center justify-center text-[120px] opacity-20" aria-hidden="true">📝</div>
+            <div
+              className="absolute inset-0 flex items-center justify-center text-[120px] opacity-20"
+              aria-hidden="true"
+            >
+              📝
+            </div>
             <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent" />
           </>
         )}
         <div className="container-x absolute bottom-8 left-0 right-0 z-[2]">
           <nav className="breadcrumb text-white/80" aria-label="Breadcrumb">
-            <Link href={base} className="!text-white/80 hover:!text-white">Home</Link>
+            <Link href={base} className="!text-white/80 hover:!text-white">
+              Home
+            </Link>
             <span className="sep">›</span>
-            <Link href={`${base}/about`} className="!text-white/80 hover:!text-white">About</Link>
+            <Link
+              href={`${base}/about`}
+              className="!text-white/80 hover:!text-white"
+            >
+              About
+            </Link>
             <span className="sep">›</span>
-            <span className="text-white">Blog</span>
+            <Link
+              href={`${base}/about/blog`}
+              className="!text-white/80 hover:!text-white"
+            >
+              Blog
+            </Link>
+            <span className="sep">›</span>
+            <span className="text-white">{blog.title}</span>
           </nav>
         </div>
       </div>
@@ -68,7 +103,10 @@ export default async function BlogDetailPage({ params }) {
             <Reveal>
               <article>
                 <div className="mb-8">
-                  <span className="inline-block rounded-full font-accent text-[11px] font-bold bg-brand-50 text-brand-700 mb-3 px-3 py-1.5" style={{ letterSpacing: '.08em' }}>
+                  <span
+                    className="inline-block rounded-full font-accent text-[11px] font-bold bg-brand-50 text-brand-700 mb-3 px-3 py-1.5"
+                    style={{ letterSpacing: '.08em' }}
+                  >
                     {blog.cat}
                   </span>
                   <h1 className="text-[clamp(28px,4vw,42px)] font-bold tracking-tight leading-tight mb-4">
@@ -77,40 +115,90 @@ export default async function BlogDetailPage({ params }) {
                   <div className="flex items-center gap-4 text-sm text-ink-2">
                     <div className="flex items-center gap-2.5">
                       {blog.authorAvatar ? (
-                        <Image height={200} width={400} className="w-8 h-8 rounded-full object-cover" src={blog.authorAvatar} alt={blog.author} />
+                        <Image
+                          src={blog.authorAvatar}
+                          alt={blog.author}
+                          width={32}
+                          height={32}
+                          className="rounded-full object-cover"
+                        />
                       ) : (
                         <div className="w-8 h-8 rounded-full bg-gradient-to-br from-brand-300 to-brand-600" />
                       )}
-                      <span className="font-medium text-ink">{blog.author}</span>
+                      <span className="font-medium text-ink">
+                        {blog.author}
+                      </span>
                     </div>
                     <span>{blog.date}</span>
                     <span>{blog.readTime}</span>
                   </div>
                 </div>
 
+                {/* Article body — blocks from Strapi */}
                 <div className="prose">
-                  {blog.intro && <p>{blog.intro}</p>}
-                  {blog.sections.map((s, i) => (
-                    <div key={i}>
-                      {s.heading && <h2>{i + 1}. {s.heading}</h2>}
-                      <p>{s.body}</p>
-                    </div>
-                  ))}
-                  {blog.outro && <p>{blog.outro}</p>}
-                </div>
+                  {blog.intro && <p className="lead">{blog.intro}</p>}
 
-                <div className="share-bar">
-                  <span>Share:</span>
-                  {['𝕏', 'f', 'W', '🔗'].map((icon) => (
-                    <button key={icon} type="button" className="share-btn" aria-label="Share">{icon}</button>
-                  ))}
+                  {blog.blocks?.map((block, i) => {
+                    if (block.type === 'rich-text') {
+                      return (
+                        <BlocksRenderer
+                          key={i}
+                          content={block.body}
+                        />
+                      );
+                    }
+
+                    if (block.type === 'media' && block.file) {
+                      return (
+                        <figure key={i} className="my-6">
+                          <Image
+                            src={block.file}
+                            alt={block.alt}
+                            width={800}
+                            height={450}
+                            className="w-full rounded-lg"
+                          />
+                          {block.caption && (
+                            <figcaption className="mt-2 text-center text-sm text-ink-2">
+                              {block.caption}
+                            </figcaption>
+                          )}
+                        </figure>
+                      );
+                    }
+
+                    if (block.type === 'quote') {
+                      return (
+                        <blockquote key={i}>
+                          {block.title && (
+                            <strong>{block.title}</strong>
+                          )}
+                          <p>{block.body}</p>
+                        </blockquote>
+                      );
+                    }
+
+                    return null;
+                  })}
+
+                  {blog.outro && <p>{blog.outro}</p>}
                 </div>
               </article>
             </Reveal>
 
             <div className="mt-6 flex gap-3">
-              <Link href={`${base}/about/blog`} className="btn btn-outline btn-sm">← Back to blog</Link>
-              <Link href={`${base}/tickets`} className="btn btn-primary btn-sm">Book your visit →</Link>
+              <Link
+                href={`${base}/about/blog`}
+                className="btn btn-outline btn-sm"
+              >
+                ← Back to blog
+              </Link>
+              <Link
+                href={`${base}/tickets-and-offers`}
+                className="btn btn-primary btn-sm"
+              >
+                Book your visit →
+              </Link>
             </div>
           </main>
 
@@ -121,28 +209,52 @@ export default async function BlogDetailPage({ params }) {
                 <div className="side-card">
                   <h4>In this article</h4>
                   {blog.toc.map((item) => (
-                    <a key={item} href="#" className="toc-item">{item}</a>
+                    <a
+                      key={item.id}
+                      href={`#${item.id}`}
+                      className="toc-item"
+                    >
+                      {item.text}
+                    </a>
                   ))}
                 </div>
               </Reveal>
             )}
+
             {blog.categories.length > 0 && (
               <Reveal>
                 <div className="side-card">
                   <h4>Categories</h4>
                   <div>
                     {blog.categories.map((c) => (
-                      <a key={c} href="#" className="cat-pill">{c}</a>
+                      <span key={c} className="cat-pill">
+                        {c}
+                      </span>
                     ))}
                   </div>
                 </div>
               </Reveal>
             )}
+
             <Reveal>
-              <div className="side-card !border-0" style={{ background: 'linear-gradient(135deg, var(--brand-400), var(--brand-300))', color: 'white' }}>
-                <h4 style={{ color: 'rgba(255,255,255,.8)' }}>Plan your visit</h4>
-                <p className="text-sm mb-3.5 opacity-90 leading-relaxed">Ready to make a splash? Book tickets online and save up to 70%.</p>
-                <Link href={`${base}/tickets`} className="btn btn-primary btn-sm w-full text-center">Book now →</Link>
+              <div
+                className="side-card !border-0"
+                style={{
+                  background:
+                    'linear-gradient(135deg, #0A5566, #0E7A93)',
+                }}
+              >
+                <h4 className="text-white/80">Plan your visit</h4>
+                <p className="text-sm mb-3.5 text-white/90 leading-relaxed">
+                  Ready to make a splash? Book tickets online and save up
+                  to 70%.
+                </p>
+                <Link
+                  href={`${base}/tickets-and-offers`}
+                  className="btn btn-primary btn-sm w-full text-center"
+                >
+                  Book now →
+                </Link>
               </div>
             </Reveal>
           </aside>
@@ -158,23 +270,47 @@ export default async function BlogDetailPage({ params }) {
                 <span className="eyebrow mb-2 block">Keep reading</span>
                 <h2 className="h2">Related articles.</h2>
               </div>
-              <Link href={`${base}/about/blog`} className="btn btn-outline btn-sm max-[720px]:hidden">All articles →</Link>
+              <Link
+                href={`${base}/about/blog`}
+                className="btn btn-outline btn-sm max-[720px]:hidden"
+              >
+                All articles →
+              </Link>
             </Reveal>
             <Reveal className="grid grid-cols-4 gap-4 max-[1024px]:grid-cols-2 max-[720px]:grid-cols-1">
               {related.map((b) => (
-                <Link key={b.slug} href={`${base}/about/blog/${b.slug}`} className="blog-card">
+                <Link
+                  key={b.slug}
+                  href={`${base}/about/blog/${b.slug}`}
+                  className="blog-card"
+                >
                   <div className="blog-media relative overflow-hidden">
                     {b.cover ? (
-                      <Image height={200} width={400} className="absolute inset-0 h-full w-full object-cover" src={b.cover} alt={b.title} />
+                      <Image
+                        src={b.cover}
+                        alt={b.title}
+                        fill
+                        sizes="(max-width: 720px) 100vw, (max-width: 1024px) 50vw, 25vw"
+                        className="object-cover"
+                      />
                     ) : (
-                      <div className="absolute inset-0" style={{ background: b.gradient || 'linear-gradient(135deg, #00A5C8, #5FDDEA)' }} />
+                      <div
+                        className="absolute inset-0"
+                        style={{
+                          background:
+                            'linear-gradient(135deg, #00A5C8, #5FDDEA)',
+                        }}
+                      />
                     )}
                   </div>
                   <div className="blog-body">
                     <div className="cat">{b.cat}</div>
                     <h4>{b.title}</h4>
                     <p>{b.desc}</p>
-                    <div className="blog-meta-row"><span>{b.date}</span><span>{b.readTime}</span></div>
+                    <div className="blog-meta-row">
+                      <span>{b.date}</span>
+                      <span>{b.readTime}</span>
+                    </div>
                   </div>
                 </Link>
               ))}
