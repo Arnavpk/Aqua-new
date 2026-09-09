@@ -24,8 +24,8 @@ export function generateMetadata({ params }) {
 export default async function TicketsPage({ params }) {
   const location = getLocation(params.location);
   const strapiLocations = await getAllStrapiLocations();
-
-  const ticketsPage = await getPage(location.slug, 'pages', 'tickets');
+  
+  const ticketsPage = await getPage(location.slug, 'pages', 'tickets-and-offers');
   const strapiTickets = await getAllTickets(location.slug);
   const strapiOffers = await getAllOffers(location.slug);
 

@@ -25,7 +25,8 @@ const TILE_STYLES = [
 
 
 export function RidesHero({ locationSlug, data, mosaic }) {
-  const eyebrow = data?.eyebrow || "14 rides · 3 pools · 1 unforgettable day";
+  
+  const eyebrow = data?.eyebrow || "15 rides · 3 pools · 1 unforgettable day";
   const heading = data?.heading || "Rides & attractions.";
   const description = data?.description || "From adrenaline-fuelled thrill slides to gentle lazy rivers — every ride at Aqua Imagicaa is engineered for stories worth telling.";
   const ctaLabel = data?.ctaLabel || "Book tickets from ₹599 →";

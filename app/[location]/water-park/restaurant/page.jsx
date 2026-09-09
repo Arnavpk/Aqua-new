@@ -28,7 +28,7 @@ export default async function RestaurantsPage({ params }) {
   const base = `/${location.slug}`;
   const strapiLocations = await getAllStrapiLocations();
 
-  const restaurantsPage = await getPage(location.slug, 'pages', 'restaurants');
+  const restaurantsPage = await getPage(location.slug, 'pages', 'water-park/restaurant');
   const strapiRestaurants = await getAllRestaurants(location.slug);
 
   const pageHero = extractPageHero(restaurantsPage);

@@ -26,7 +26,7 @@ export default async function RidesPage({ params }) {
   const strapiCategories = await getRideCategories();
   const location = getLocation(params.location);
 
-  const ridesPage = await getPage(location.slug, 'pages', 'rides');
+  const ridesPage = await getPage(location.slug, 'pages', 'water-park/rides-and-attractions');
   const strapiRides = await getAllStrapiRides(location.slug);
   // console.log("LOCATION:", location.slug, "RIDES COUNT:", strapiRides.length);
   const sections = extractRideSections(strapiRides, strapiCategories) || RIDE_SECTIONS;
