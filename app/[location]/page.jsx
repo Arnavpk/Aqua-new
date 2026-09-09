@@ -28,6 +28,8 @@ import { Footer } from '@/components/Footer';
 import { MobBook } from '@/components/MobBook';
 import { getAllStrapiLocations } from '@/lib/strapi/getLocations';
 import { getNavItems } from '@/lib/strapi/getNav';
+import { extractAboutStory } from '@/lib/extractors/aboutExtractor';
+import Image from 'next/image';
 
 
 export default async function LocationHome({ params }) {
@@ -45,20 +47,46 @@ export default async function LocationHome({ params }) {
   const faq = homePage ? extractFaq(homePage) : null;
   const ctaBanner = homePage ? extractCtaBanner(homePage) : null;
   const navItems = await getNavItems(location.slug);
-
+  const story = homePage ? extractAboutStory(homePage) : null;
 
 
   const strapiLocations = await getAllStrapiLocations();
+
 
   // console.log("STRAPI BADGE:", hotOffers.offers.map((offer) => offer.badge));
 
   return (
     <>
-      <Navbar location={location} locations={strapiLocations} navItems={navItems} />      <Hero location={{ ...location, hero: hero || location.hero }} />
+      <Navbar location={location} locations={strapiLocations} navItems={navItems} />
+      <Hero location={{ ...location, hero: hero || location.hero }} />
       <main>
         {location.slug == "ahmedabad" && (<FeaturedRides locationSlug={location.slug} data={featuredRides} />)}
 
-        {/* <Categories /> */}
+        {/* About Story */}
+        {story && (
+          <section className="section-shell">
+
+            <div className="container-x">
+              <div className="grid grid-cols-2 gap-12 items-center max-[1024px]:grid-cols-1">
+                <div>
+                  {story.eyebrow && <span className="eyebrow mb-3 block">{story.eyebrow}</span>}
+                  <h2 className="h2 mb-4">{story.heading}</h2>
+                  {(story.paragraphs || []).map((p, i) => (
+                    <p key={i} className="text-[15px] text-ink-2 leading-relaxed mb-3">{p}</p>
+                  ))}
+                </div>
+                <div className="rounded-rx overflow-hidden aspect-[4/3] relative">
+                  {story.image ? (
+                    <Image height={200} width={400} className="absolute inset-0 h-full w-full object-cover" src={story.image} alt={story.heading} />
+                  ) : (
+                    <div className="absolute inset-0" style={{ background: 'linear-gradient(135deg, #22C4DE, #5FDDEA)' }} />
+                  )}
+                </div>
+              </div>
+            </div>
+          </section>
+        )}
+
         <HotOffers locationSlug={location.slug} data={hotOffers} />
         <EventsSplit data={eventsSplit} />
         {/* <PlanVisit locationSlug={location.slug} data={planVisit} /> */}
