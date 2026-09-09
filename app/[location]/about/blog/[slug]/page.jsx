@@ -32,7 +32,7 @@ export default async function BlogDetailPage({ params }) {
     getArticleBySlug(location.slug, params.slug),
   ]);
 
-  console.log('RAW BLOCKS:', JSON.stringify(strapiArticle?.blocks, null, 2));
+  // console.log('RAW BLOCKS:', JSON.stringify(strapiArticle?.blocks, null, 2));
   const blog = extractArticleDetail(strapiArticle);
   if (!blog) notFound();
 

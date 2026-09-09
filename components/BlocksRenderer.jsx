@@ -45,7 +45,15 @@ function parseMarkdown(md) {
                 .replace(/[^a-z0-9]+/g, '-')
                 .replace(/^-|-$/g, '');
             const Tag = `h${level}`;
-            elements.push(<Tag key={i} id={id}>{inlineMarkdown(text)}</Tag>);
+            const headingClass = {
+                1: 'text-[clamp(28px,4vw,42px)] font-bold tracking-tight leading-tight mt-8 mb-4',
+                2: 'text-[clamp(22px,3vw,32px)] font-bold tracking-tight leading-snug mt-8 mb-3',
+                3: 'text-[clamp(18px,2.5vw,24px)] font-semibold leading-snug mt-6 mb-2',
+                4: 'text-[clamp(16px,2vw,20px)] font-semibold leading-snug mt-5 mb-2',
+                5: 'text-base font-semibold mt-4 mb-1.5',
+                6: 'text-sm font-semibold mt-4 mb-1',
+            }[level] || '';
+            elements.push(<Tag key={i} id={id} className={headingClass}>{inlineMarkdown(text)}</Tag>);
             i++;
             continue;
         }
