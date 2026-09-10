@@ -55,6 +55,8 @@ function buildFooterColumns(links) {
         { label: 'Terms', href: '/terms-and-conditions' },
         { label: 'Visitor Guide', href: '/visitor-guide' },
         { label: 'Guest Services', href: '/guest-services' },
+        { label: 'Rules & Regulations', href: '/rules-and-regulations' },
+        {label: 'Privacy Policy', href: '/privacy-policy' },
       ],
     },
 
