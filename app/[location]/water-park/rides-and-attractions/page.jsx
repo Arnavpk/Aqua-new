@@ -47,6 +47,7 @@ export default async function RidesPage({ params }) {
       <Navbar location={location} locations={strapiLocations} navItems={navItems} />
       <RidesHero locationSlug={location.slug} data={ridesHero} mosaic={mosaicTiles} />
 
+
       {location.slug == "ahmedabad" && (<RidesContent1 params={params} />)}
       <RidesContent id="rides"
         locationSlug={location.slug}
