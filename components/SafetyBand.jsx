@@ -5,7 +5,7 @@ export function SafetyBand({ data }) {
   const heading = data?.heading || "Your Safety Our Priority";
   const subtitle = data?.subtitle || "Wave pools, slides & aqua fun under the sun";
   const items = data?.items?.length ? data.items : SAFETY_ITEMS;
-  const marquee = data?.marquee?.length ? data.marquee : SAFETY_MARQUEE;
+  const marquee = data?.marquee?.length ? data.marquee : [];
 
   const doubled = [...marquee, ...marquee, ...marquee, ...marquee];
 
