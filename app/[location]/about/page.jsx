@@ -101,7 +101,7 @@ export default async function AboutPage({ params }) {
         <div className="container-x">
           <Reveal className="section-head">
             <div>
-              <span className="eyebrow mb-2 block">{whyChoose?.eyebrow || "Why choose us"}</span>
+              <span className="eyebrow mb-2 block">{whyChoose?.eyebrow || ""}</span>
               <h2 className="h2">{whyChoose?.heading || "What makes Aqua Imagicaa special."}</h2>
             </div>
           </Reveal>
@@ -121,8 +121,8 @@ export default async function AboutPage({ params }) {
       <section className="section-shell">
         <div className="container-x">
           <Reveal className="section-head">
-            <div><span className="eyebrow mb-2 block">Our rides & attractions</span><h2 className="h2">14 ways to make a splash.</h2></div>
-            <Link href={`${base}/rides`} className="btn btn-outline btn-sm max-[720px]:hidden">Explore all rides →</Link>
+            <div><span className="eyebrow mb-2 block">Our rides & attractions</span><h2 className="h2">20 ways to make a splash.</h2></div>
+            <Link href={`${base}/water-park/rides-and-attractions`} className="btn btn-outline btn-sm max-[720px]:hidden">Explore all rides →</Link>
           </Reveal>
         </div>
       </section>
