@@ -48,7 +48,7 @@ export default async function RidesPage({ params }) {
       <RidesHero locationSlug={location.slug} data={ridesHero} mosaic={mosaicTiles} />
 
 
-      {location.slug == "ahmedabad" && (<RidesContent1 params={params} />)}
+      {location.slug == "mehsana" && (<RidesContent1 params={params} />)}
       <RidesContent id="rides"
         locationSlug={location.slug}
         sections={sections}

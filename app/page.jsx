@@ -23,8 +23,8 @@ const LOCATION_META = {
     bookUrl: '/indore/tickets-and-offers',
     image: 'https://www.aquaimagicaa.com/assets/images/indore-bg.jpg',
   },
-  ahmedabad: {
-    tagline: 'Coming soon to Ahmedabad',
+  mehsana: {
+    tagline: 'Coming soon to mehsana',
     rides: 'Opening 2026',
     highlight: 'For booking: +91 9099080024',
     status: 'coming-soon',
@@ -34,7 +34,7 @@ const LOCATION_META = {
 
 export const metadata = {
   title: 'Aqua Imagicaa — India\'s Most Loved Water Park Experience',
-  description: 'Choose your Aqua Imagicaa location — Surat, Indore, or Ahmedabad. World-class water slides, wave pools, and family fun.',
+  description: 'Choose your Aqua Imagicaa location — Surat, Indore, or mehsana. World-class water slides, wave pools, and family fun.',
 };
 
 export default function RootPage() {
@@ -53,7 +53,7 @@ export default function RootPage() {
           <div className="lp-logo" aria-hidden="true" >
             <Image height={400} width={200} src="https://www.aquaimagicaa.com/assets/images/Aquamagicaa-logo.png" alt="logo" />
           </div>
-          
+
           <p className="lp-subtitle">India&apos;s Most Loved Water Park Experience</p>
         </header>
 
@@ -72,7 +72,7 @@ export default function RootPage() {
                 {/* Full background image */}
                 <div className="lp-card-bg">
                   {meta.image ? (
-                    <Image height={200} width={400}  src={meta.image} alt={loc.displayName} />
+                    <Image height={200} width={400} src={meta.image} alt={loc.displayName} />
                   ) : (
                     <div
                       className="lp-card-bg-placeholder"
