@@ -15,8 +15,8 @@ const LOCATION_META = {
   },
   indore: {
     tagline: 'MP\'s biggest water park',
-    rides: '16+ signature rides',
-    highlight: '1 pool · 6 restaurants',
+    rides: '20+ International Rides, Biggest Wavepool',
+    highlight: '3+ Multicuisine Restaurants',
     status: 'open',
     ctaLabel: 'Explore Indore →',
     bookLabel: 'Book Now',
