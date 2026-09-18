@@ -45,7 +45,7 @@ export default async function ContactUsPage({ params }) {
         <ContactBody data={data} base={base} />
       </main>
 
-      <Footer location={location} navItems={navItems} />
+      <Footer location={location} navItems={navItems} locations={strapiLocations} />
       <MobBook location={location} />
     </>
   );

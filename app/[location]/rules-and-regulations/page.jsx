@@ -23,15 +23,15 @@ export default async function RulesAndRegulationsPage({ params }) {
   const base = `/${location.slug}`;
   const strapiLocations = await getAllStrapiLocations();
   const navItems = await getNavItems(location.slug);
-    
+
   const page = await getPage(location.slug, 'pages', 'rules-and-regulations');
-  
+
   const pageHero = extractPageHero(page);
-  
+
   const body = extractTermsContent(page);
 
   return (
-    <>    
+    <>
 
       <PageHero
         eyebrow={pageHero?.eyebrow || "Legal"}
@@ -47,7 +47,7 @@ export default async function RulesAndRegulationsPage({ params }) {
         <TermsContent body={body} />
       </main>
 
-      <Footer location={location} navItems={navItems} />
+      <Footer location={location} navItems={navItems} locations={strapiLocations} />
       <MobBook location={location} />
     </>
   )

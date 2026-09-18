@@ -34,7 +34,7 @@ const GuestServices = async ({ params }) => {
                 <TermsContent body={body} />
             </main>
 
-            <Footer location={location} navItems={navItems} />
+            <Footer location={location} navItems={navItems} locations={strapiLocations} />
             <MobBook location={location} />
         </>
     )
