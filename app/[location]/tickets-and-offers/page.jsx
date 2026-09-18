@@ -1,3 +1,4 @@
+import { notFound } from 'next/navigation';
 import { getLocation } from '@/lib/locations';
 import { getPage } from '@/lib/strapi/getPage';
 import { getAllTickets, getAllOffers } from '@/lib/strapi/getTickets';
@@ -12,6 +13,13 @@ import { OffersGrid } from '@/components/tickets/OffersGrid';
 import { HelpStrip } from '@/components/tickets/HelpStrip';
 import { getNavItems } from '@/lib/strapi/getNav';
 
+// Helpers
+const hasItems = (arr) => Array.isArray(arr) && arr.length > 0;
+const hasContent = (obj) =>
+  obj && typeof obj === 'object' && Object.values(obj).some((v) =>
+    Array.isArray(v) ? v.length > 0 : v !== null && v !== undefined && v !== ''
+  );
+const safe = (promise, fallback = null) => promise.catch(() => fallback);
 
 export function generateMetadata({ params }) {
   const loc = getLocation(params.location);
@@ -23,46 +31,65 @@ export function generateMetadata({ params }) {
 
 export default async function TicketsPage({ params }) {
   const location = getLocation(params.location);
-  const strapiLocations = await getAllStrapiLocations();
-  
-  const ticketsPage = await getPage(location.slug, 'pages', 'tickets-and-offers');
-  const strapiTickets = await getAllTickets(location.slug);
-  const strapiOffers = await getAllOffers(location.slug);
+  if (!location) notFound();
 
-  const pageHero = extractPageHero(ticketsPage);
-  const helpStrip = extractHelpStrip(ticketsPage);
-  const tickets = extractTickets(strapiTickets);
-  const offers = extractOffers(strapiOffers);
-  const navItems = await getNavItems(location.slug);
+  // Fetch in parallel; a failed request is treated as "no data"
+  const [strapiLocations, ticketsPage, strapiTickets, strapiOffers, navItems] = await Promise.all([
+    safe(getAllStrapiLocations(), []),
+    safe(getPage(location.slug, 'pages', 'tickets-and-offers')),
+    safe(getAllTickets(location.slug), []),
+    safe(getAllOffers(location.slug), []),
+    safe(getNavItems(location.slug), []),
+  ]);
 
+  const pageHero = ticketsPage ? extractPageHero(ticketsPage) : null;
+  const helpStrip = ticketsPage ? extractHelpStrip(ticketsPage) : null;
+  const tickets = strapiTickets ? extractTickets(strapiTickets) : [];
+  const offers = strapiOffers ? extractOffers(strapiOffers) : [];
+
+  const showHero = Boolean(pageHero?.heading);
+  const showTickets = hasItems(tickets);
+  const showOffers = hasItems(offers);
+  const showHelpStrip = hasContent(helpStrip);
+
+  // Split heading so the last word is italicised
+  const headingWords = pageHero?.heading?.trim().split(/\s+/) ?? [];
+  const headingLead = headingWords.slice(0, -1).join(' ');
+  const headingLast = headingWords.slice(-1)[0];
 
   return (
     <>
       <Navbar location={location} locations={strapiLocations} navItems={navItems} />
-      <PageHero
-        eyebrow={pageHero?.eyebrow || "Save more · splash more"}
-        title={pageHero?.heading ? (
-          <>
-            {pageHero.heading.split(" ").slice(0, -1).join(" ")}{" "}
-            <em>{pageHero.heading.split(" ").slice(-1)}</em>
-          </>
-        ) : (
-          <>Tickets &amp; <em>offers.</em></>
-        )}
-        subtitle={pageHero?.subtitle || "Enjoy the best deals at Aqua Imagicaa."}
-        breadcrumbs={[
-          { label: 'Home', href: `/${location.slug}` },
-          { label: 'Tickets & Offers' },
-        ]}
-       
-        primaryCta={pageHero?.primaryCta || { label: 'Book tickets from ₹599 →', href: `/${location.slug}/tickets-and-offers` }}
-        secondaryCta={pageHero?.secondaryCta || { label: 'Browse offers', href: '#offers' }}
-        bgImage={pageHero?.bgImage}
-        mobileImage={pageHero?.mobileImage}
-      />
-      <TicketsGrid locationSlug={location.slug} data={tickets} />
-      <OffersGrid locationSlug={location.slug} data={offers} />
-      <HelpStrip locationSlug={location.slug} data={helpStrip} />
+
+      {showHero && (
+        <PageHero
+          eyebrow={pageHero.eyebrow}
+          title={
+            <>
+              {headingLead && <>{headingLead}{' '}</>}
+              <em>{headingLast}</em>
+            </>
+          }
+          subtitle={pageHero.subtitle}
+          breadcrumbs={[
+            { label: 'Home', href: `/${location.slug}` },
+            { label: 'Tickets & Offers' },
+          ]}
+          primaryCta={pageHero.primaryCta?.label ? pageHero.primaryCta : undefined}
+          secondaryCta={
+            pageHero.secondaryCta?.label
+              ? pageHero.secondaryCta
+              : undefined
+          }
+          bgImage={pageHero.bgImage}
+          mobileImage={pageHero.mobileImage}
+        />
+      )}
+
+      {showTickets && <TicketsGrid locationSlug={location.slug} data={tickets} />}
+      {showOffers && <OffersGrid locationSlug={location.slug} data={offers} />}
+      {showHelpStrip && <HelpStrip locationSlug={location.slug} data={helpStrip} />}
+
       <Footer location={location} />
       <MobBook location={location} />
     </>
