@@ -7,6 +7,7 @@ import { Reveal } from './Reveal';
 import { FAQS } from '@/lib/data/home';
 
 const TABS = [
+
   { key: 'all', label: 'All' },
   { key: 'park', label: 'Park' },
   { key: 'safety', label: 'Rules & Safety' },
