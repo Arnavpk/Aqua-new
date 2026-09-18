@@ -90,6 +90,7 @@ export function FAQ({ data, showTabs = true, maxItems = 5 }) {
                   <Link href={`/${location}/faq-help`} className="faq-view-more">
                     View More
                   </Link>
+
                 )}
               </div>
             </div>
