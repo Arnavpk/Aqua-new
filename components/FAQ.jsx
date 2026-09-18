@@ -6,6 +6,7 @@ import { useParams } from 'next/navigation';
 import { Reveal } from './Reveal';
 import { FAQS } from '@/lib/data/home';
 
+
 const TABS = [
   { key: 'all', label: 'All' },
   { key: 'park', label: 'Park' },
@@ -90,7 +91,6 @@ export function FAQ({ data, showTabs = true, maxItems = 5 }) {
                   <Link href={`/${location}/faq-help`} className="faq-view-more">
                     View More
                   </Link>
-
                 )}
               </div>
             </div>
