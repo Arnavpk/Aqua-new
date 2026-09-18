@@ -3,9 +3,10 @@ import { getLocation, getAllLocationSlugs } from '@/lib/locations';
 import { getAllStrapiLocations } from '@/lib/strapi/getLocations';
 import { getNavItems } from '@/lib/strapi/getNav';
 import { MobileTabBar } from '@/components/MobileTabBar';
-import { LocationPicker } from '@/components/LocationPicker';
+// import { LocationPicker } from '@/components/LocationPicker';
 import { Navbar } from '@/components/Navbar';
 import { GTMHead, GTMNoScript, MetaPixelHead, MetaPixelNoScript } from '@/components/GTM';
+import { LocationPicker } from '@/components/LocationPicker';
 
 export function generateStaticParams() {
   return getAllLocationSlugs().map((slug) => ({ location: slug }));
@@ -29,7 +30,7 @@ export default async function LocationLayout({ children, params }) {
 
   return (
     <>
-      <LocationPicker locations={strapiLocations} currentSlug={params.location} />
+      {/* <LocationPicker locations={strapiLocations} currentSlug={params.location} /> */}
       <GTMHead gtmId={location?.gtmId} />
       <GTMNoScript gtmId={location?.gtmId} />
       <MetaPixelHead pixelId={location.metaPixelId} />
