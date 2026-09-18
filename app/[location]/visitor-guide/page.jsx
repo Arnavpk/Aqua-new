@@ -33,22 +33,22 @@ export default async function VisitorGuidePage({ params }) {
     <>
       {/* <Navbar location={location} locations={strapiLocations} navItems={navItems} /> */}
 
-       <PageHero
-              eyebrow={pageHero?.eyebrow || "Legal"}
-              title={pageHero?.heading || "Visitor Guide"}
-              subtitle={pageHero?.subtitle || "Everything you need to know for a safe, fun, and hassle-free day at Aqua Imagicaa."}
-              breadcrumbs={[
-                { label: 'Home', href: base },
-                { label: 'Visitor Guide' },
-              ]}
-            />
-      
-            <main>
-              <TermsContent body={body} />
-            </main>
-      
-            <Footer location={location} navItems={navItems} />
-            <MobBook location={location} />
+      <PageHero
+        eyebrow={pageHero?.eyebrow || "Legal"}
+        title={pageHero?.heading || "Visitor Guide"}
+        subtitle={pageHero?.subtitle || "Everything you need to know for a safe, fun, and hassle-free day at Aqua Imagicaa."}
+        breadcrumbs={[
+          { label: 'Home', href: base },
+          { label: 'Visitor Guide' },
+        ]}
+      />
+
+      <main>
+        <TermsContent body={body} />
+      </main>
+
+      <Footer location={location} navItems={navItems} locations={strapiLocations} />
+      <MobBook location={location} />
     </>
   );
 }

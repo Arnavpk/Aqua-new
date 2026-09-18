@@ -90,7 +90,7 @@ export default async function TicketsPage({ params }) {
       {showOffers && <OffersGrid locationSlug={location.slug} data={offers} />}
       {showHelpStrip && <HelpStrip locationSlug={location.slug} data={helpStrip} />}
 
-      <Footer location={location} />
+      <Footer location={location} navItems={navItems} locations={strapiLocations} />
       <MobBook location={location} />
     </>
   );

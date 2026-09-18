@@ -97,7 +97,7 @@ export default async function LocationHome({ params }) {
         <FAQ data={faq} />
         <CtaBanner locationSlug={location.slug} data={ctaBanner} />
       </main>
-      <Footer location={location} navItems={navItems} />
+      <Footer location={location} navItems={navItems} locations={strapiLocations} />
       <MobBook location={location} />
     </>
   );

@@ -58,7 +58,7 @@ export default async function RidesPage({ params }) {
         featuredSection={featuredSection}
       />
 
-      <Footer location={location} />
+      <Footer location={location} navItems={navItems} locations={strapiLocations} />
       <MobBook location={location} />
     </>
   );

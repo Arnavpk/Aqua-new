@@ -265,7 +265,7 @@ export default async function AboutPage({ params }) {
         </div>
       </section>
 
-      <Footer location={location} />
+      <Footer location={location} navItems={navItems} locations={strapiLocations} />
       <MobBook location={location} />
     </>
   );

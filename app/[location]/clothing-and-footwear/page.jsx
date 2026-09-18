@@ -48,7 +48,7 @@ export default async function ClothingAndFootwearPage({ params }) {
   const page = await getPage(location.slug, 'pages', 'clothing-and-footwear');
   const pageHero = extractPageHero(page);
   const body = extractTermsContent(page) || FALLBACK_BODY;
-console.log("BODY PREVIEW:", JSON.stringify(body).slice(0, 200));
+  console.log("BODY PREVIEW:", JSON.stringify(body).slice(0, 200));
 
   return (
     <>
@@ -70,7 +70,7 @@ console.log("BODY PREVIEW:", JSON.stringify(body).slice(0, 200));
         <TermsContent body={body} />
       </main>
 
-      <Footer location={location} navItems={navItems} />
+      <Footer location={location} navItems={navItems} locations={strapiLocations} />
       <MobBook location={location} />
     </>
   );

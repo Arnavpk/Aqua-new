@@ -18,20 +18,20 @@ export function generateMetadata({ params }) {
   };
 }
 
-export default async function PrivacyPolicy({params}) {
-    const location = getLocation(params.location);
+export default async function PrivacyPolicy({ params }) {
+  const location = getLocation(params.location);
   const base = `/${location.slug}`;
   const strapiLocations = await getAllStrapiLocations();
   const navItems = await getNavItems(location.slug);
-    
+
   const page = await getPage(location.slug, 'pages', 'privacy-policy');
-  
+
   const pageHero = extractPageHero(page);
-  
+
   const body = extractTermsContent(page);
 
   return (
-    <>    
+    <>
 
       <PageHero
         eyebrow={pageHero?.eyebrow || "Legal"}
@@ -47,7 +47,7 @@ export default async function PrivacyPolicy({params}) {
         <TermsContent body={body} />
       </main>
 
-      <Footer location={location} navItems={navItems} />
+      <Footer location={location} navItems={navItems} locations={strapiLocations} />
       <MobBook location={location} />
     </>
   )

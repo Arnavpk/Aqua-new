@@ -47,7 +47,7 @@ export default async function IMSPage({ params }) {
         <IMSContent data={IMS_DATA} />
       </main>
 
-      <Footer location={location} navItems={navItems} />
+      <Footer location={location} navItems={navItems} locations={strapiLocations} />
       <MobBook location={location} />
     </>
   );

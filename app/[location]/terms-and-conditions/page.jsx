@@ -23,13 +23,13 @@ export default async function TermsPage({ params }) {
   const base = `/${location.slug}`;
   const strapiLocations = await getAllStrapiLocations();
   const navItems = await getNavItems(location.slug);
-    
+
   const page = await getPage(location.slug, 'pages', 'terms-and-conditions');
-  
+
   const pageHero = extractPageHero(page);
-  
+
   const body = extractTermsContent(page);
-  
+
   return (
     <>
       <Navbar location={location} locations={strapiLocations} navItems={navItems} />
@@ -48,7 +48,7 @@ export default async function TermsPage({ params }) {
         <TermsContent body={body} />
       </main>
 
-      <Footer location={location} navItems={navItems} />
+      <Footer location={location} navItems={navItems} locations={strapiLocations} />
       <MobBook location={location} />
     </>
   );

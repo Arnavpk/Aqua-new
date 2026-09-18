@@ -163,7 +163,7 @@ export default async function RestaurantDetailPage({ params }) {
         </section>
       )}
 
-      <Footer location={location} />
+      <Footer location={location} navItems={navItems} locations={strapiLocations} />
       <MobBook location={location} />
     </>
   );

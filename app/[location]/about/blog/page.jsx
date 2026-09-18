@@ -109,7 +109,7 @@ export default async function BlogListingPage({ params }) {
         </div>
       </section>
 
-      <Footer location={location} />
+      <Footer location={location} navItems={navItems} locations={strapiLocations} />
       <MobBook location={location} />
     </>
   );
