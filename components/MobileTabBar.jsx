@@ -5,9 +5,9 @@ import { usePathname } from 'next/navigation';
 
 const TABS = [
   { key: 'home', label: 'Home', icon: '🏠', href: '' },
-  { key: 'rides', label: 'Rides', icon: '🌊', href: '/rides' },
-  { key: 'book', label: 'Book', icon: '🎟️', href: '/tickets', center: true },
-  { key: 'dining', label: 'Dining', icon: '🍽️', href: '/restaurants' },
+  { key: 'rides', label: 'Rides', icon: '🌊', href: '/water-park/rides-and-attractions' },
+  { key: 'book', label: 'Book', icon: '🎟️', href: '/tickets-and-offers', center: true },
+  { key: 'dining', label: 'Dining', icon: '🍽️', href: '/water-park/restaurant' },
   { key: 'more', label: 'More', icon: '☰', href: '/about' },
 ];
 
