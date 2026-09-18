@@ -4,9 +4,9 @@ import Image from 'next/image';
 
 const LOCATION_META = {
   surat: {
-    tagline: 'Best Water Park Experience in Surat',
-    rides: '14+ signature rides',
-    highlight: '1 pools · 5 restaurants',
+    tagline: 'The Heart of Surat',
+    rides: '16+ international rides',
+    highlight: 'Amazon-inspired Theme ·  Family & Thrill Rides',
     status: 'open',
     ctaLabel: 'Explore Surat →',
     bookLabel: 'Book Now',
