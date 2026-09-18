@@ -1,7 +1,5 @@
 'use client';
 
-'use client';
-
 import { useState } from 'react';
 import Link from 'next/link';
 import { useParams } from 'next/navigation';
@@ -9,6 +7,7 @@ import { Reveal } from './Reveal';
 import { FAQS } from '@/lib/data/home';
 
 const TABS = [
+
   { key: 'all', label: 'All' },
   { key: 'park', label: 'Park' },
   { key: 'safety', label: 'Rules & Safety' },
@@ -16,12 +15,12 @@ const TABS = [
   { key: 'tickets', label: 'Tickets' },
   { key: 'food', label: 'Food & Restaurants' },
   { key: 'dress', label: 'Dressing & Retail' },
-  { key: "service", label: "Service Facility FAQs" },
+  { key: 'service', label: 'Service Facility FAQs' },
 ];
 
-export function FAQ({ data, showTabs = true }) {
-  const eyebrow = data?.eyebrow || "Still curious?";
-  const heading = data?.heading || "Frequently asked questions.";
+export function FAQ({ data, showTabs = true, maxItems = 5 }) {
+  const eyebrow = data?.eyebrow || 'Still curious?';
+  const heading = data?.heading || 'Frequently asked questions.';
   const faqs = data?.faqs?.length ? data.faqs : FAQS;
 
   const availableCats = new Set(faqs.map((f) => f.cat));
@@ -32,7 +31,13 @@ export function FAQ({ data, showTabs = true }) {
 
   const params = useParams();
   const location = params?.location;
+
   const filtered = !showTabs || cat === 'all' ? faqs : faqs.filter((f) => f.cat === cat);
+
+  // Limit how many FAQs are shown (pass maxItems={null} to show all)
+  const hasLimit = typeof maxItems === 'number' && maxItems > 0;
+  const visibleFaqs = hasLimit ? filtered.slice(0, maxItems) : filtered;
+  const hasMore = hasLimit && filtered.length > maxItems;
 
   return (
     <section className="section-shell section-tight">
@@ -62,7 +67,7 @@ export function FAQ({ data, showTabs = true }) {
                   </div>
                 )}
 
-                {filtered.map((faq, i) => {
+                {visibleFaqs.map((faq, i) => {
                   const isOpen = openIdx === i;
                   return (
                     <div key={faq.q} className="faq-item">
@@ -82,7 +87,7 @@ export function FAQ({ data, showTabs = true }) {
                   );
                 })}
 
-                {location && (
+                {location && hasMore && (
                   <Link href={`/${location}/faq-help`} className="faq-view-more">
                     View More
                   </Link>
