@@ -24,10 +24,12 @@ const LOCATION_META = {
     image: 'https://www.aquaimagicaa.com/assets/images/indore-bg.jpg',
   },
   mehsana: {
-    tagline: 'Coming soon to mehsana',
-    rides: 'Opening 2026',
+    tagline: 'Explore Mehsana\'s Aqua Imagicaa',
+    // rides: 'Opening 2026',
     highlight: 'For booking: +91 9099080024',
-    status: 'coming-soon',
+    // status: 'open',
+    ctaLabel: 'Explore Mehsana →',
+    bookUrl: '/mehsana/tickets-and-offers',
     image: "https://www.shankuswaterpark.com/wp-content/uploads/2024/05/waterpark.jpg",
   },
 };
@@ -68,7 +70,8 @@ export default function RootPage() {
             const isOpen = meta.status === 'open';
 
             return (
-              <div key={loc.slug} className={`lp-card ${!isOpen ? 'lp-card-soon' : ''}`}>
+              // <div key={loc.slug} className={`lp-card ${!isOpen ? 'lp-card-soon' : ''}`}>
+              <div key={loc.slug} className={`lp-card `}>
                 {/* Full background image */}
                 <div className="lp-card-bg">
                   {meta.image ? (
@@ -84,7 +87,7 @@ export default function RootPage() {
                 </div>
 
                 {/* Dark gradient overlay */}
-                <div className="lp-card-overlay" />
+                {/* <div className="lp-card-overlay" /> */}
 
                 {/* Content pinned to bottom */}
                 <div className="lp-card-content">
@@ -98,7 +101,7 @@ export default function RootPage() {
                     <span>{meta.highlight}</span>
                   </div>
 
-                  {isOpen ? (
+                  {/* {isOpen ? ( */}
                     <div className="lp-card-actions">
                       <Link href={`/${loc.slug}`} className="lp-btn-primary">
                         {meta.ctaLabel}
@@ -107,11 +110,11 @@ export default function RootPage() {
                         {meta.bookLabel}
                       </Link>
                     </div>
-                  ) : (
-                    <div className="lp-card-actions">
-                      <span className="lp-badge-soon">Coming Soon</span>
+                  {/* ) : ( */}
+                    {/* <div className="lp-card-actions">
+                      <span className="lp-badge-soon">Explore Mehsana</span>
                     </div>
-                  )}
+                  )} */}
                 </div>
               </div>
             );
