@@ -87,7 +87,7 @@ export default async function LocationHome({ params }) {
           </section>
         )}
 
-        <HotOffers locationSlug={location.slug} data={hotOffers} />
+        {hotOffers && <HotOffers locationSlug={location.slug} data={hotOffers} />}
         <EventsSplit data={eventsSplit} />
         {/* <PlanVisit locationSlug={location.slug} data={planVisit} /> */}
         {/* <ParkMap data={parkMap} /> */}
