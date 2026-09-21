@@ -51,11 +51,11 @@ export function HotOffers({ locationSlug, data }) {
                     letterSpacing: ".06em",
                   }}
                 >
-                  {offer.badge}
+                  {offer.badge?.label || offer.badge}
                 </span>
-                <div className="absolute bottom-3.5 right-3.5 bg-white/[.97] rounded-2xl px-3.5 py-2.5 text-right z-[2] shadow-s3">
+                {/* <div className="absolute bottom-3.5 right-3.5 bg-white/[.97] rounded-2xl px-3.5 py-2.5 text-right z-[2] shadow-s3">
                   <div className="text-[22px] font-extrabold text-coral leading-none">{offer.discount}</div>
-                </div>
+                </div> */}
               </div>
               <div className="p-4">
                 <h3 className="text-[15px] font-bold tracking-tight mb-1.5">{offer.title}</h3>

@@ -119,7 +119,8 @@ export function Navbar({ location, locations, navItems }) {
             </div>
 
             <div className="flex items-center gap-2.5">
-              <a href={location.contact.phoneHref} className={`nav-phone ${solid ? 'text-ink' : 'text-white'}`}>📞 {location.contact.phone}</a>
+
+              <a href={`tel:${currentLoc?.phone || location.contact?.phone || ''}`} className={`nav-phone ${solid ? 'text-ink' : 'text-white'}`}>📞 {currentLoc?.phone || location.contact?.phone || ''}</a>
               <Link href={`${base}/tickets-and-offers`} className="btn btn-primary btn-sm max-[720px]:hidden">Book now →</Link>
               <button type="button" className="nav-burger" aria-label="Open menu" aria-expanded={drawerOpen} onClick={() => setDrawerOpen(true)}>
                 <span /><span /><span />
@@ -220,8 +221,8 @@ export function Navbar({ location, locations, navItems }) {
 
         <div className="mt-5">
           <Link href={`${base}/tickets-and-offers`} className="btn btn-primary w-full text-center" onClick={() => setDrawerOpen(false)}>Book now →</Link>
-          <a href={location.contact.phoneHref} className="block text-center mt-3 text-ink-2 text-sm">
-            📞 {location.contact.phone} · {location.contact.phoneHours}
+          <a href={`tel:${currentLoc?.phone || location.contact?.phone || ''}`} className="block text-center mt-3 text-ink-2 text-sm">
+            📞 {currentLoc?.phone || location.contact?.phone || ''}
           </a>
         </div>
       </aside>

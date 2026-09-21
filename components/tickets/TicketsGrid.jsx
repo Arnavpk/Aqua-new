@@ -20,8 +20,8 @@ export function TicketsGrid({ locationSlug, data }) {
           {tickets.map((t) => (
             <div key={t.slug} className={`ticket-card ${t.featured ? 'featured' : ''}`}>
               {t.badge && (
-                <span className="badge-abs" style={{ background: 'var(--sun)', color: 'var(--ink)' }}>
-                  {t.badge}
+                <span className="...">
+                  {t.badge?.label || t.badge}
                 </span>
               )}
               <div
