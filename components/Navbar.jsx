@@ -62,6 +62,14 @@ export function Navbar({ location, locations, navItems }) {
       </Link>
     );
   };
+  let bookingLink = '';
+  if (base.includes('indore')) {
+   bookingLink = 'https://www.aquaimagicaa.com/book-now?theme=aquaimagicaa&location_id=7';
+  }else if (base.includes('surat')) {
+    bookingLink = 'https://www.aquaimagicaa.com/book-now?theme=aquaimagicaa&location_id=6';
+  }else {
+    bookingLink = '/mehsana/tickets-and-offers';
+  }
 
   return (
     <>
@@ -121,7 +129,7 @@ export function Navbar({ location, locations, navItems }) {
             <div className="flex items-center gap-2.5">
 
               <a href={`tel:${currentLoc?.phone || location.contact?.phone || ''}`} className={`nav-phone ${solid ? 'text-ink' : 'text-white'}`}>📞 {currentLoc?.phone || location.contact?.phone || ''}</a>
-              <Link href={`${base}/tickets-and-offers`} className="btn btn-primary btn-sm max-[720px]:hidden">Book now →</Link>
+              <Link href={bookingLink} className="btn btn-primary btn-sm max-[720px]:hidden">Book now →</Link>
               <button type="button" className="nav-burger" aria-label="Open menu" aria-expanded={drawerOpen} onClick={() => setDrawerOpen(true)}>
                 <span /><span /><span />
               </button>
@@ -220,7 +228,7 @@ export function Navbar({ location, locations, navItems }) {
         </div>
 
         <div className="mt-5">
-          <Link href={`${base}/tickets-and-offers`} className="btn btn-primary w-full text-center" onClick={() => setDrawerOpen(false)}>Book now →</Link>
+          <Link href={bookingLink} className="btn btn-primary w-full text-center" onClick={() => setDrawerOpen(false)}>Book now →</Link>
           <a href={`tel:${currentLoc?.phone || location.contact?.phone || ''}`} className="block text-center mt-3 text-ink-2 text-sm">
             📞 {currentLoc?.phone || location.contact?.phone || ''}
           </a>
