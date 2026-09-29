@@ -39,7 +39,7 @@ export default async function AboutPage({ params }) {
   const timeline = extractAboutTimeline(aboutPage);
   const faqData = extractFaq(aboutPage);
   const aboutCta = extractAboutCta(aboutPage);
-  const blogs = extractArticles(strapiArticles) || BLOGS;
+  const blogs = extractArticles(strapiArticles) || [];
 
   // Ride count from Strapi
   const rideCount = strapiRides?.length || 0;

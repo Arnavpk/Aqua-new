@@ -1,12 +1,13 @@
 import { getLocation } from '@/lib/locations';
 import { getAllStrapiLocations } from '@/lib/strapi/getLocations';
 import { getNavItems } from '@/lib/strapi/getNav';
+import { getGroupQuotationTypes } from '@/lib/strapi/getGroupQuotationTypes';
 import { Navbar } from '@/components/Navbar';
 import { PageHero } from '@/components/PageHero';
 import { Footer } from '@/components/Footer';
 import { MobBook } from '@/components/MobBook';
 import { Reveal } from '@/components/Reveal';
-import { GroupEnquiryForm } from '@/components/GroupEnquiryForm';
+import { GroupEnquiryForm } from '@/components/group-enquiry/GroupEnquiryForm';
 
 export function generateMetadata({ params }) {
     const loc = getLocation(params.location);
@@ -20,9 +21,10 @@ export default async function GroupEnquiryPage({ params }) {
     const location = getLocation(params.location);
     const base = `/${location.slug}`;
 
-    const [strapiLocations, navItems] = await Promise.all([
+    const [strapiLocations, navItems, quotationTypes] = await Promise.all([
         getAllStrapiLocations(),
         getNavItems(location.slug),
+        getGroupQuotationTypes(location.slug),
     ]);
 
     return (
@@ -47,6 +49,7 @@ export default async function GroupEnquiryPage({ params }) {
                         <GroupEnquiryForm
                             locationSlug={location.slug}
                             locationName={location.name}
+                            quotationTypes={quotationTypes}
                         />
                     </Reveal>
                 </div>
