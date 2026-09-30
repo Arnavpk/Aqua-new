@@ -22,7 +22,7 @@ export async function generateMetadata({ params }) {
     };
 }
 
-export default async function FaqHelpPage({ params }) {
+export default async function FaqHelpPage({ params, locations }) {
     const location = getLocation(params.location);
     const base = `/${location.slug}`;
 
@@ -107,7 +107,7 @@ export default async function FaqHelpPage({ params }) {
                         <div className="c-row">
                             <span className="icon">📞</span>
                             <div>
-                                <a href={location.contact.phoneHref}>{location.contact.phone}</a>
+                                <a href={location.contact?.phone}>{location.contact?.phone}</a>
                             </div>
                         </div>
                         <div className="c-row">
