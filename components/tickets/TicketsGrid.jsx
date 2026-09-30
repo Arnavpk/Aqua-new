@@ -42,7 +42,7 @@ export function TicketsGrid({ locationSlug, data }) {
                 {t.unit}
               </div>
               <Link
-                href={t.ctaUrl || `/${locationSlug}/tickets`}
+                href={t.ctaUrl || []}
                 className={`btn ${t.featured ? 'btn-primary' : 'btn-dark'} w-full text-center mt-auto`}
               >
                 {t.ctaLabel || (t.featured ? `Book ${t.name.toLowerCase()} →` : 'Book →')}
