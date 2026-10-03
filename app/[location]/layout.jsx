@@ -7,6 +7,8 @@ import { MobileTabBar } from '@/components/MobileTabBar';
 import { Navbar } from '@/components/Navbar';
 import { GTMHead, GTMNoScript, MetaPixelHead, MetaPixelNoScript } from '@/components/GTM';
 import { LocationPicker } from '@/components/LocationPicker';
+import { GlobalPopup } from '@/components/GlobalPopup';
+import { getGlobalPopup } from '@/lib/strapi/getGlobal';
 
 export function generateStaticParams() {
   return getAllLocationSlugs().map((slug) => ({ location: slug }));
@@ -27,6 +29,7 @@ export default async function LocationLayout({ children, params }) {
 
   const strapiLocations = await getAllStrapiLocations();
   const navItems = await getNavItems(params.location);
+    const popup = await getGlobalPopup();    
 
   return (
     <>
@@ -44,6 +47,7 @@ export default async function LocationLayout({ children, params }) {
 
       {children}
       <MobileTabBar locationSlug={params.location} />
+      <GlobalPopup popup={popup} />
     </>
   );
 }
