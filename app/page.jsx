@@ -34,6 +34,25 @@ const LOCATION_META = {
   },
 };
 
+const TEXT_SHADOW =
+  '0 0 2px rgba(6,58,76,0.9), 0 1px 4px rgba(6,58,76,0.85), 0 2px 12px rgba(6,58,76,0.7)';
+
+const CARD_TEXT = {
+  city: { color: '#fff', fontWeight: 800, textShadow: TEXT_SHADOW },
+  state: { color: '#FCD55B', fontWeight: 600, textShadow: TEXT_SHADOW },
+  tagline: { color: '#fff', fontWeight: 600, textShadow: TEXT_SHADOW },
+  stats: { color: '#fff', fontWeight: 500, textShadow: TEXT_SHADOW },
+};
+
+const BOOK_BTN_STYLE = {
+  background: 'rgba(255,255,255,0.2)',
+  color: '#fff',
+  border: '1.5px solid #fff',
+  backdropFilter: 'blur(6px)',
+  WebkitBackdropFilter: 'blur(6px)',
+  textShadow: '0 1px 4px rgba(6,58,76,0.8)',
+};
+
 export const metadata = {
   title: 'Aqua Imagicaa — India\'s Most Loved Water Park Experience',
   description: 'Choose your Aqua Imagicaa location — Surat, Indore, or mehsana. World-class water slides, wave pools, and family fun.',
@@ -87,7 +106,7 @@ export default function RootPage() {
                 </div>
 
                 {/* Dark gradient overlay */}
-                {/* <div className="lp-card-overlay" /> */}
+                <div className="lp-card-overlay" />
 
                 {/* Content pinned to bottom */}
                 <div className="lp-card-content">
@@ -102,16 +121,22 @@ export default function RootPage() {
                   </div>
 
                   {/* {isOpen ? ( */}
-                    <div className="lp-card-actions">
-                      <Link href={`/${loc.slug}`} className="lp-btn-primary">
-                        {meta.ctaLabel}
-                      </Link>
-                      <Link href={meta.bookUrl} className="lp-btn-secondary">
+                  <div className="lp-card-actions">
+                    <Link href={`/${loc.slug}`} className="lp-btn-primary">
+                      {meta.ctaLabel}
+                    </Link>
+                    {meta.bookLabel && (
+                      <Link
+                        href={meta.bookUrl}
+                        className="lp-btn-secondary hover:!bg-white hover:!text-[#0E7A93]"
+                        style={BOOK_BTN_STYLE}
+                      >
                         {meta.bookLabel}
                       </Link>
-                    </div>
+                    )}
+                  </div>
                   {/* ) : ( */}
-                    {/* <div className="lp-card-actions">
+                  {/* <div className="lp-card-actions">
                       <span className="lp-badge-soon">Explore Mehsana</span>
                     </div>
                   )} */}
