@@ -9,12 +9,12 @@ export function TermsContent({ body }) {
   return (
     <section className="section-shell">
       <div className="container-x">
-        <Reveal>
+        {/* <Reveal> */}
           <div
             className="content-block prose-terms"
             dangerouslySetInnerHTML={{ __html: html }}
           />
-        </Reveal>
+        {/* </Reveal> */}
       </div>
     </section>
   );

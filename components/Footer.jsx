@@ -45,13 +45,12 @@ function buildFooterColumns(links) {
     },
     {
       heading: 'Legal',
-      links: [
-        { label: 'Privacy', href: '/terms-and-conditions' },
-        { label: 'Terms', href: '/terms-and-conditions' },
+      links: [        
+        { label: 'Terms & Conditions', href: '/terms-and-conditions' },
+        { label: 'Privacy Policy', href: '/privacy-policy' },
         { label: 'Visitor Guide', href: '/visitor-guide' },
         { label: 'Guest Services', href: '/guest-services' },
         { label: 'Rules & Regulations', href: '/rules-and-regulations' },
-        { label: 'Privacy Policy', href: '/privacy-policy' },
       ],
     },
   ];
