@@ -41,6 +41,7 @@ function buildFooterColumns(links) {
       links: [
         { label: 'About', href: about },
         { label: 'Contact', href: '/contact-us' },
+        { label: 'Blogs', href: '/about/blog' },
       ],
     },
     {

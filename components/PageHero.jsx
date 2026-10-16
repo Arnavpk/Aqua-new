@@ -11,8 +11,13 @@ export function PageHero({
   secondaryCta = null,
   bgImage = null,
   mobileImage = null,
+  bgVideo = null,
+  mobileVideo = null,
+  videoPoster = null,
   fill = '#EAFBFD',
 }) {
+  const hasMedia = Boolean(bgVideo || bgImage);
+
   return (
     <header
       className="relative overflow-hidden text-white"
@@ -21,7 +26,31 @@ export function PageHero({
         padding: '140px 0 180px',
       }}
     >
-      {bgImage && (
+      {bgVideo ? (
+        <>
+          {/* One video for all screens unless a separate mobile cut is given,
+              so desktop doesn't download two files. */}
+          <video
+            className={`absolute inset-0 h-full w-full object-cover z-0 ${mobileVideo ? 'hidden md:block' : ''}`}
+            src={bgVideo}
+            poster={videoPoster || bgImage || undefined}
+            autoPlay muted loop playsInline
+            preload="metadata"
+            aria-hidden="true"
+          />
+          {mobileVideo && (
+            <video
+              className="absolute inset-0 h-full w-full object-cover z-0 md:hidden"
+              src={mobileVideo}
+              poster={videoPoster || mobileImage || bgImage || undefined}
+              autoPlay muted loop playsInline
+              preload="metadata"
+              aria-hidden="true"
+            />
+          )}
+          <div className="absolute inset-0 z-[1] bg-black/40" />
+        </>
+      ) : bgImage ? (
         <>
           <Image height={200} width={400}
             className="absolute inset-0 h-full w-full object-cover z-0 hidden md:block"
@@ -35,8 +64,8 @@ export function PageHero({
           />
           <div className="absolute inset-0 z-[1] bg-black/40" />
         </>
-      )}
-      {!bgImage && (
+      ) : null}
+      {!hasMedia && (
         <div
           className="absolute inset-0"
           style={{

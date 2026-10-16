@@ -145,17 +145,23 @@ export default async function RideDetailPage({ params }) {
             )}
 
             {/* Safety */}
-            {detail.safety?.length > 0 && (
+            {detail.safety?.some((s) => s?.text) && (
               <Reveal>
                 <div className="content-block">
                   <span className="eyebrow mb-3 block">Safety &amp; guidelines</span>
                   <h2>Before you ride.</h2>
                   <ul className="safety-list">
-                    {detail.safety.map((s, i) => (
-                      <li key={i} className={s.type !== 'ok' ? s.type : ''}>
-                        <span dangerouslySetInnerHTML={{ __html: s.text.replace(/(\d+ cm|\d+'[^"]*")/g, '<strong>$1</strong>') }} />
-                      </li>
-                    ))}
+                    {detail.safety
+                      .filter((s) => s?.text)
+                      .map((s, i) => (
+                        <li key={i} className={s.type !== 'ok' ? s.type : ''}>
+                          <span
+                            dangerouslySetInnerHTML={{
+                              __html: s.text.replace(/(\d+ cm|\d+'[^"]*")/g, '<strong>$1</strong>'),
+                            }}
+                          />
+                        </li>
+                      ))}
                   </ul>
                 </div>
               </Reveal>
