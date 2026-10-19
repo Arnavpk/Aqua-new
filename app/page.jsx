@@ -16,7 +16,7 @@ const LOCATION_META = {
   indore: {
     tagline: 'MP\'s biggest water park',
     rides: '20+ International Rides, Biggest Wavepool',
-    highlight: '3+ Multicuisine Restaurants',
+    highlight: '6+ Multicuisine Restaurants',
     status: 'open',
     ctaLabel: 'Explore Indore →',
     bookLabel: 'Book Now',
@@ -26,7 +26,7 @@ const LOCATION_META = {
   mehsana: {
     tagline: 'Explore Mehsana\'s Aqua Imagicaa',
     // rides: 'Opening 2026',
-    highlight: 'For booking: +91 9099080024',
+    highlight: 'For booking: +91 9974417666',
     // status: 'open',
     ctaLabel: 'Explore Mehsana →',
     bookUrl: '/mehsana/tickets-and-offers',
