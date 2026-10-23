@@ -11,7 +11,7 @@ const LOCATION_META = {
     ctaLabel: 'Explore Surat →',
     bookLabel: 'Book Now',
     bookUrl: '/surat/tickets-and-offers',
-    image: '	https://www.aquaimagicaa.com/assets/images/surat-bg.jpg',
+    image: 'https://www.aquaimagicaa.com/assets/images/surat-bg.jpg',
   },
   indore: {
     tagline: 'MP\'s biggest water park',
