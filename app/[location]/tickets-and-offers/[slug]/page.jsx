@@ -41,45 +41,68 @@ export default async function OfferDetailPage({ params }) {
       <Navbar location={location} locations={strapiLocations} navItems={navItems} />
 
       {/* ===== OFFER HERO ===== */}
-      <header className="offer-hero relative overflow-hidden">
+      <header className="offer-hero relative overflow-hidden min-h-[520px] md:min-h-[680px] flex flex-col justify-end">
         {(detail.bImage || detail.image) ? (
           <>
             {/* Desktop banner */}
-            <Image height={200} width={400}
-              className="hidden md:block absolute inset-0 h-full w-full object-cover z-0"
+            <Image
+              fill
+              priority
+              sizes="100vw"
+              className="hidden md:block object-cover z-0"
               src={detail.bImage || detail.image}
-              alt={detail.name}
+              alt={detail.name || 'Offer banner'}
             />
             {/* Mobile banner */}
-            <Image height={200} width={400}
-              className="block md:hidden absolute inset-0 h-full w-full object-cover z-0"
+            <Image
+              fill
+              priority
+              sizes="100vw"
+              className="block md:hidden object-cover z-0"
               src={detail.bImageMobile || detail.bImage || detail.image}
-              alt={detail.name}
+              alt={detail.name || 'Offer banner'}
             />
             <div className="absolute inset-0 z-[1] bg-black/40" />
           </>
         ) : (
           <div className="absolute inset-0 z-0" style={{ background: 'linear-gradient(135deg, #FF7A9C, #FFD84D)' }} />
         )}
-        <div className="container-x relative z-[3]">
+
+        <div className="container-x relative z-[3] w-full">
           <nav className="breadcrumb" aria-label="Breadcrumb">
             <Link href={base}>Home</Link>
             <span className="sep">›</span>
             <Link href={`${base}/tickets`}>Tickets &amp; Offers</Link>
-            <span className="sep">›</span>
-            <span className="text-white">{detail.name} {detail.nameEm}</span>
+            {(detail.name || detail.nameEm) && (
+              <>
+                <span className="sep">›</span>
+                <span className="text-white">{detail.name} {detail.nameEm}</span>
+              </>
+            )}
           </nav>
+
           {detail.badge && <span className="offer-badge-hero">{detail.badge}</span>}
-          <h1>
-            {detail.name} <em>{detail.nameEm}</em> {detail.nameSuffix}
-          </h1>
-          <p className="text-[clamp(17px,1.6vw,22px)] max-w-[600px] mb-6 opacity-90 leading-relaxed font-light">
-            {detail.lede}
-          </p>
-          <div className="flex gap-3 flex-wrap">
-            {/* <button type="button" className="btn btn-dark">Book now — save {detail.medallion.big} →</button> */}
-            <Link href={`${base}/tickets-and-offers`} className="btn btn-glass">← All offers</Link>
-          </div>
+
+          {(detail.name || detail.nameEm || detail.nameSuffix) && (
+            <h1>
+              {detail.name} {detail.nameEm && <em>{detail.nameEm}</em>} {detail.nameSuffix}
+            </h1>
+          )}
+
+          {detail.lede && (
+            <p className="text-[clamp(17px,1.6vw,22px)] max-w-[600px] mb-6 opacity-90 leading-relaxed font-light">
+              {detail.lede}
+            </p>
+          )}
+
+          {detail.cta_all_offers_label && (
+            <div className="flex gap-3 flex-wrap">
+              <Link href={`${base}/tickets-and-offers`} className="btn btn-glass">
+                {detail.cta_all_offers_label}
+              </Link>
+            </div>
+          )}
+
           {detail.meta.length > 0 && (
             <div className="offer-meta">
               {detail.meta.map((m) => (
@@ -91,11 +114,15 @@ export default async function OfferDetailPage({ params }) {
             </div>
           )}
         </div>
-        <div className="medallion" aria-hidden="true">
-          <div className="big">{detail.medallion.big}</div>
-          <div className="lil">{detail.medallion.small}</div>
-          <div className="validity">{detail.medallion.validity}</div>
-        </div>
+
+        {(detail.medallion.big || detail.medallion.small || detail.medallion.validity) && (
+          <div className="medallion" aria-hidden="true">
+            <div className="big">{detail.medallion.big}</div>
+            <div className="lil">{detail.medallion.small}</div>
+            <div className="validity">{detail.medallion.validity}</div>
+          </div>
+        )}
+
         <WaveDivider fill="#EAFBFD" />
       </header>
 
