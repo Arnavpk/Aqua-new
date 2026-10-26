@@ -1,6 +1,7 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useId } from 'react';
+
 
 const EMPTY = {
     company: '',
@@ -14,6 +15,7 @@ const EMPTY = {
     message: '',
     website: '', // honeypot: real users never see or fill this
 };
+
 
 function isoDatePlusDays(days) {
     const d = new Date();
@@ -32,7 +34,11 @@ export function CorporateEnquiryForm({
     successHeading = 'Thanks, we have your enquiry.',
     successBody = 'Our team will get back to you shortly.',
     minLeadDays = 2,
+    bare = false,        // true inside the popup: drops the white card wrapper
+    source = 'inline',   // 'inline' | 'popup'
 }) {
+    const uid = useId();
+    const cardClass = bare ? 'text-ink' : 'rounded-rl bg-white text-ink p-8 shadow-s2 max-[720px]:p-5';
     const [form, setForm] = useState({ ...EMPTY, outingType: outingTypes[0] || '' });
     const [errors, setErrors] = useState({});
     const [status, setStatus] = useState('idle'); // idle | sending | success | error
@@ -79,6 +85,7 @@ export function CorporateEnquiryForm({
                     ...form,
                     guests: Number(form.guests),
                     location: locationSlug,
+                    source,
                     pageUrl: typeof window !== 'undefined' ? window.location.href : '',
                 }),
             });
@@ -90,7 +97,7 @@ export function CorporateEnquiryForm({
             // Conversion tracking — no-ops if GTM / Meta Pixel aren't loaded.
             try {
                 window.dataLayer = window.dataLayer || [];
-                window.dataLayer.push({ event: 'corporate_enquiry_submit', location: locationSlug });
+                window.dataLayer.push({ event: 'corporate_enquiry_submit', location: locationSlug, form_source: source });
                 if (typeof window.fbq === 'function') window.fbq('track', 'Lead', { content_name: 'Corporate outing' });
             } catch { }
         } catch {
@@ -100,7 +107,7 @@ export function CorporateEnquiryForm({
 
     if (status === 'success') {
         return (
-            <div className="rounded-rl bg-white text-ink p-10 shadow-s2 text-center max-[720px]:p-6" role="status">
+            <div className={`${bare ? 'py-6' : 'rounded-rl bg-white p-10 shadow-s2 max-[720px]:p-6'} text-ink text-center`} role="status">
                 <div className="text-[44px] mb-3">✅</div>
                 <h3 className="h3 mb-2">{successHeading}</h3>
                 <p className="text-sm text-ink-2 mb-5">
@@ -114,7 +121,7 @@ export function CorporateEnquiryForm({
     }
 
     return (
-        <form onSubmit={handleSubmit} noValidate className="rounded-rl bg-white text-ink p-8 shadow-s2 max-[720px]:p-5">
+        <form onSubmit={handleSubmit} noValidate className={`relative ${cardClass}`}>
             <div className="grid grid-cols-2 gap-x-5 gap-y-4 max-[720px]:grid-cols-1">
                 <Field id="ce-company" label="Company name" required error={errors.company}>
                     <input id="ce-company" type="text" autoComplete="organization" value={form.company} onChange={set('company')} className="form-input" />
