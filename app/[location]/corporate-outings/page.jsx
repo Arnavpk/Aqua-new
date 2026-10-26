@@ -12,6 +12,7 @@ import { MobBook } from '@/components/MobBook';
 import { Reveal } from '@/components/Reveal';
 import { AboutContent } from '@/components/AboutContent';
 import { CorporateEnquiryForm } from '@/components/corporate/CorporateEnquiryForm';
+import { CorporateEnquiryModal } from '@/components/corporate/CorporateEnquiryModal';
 
 export function generateMetadata({ params }) {
     const data = getCorporateOutingsData(params.location);
@@ -40,6 +41,17 @@ export default async function CorporateOutingsPage({ params }) {
     const base = `/${location.slug}`;
     const { contact, hero, intro, benefits, rides, food, banquet, safety, steps, enquiry, faq, cta } = data;
 
+    const formProps = {
+        locationSlug: location.slug,
+        locationName: location.name,
+        outingTypes: enquiry.outingTypes,
+        banquetOptions: enquiry.banquetOptions,
+        submitLabel: enquiry.submitLabel,
+        privacyNote: enquiry.privacyNote,
+        successHeading: enquiry.successHeading,
+        successBody: enquiry.successBody,
+        minLeadDays: enquiry.minLeadDays,
+    };
     const [strapiLocations, navItems] = await Promise.all([
         getAllStrapiLocations(),
         getNavItems(location.slug),
@@ -62,7 +74,7 @@ export default async function CorporateOutingsPage({ params }) {
             />
 
             {/* Jump links */}
-            <nav aria-label="On this page" className="section-shell section-tight" style={{ paddingBottom: 0 }}>
+            {/* <nav aria-label="On this page" className="section-shell section-tight" style={{ paddingBottom: 0 }}>
                 <div className="container-x">
                     <div className="flex flex-wrap gap-2 max-[720px]:flex-nowrap max-[720px]:overflow-x-auto max-[720px]:pb-1">
                         {data.jumpLinks.map((l) => (
@@ -72,7 +84,7 @@ export default async function CorporateOutingsPage({ params }) {
                         ))}
                     </div>
                 </div>
-            </nav>
+            </nav> */}
 
             {/* Intro */}
             <section className="section-shell">
@@ -119,7 +131,7 @@ export default async function CorporateOutingsPage({ params }) {
                         <div>
                             <span className="eyebrow mb-2 block">{rides.eyebrow}</span>
                             <h2 className="h2 mb-2">{rides.heading}</h2>
-                            <p className="text-[15px] text-ink-2 m-0 max-w-[560px]">{rides.subtitle}</p>
+                            {/* <p className="text-[15px] text-ink-2 m-0 max-w-[560px]">{rides.subtitle}</p> */}
                         </div>
                         <Link href={`${base}${rides.cta.path}`} className="btn btn-outline btn-sm max-[720px]:hidden">
                             {rides.cta.label}
@@ -132,7 +144,7 @@ export default async function CorporateOutingsPage({ params }) {
                         ))}
                     </Reveal>
 
-                    <Reveal className="grid grid-cols-3 gap-4 max-[1024px]:grid-cols-1">
+                    {/* <Reveal className="grid grid-cols-3 gap-4 max-[1024px]:grid-cols-1">
                         {rides.groups.map((g) => (
                             <div key={g.title} className="rounded-rl p-6 text-white bg-brand-900">
                                 <h3 className="text-lg font-bold mb-3" style={{ color: g.accent }}>{g.title}</h3>
@@ -145,7 +157,7 @@ export default async function CorporateOutingsPage({ params }) {
                                 </div>
                             </div>
                         ))}
-                    </Reveal>
+                    </Reveal> */}
 
                     <Link href={`${base}${rides.cta.path}`} className="btn btn-outline btn-sm mt-5 hidden max-[720px]:inline-flex">
                         {rides.cta.label}
@@ -184,6 +196,7 @@ export default async function CorporateOutingsPage({ params }) {
                             <span className="eyebrow mb-3 block">{banquet.eyebrow}</span>
                             <h2 className="h2 mb-4">{banquet.heading}</h2>
                             <p className="body-lg m-0">{banquet.body}</p>
+                            <p className="text-sm text-ink-2 leading-relaxed mt-4 mb-0 max-w-[720px]">{banquet.note}</p>
                         </div>
                         <div className="rounded-rx overflow-hidden aspect-[16/10] relative max-[720px]:rounded-[24px]">
                             {banquet.image ? (
@@ -196,7 +209,7 @@ export default async function CorporateOutingsPage({ params }) {
                         </div>
                     </Reveal>
 
-                    <Reveal className="grid grid-cols-2 gap-4 max-[720px]:grid-cols-1">
+                    {/* <Reveal className="grid grid-cols-2 gap-4 max-[720px]:grid-cols-1">
                         {[
                             { list: banquet.provides, bg: 'white', border: '1px solid #CFEEF3', mark: '✓', markBg: '#00A5C8', markColor: 'white' },
                             { list: banquet.arranges, bg: '#FFF6D1', border: '1px solid #FFE58A', mark: '→', markBg: '#0C3B47', markColor: 'white' },
@@ -211,8 +224,8 @@ export default async function CorporateOutingsPage({ params }) {
                                 </ul>
                             </div>
                         ))}
-                    </Reveal>
-                    <p className="text-sm text-ink-2 leading-relaxed mt-4 mb-0 max-w-[720px]">{banquet.note}</p>
+                    </Reveal> */}
+
                 </div>
             </section>
 
@@ -279,7 +292,7 @@ export default async function CorporateOutingsPage({ params }) {
             </section>
 
             {/* Enquiry */}
-            <section id="enquire" className="section-shell scroll-mt-28">
+            {/* <section id="enquire" className="section-shell scroll-mt-28">
                 <div className="container-x">
                     <div
                         className="rounded-rx p-12 grid grid-cols-[1fr_1.6fr] gap-10 items-start text-white max-[1024px]:grid-cols-1 max-[1024px]:gap-6 max-[720px]:p-5 max-[720px]:rounded-[24px]"
@@ -295,20 +308,10 @@ export default async function CorporateOutingsPage({ params }) {
                                 <li className="text-white/80">⏰ {contact.hours}</li>
                             </ul>
                         </div>
-                        <CorporateEnquiryForm
-                            locationSlug={location.slug}
-                            locationName={location.name}
-                            outingTypes={enquiry.outingTypes}
-                            banquetOptions={enquiry.banquetOptions}
-                            submitLabel={enquiry.submitLabel}
-                            privacyNote={enquiry.privacyNote}
-                            successHeading={enquiry.successHeading}
-                            successBody={enquiry.successBody}
-                            minLeadDays={enquiry.minLeadDays}
-                        />
+                        <CorporateEnquiryForm {...formProps} />
                     </div>
                 </div>
-            </section>
+            </section> */}
 
             {/* FAQ */}
             <div id="faqs" className="scroll-mt-28">
@@ -333,6 +336,14 @@ export default async function CorporateOutingsPage({ params }) {
 
             <Footer location={location} navItems={navItems} locations={strapiLocations} />
             <MobBook location={location} />
+            <CorporateEnquiryModal
+                trigger={hero.primaryCta.href}
+                eyebrow={enquiry.eyebrow}
+                heading={enquiry.heading}
+                body={enquiry.body}
+                contact={contact}
+                formProps={formProps}
+            />
         </>
     );
 }
