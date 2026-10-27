@@ -1,3 +1,7 @@
+// "use client"; // skip if it's already there
+
+// import { useState } from "react";
+
 import { notFound } from 'next/navigation';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -56,6 +60,7 @@ export default async function CorporateOutingsPage({ params }) {
         getAllStrapiLocations(),
         getNavItems(location.slug),
     ]);
+    // const [banquetExpanded, setBanquetExpanded] = useState(false);
 
     return (
         <>
@@ -95,9 +100,25 @@ export default async function CorporateOutingsPage({ params }) {
                             <h2 className="h2">{intro.heading}</h2>
                         </div>
                         <div>
+                            <input type="checkbox" id="intro-readmore" className="peer sr-only" />
+
                             {intro.paragraphs.map((p, i) => (
-                                <p key={i} className="body-lg mb-4 last:mb-0">{p}</p>
+                                <p
+                                    key={i}
+                                    className={
+                                        i === 0
+                                            ? "body-lg m-0 line-clamp-2 peer-checked:line-clamp-none"
+                                            : "body-lg mt-4 mb-0 hidden peer-checked:block"
+                                    }
+                                >
+                                    {p}
+                                </p>
                             ))}
+
+                            <label
+                                htmlFor="intro-readmore"
+                                className="inline-block mt-2 cursor-pointer text-sm font-semibold text-[#0E7A93] underline underline-offset-4 hover:opacity-80 transition after:content-['Read_more'] peer-checked:after:content-['Read_less']"
+                            />
                         </div>
                     </Reveal>
                 </div>
@@ -188,6 +209,36 @@ export default async function CorporateOutingsPage({ params }) {
                 </div>
             </section>
 
+            {/* Safety */}
+            <section className="section-shell">
+                <div className="container-x">
+                    <Reveal>
+                        <div className="safety-band" style={{ paddingBottom: 48 }}>
+                            <div className="relative z-[1] grid grid-cols-[1fr_2fr] gap-8 items-center max-[1024px]:grid-cols-1">
+                                <div>
+                                    <span className="eyebrow eyebrow-sun mb-3 block">{safety.eyebrow}</span>
+                                    <h2 className="h1 text-white">{safety.heading}</h2>
+                                </div>
+                                <div className="grid grid-cols-2 gap-3 max-[520px]:grid-cols-1">
+                                    {safety.items.map((s, i) => (
+                                        <div
+                                            key={s.title}
+                                            className={`safety-grid-card flex gap-3 items-start ${i === safety.items.length - 1 && safety.items.length % 2 ? 'col-span-2 max-[520px]:col-span-1' : ''}`}
+                                        >
+                                            <span className="text-2xl leading-none">{s.icon}</span>
+                                            <div>
+                                                <h3 className="text-[15px] font-bold mb-0.5">{s.title}</h3>
+                                                <p className="text-[13px] text-ink-2 leading-relaxed m-0">{s.desc}</p>
+                                            </div>
+                                        </div>
+                                    ))}
+                                </div>
+                            </div>
+                        </div>
+                    </Reveal>
+                </div>
+            </section>
+
             {/* Banquet & R&R */}
             <section id="banquet" className="section-shell scroll-mt-28">
                 <div className="container-x">
@@ -195,8 +246,21 @@ export default async function CorporateOutingsPage({ params }) {
                         <div>
                             <span className="eyebrow mb-3 block">{banquet.eyebrow}</span>
                             <h2 className="h2 mb-4">{banquet.heading}</h2>
-                            <p className="body-lg m-0">{banquet.body}</p>
-                            <p className="text-sm text-ink-2 leading-relaxed mt-4 mb-0 max-w-[720px]">{banquet.note}</p>
+
+                            <input type="checkbox" id="banquet-readmore" className="peer sr-only" />
+
+                            <p className="body-lg m-0 line-clamp-2 peer-checked:line-clamp-none">
+                                {banquet.body}
+                            </p>
+
+                            <p className="hidden peer-checked:block text-sm text-ink-2 leading-relaxed mt-4 mb-0 max-w-[720px]">
+                                {banquet.note}
+                            </p>
+
+                            <label
+                                htmlFor="banquet-readmore"
+                                className="inline-block mt-2 cursor-pointer text-sm font-semibold text-[#0E7A93] underline underline-offset-4 hover:opacity-80 transition after:content-['Read_more'] peer-checked:after:content-['Read_less']"
+                            />
                         </div>
                         <div className="rounded-rx overflow-hidden aspect-[16/10] relative max-[720px]:rounded-[24px]">
                             {banquet.image ? (
@@ -229,38 +293,10 @@ export default async function CorporateOutingsPage({ params }) {
                 </div>
             </section>
 
-            {/* Safety */}
-            <section className="section-shell">
-                <div className="container-x">
-                    <Reveal>
-                        <div className="safety-band" style={{ paddingBottom: 48 }}>
-                            <div className="relative z-[1] grid grid-cols-[1fr_2fr] gap-8 items-center max-[1024px]:grid-cols-1">
-                                <div>
-                                    <span className="eyebrow eyebrow-sun mb-3 block">{safety.eyebrow}</span>
-                                    <h2 className="h1 text-white">{safety.heading}</h2>
-                                </div>
-                                <div className="grid grid-cols-2 gap-3 max-[520px]:grid-cols-1">
-                                    {safety.items.map((s, i) => (
-                                        <div
-                                            key={s.title}
-                                            className={`safety-grid-card flex gap-3 items-start ${i === safety.items.length - 1 && safety.items.length % 2 ? 'col-span-2 max-[520px]:col-span-1' : ''}`}
-                                        >
-                                            <span className="text-2xl leading-none">{s.icon}</span>
-                                            <div>
-                                                <h3 className="text-[15px] font-bold mb-0.5">{s.title}</h3>
-                                                <p className="text-[13px] text-ink-2 leading-relaxed m-0">{s.desc}</p>
-                                            </div>
-                                        </div>
-                                    ))}
-                                </div>
-                            </div>
-                        </div>
-                    </Reveal>
-                </div>
-            </section>
+
 
             {/* How to plan */}
-            <section id="plan" className="section-shell scroll-mt-28" style={{ background: 'white' }}>
+            {/* <section id="plan" className="section-shell scroll-mt-28" style={{ background: 'white' }}>
                 <div className="container-x">
                     <Reveal className="section-head">
                         <div>
@@ -289,7 +325,7 @@ export default async function CorporateOutingsPage({ params }) {
                         </ol>
                     </Reveal>
                 </div>
-            </section>
+            </section> */}
 
             {/* Enquiry */}
             {/* <section id="enquire" className="section-shell scroll-mt-28">
@@ -319,7 +355,7 @@ export default async function CorporateOutingsPage({ params }) {
             </div>
 
             {/* Closing CTA */}
-            <section className="section-shell">
+            {/* <section className="section-shell">
                 <div className="container-x">
                     <Reveal>
                         <div className="cta-banner" style={{ paddingBottom: 80 }}>
@@ -332,7 +368,7 @@ export default async function CorporateOutingsPage({ params }) {
                         </div>
                     </Reveal>
                 </div>
-            </section>
+            </section> */}
 
             <Footer location={location} navItems={navItems} locations={strapiLocations} />
             <MobBook location={location} />
