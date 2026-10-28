@@ -11,7 +11,7 @@ const LOCATION_META = {
     ctaLabel: 'Explore Surat →',
     bookLabel: 'Book Now',
     bookUrl: '/surat/tickets-and-offers',
-    image: 'https://www.aquaimagicaa.com/assets/images/surat-bg.jpg',
+    image: '/surat-bg.jpg',
   },
   indore: {
     tagline: 'MP\'s biggest water park',
@@ -21,7 +21,7 @@ const LOCATION_META = {
     ctaLabel: 'Explore Indore →',
     bookLabel: 'Book Now',
     bookUrl: '/indore/tickets-and-offers',
-    image: 'https://www.aquaimagicaa.com/assets/images/indore-bg.jpg',
+    image: '/indore-bg.jpg',
   },
   mehsana: {
     tagline: 'Explore Mehsana\'s Aqua Imagicaa',
@@ -72,7 +72,7 @@ export default function RootPage() {
       <div className="lp-inner">
         <header className="lp-header">
           <div className="lp-logo" aria-hidden="true" >
-            <Image height={400} width={200} src="https://www.aquaimagicaa.com/assets/images/Aquamagicaa-logo.png" alt="logo" />
+            <Image height={400} width={200} src="/Aquamagicaa-logo.png" alt="logo" />
           </div>
 
           <p className="lp-subtitle">India&apos;s Most Loved Water Park Experience</p>
