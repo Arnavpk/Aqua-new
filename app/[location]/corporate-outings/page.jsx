@@ -19,6 +19,7 @@ export function generateMetadata({ params }) {
     return { title: data.meta.title, description: data.meta.description };
 }
 
+
 /* ═════════════════════════════════════════════════════════════════════════════
    IMAGES — put all photos in:  public/images/corporate/
    Set any line to null to show the colour gradient instead (until the photo is ready).
