@@ -10,7 +10,7 @@ import { Footer } from '@/components/Footer';
 import { MobBook } from '@/components/MobBook';
 import { Reveal } from '@/components/Reveal';
 import { AboutContent } from '@/components/AboutContent';
-import { CorporateEnquiryForm } from '@/components/corporate/CorporateEnquiryForm';
+// import { CorporateEnquiryForm } from '@/components/corporate/CorporateEnquiryForm';
 import { CorporateEnquiryModal } from '@/components/corporate/CorporateEnquiryModal';
 
 export function generateMetadata({ params }) {
