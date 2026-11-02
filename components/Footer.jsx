@@ -41,12 +41,12 @@ function buildFooterColumns(links) {
       links: [
         { label: 'About', href: about },
         { label: 'Contact', href: '/contact-us' },
-        { label: 'Blogs', href: '/about/blog' },
+        { label: 'Blogs', href: '/blog' },
       ],
     },
     {
       heading: 'Legal',
-      links: [        
+      links: [
         { label: 'Terms & Conditions', href: '/terms-and-conditions' },
         { label: 'Privacy Policy', href: '/privacy-policy' },
         { label: 'Visitor Guide', href: '/visitor-guide' },
