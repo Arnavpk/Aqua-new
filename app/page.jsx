@@ -25,10 +25,11 @@ const LOCATION_META = {
   },
   mehsana: {
     tagline: 'Explore Mehsana\'s Aqua Imagicaa',
-    // rides: 'Opening 2026',
+    rides: '40+ International Rides',
     highlight: 'For booking: +91 9974417666',
-    // status: 'open',
+    status: 'open',
     ctaLabel: 'Explore Mehsana →',
+    bookLabel: 'Book Now',
     bookUrl: '/mehsana/tickets-and-offers',
     image: "https://www.shankuswaterpark.com/wp-content/uploads/2024/05/waterpark.jpg",
   },
