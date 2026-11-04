@@ -25,7 +25,7 @@ const LOCATION_META = {
   },
   mehsana: {
     tagline: 'Explore Mehsana\'s Aqua Imagicaa',
-    rides: '40+ International Rides',
+    rides: '40+ International Rides, ',
     highlight: 'For booking: +91 9974417666',
     status: 'open',
     ctaLabel: 'Explore Mehsana →',
