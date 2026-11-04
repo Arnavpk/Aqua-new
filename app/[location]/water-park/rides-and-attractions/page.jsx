@@ -1,7 +1,15 @@
 import { getLocation } from '@/lib/locations';
 import { getPage } from '@/lib/strapi/getPage';
 import { getAllStrapiRides, getRideCategories } from '@/lib/strapi/getRides';
-import { extractRideSections, extractFeaturedSpotlight, extractRideCategories, extractMosaicTiles, extractRidesHero, extractPlanSafety, extractFeaturedSpotlightSection } from '@/lib/extractors/rideExtractor';
+import {
+  extractRideSections,
+  extractFeaturedSpotlight,
+  extractRideCategories,
+  extractMosaicTiles,
+  extractRidesHero,
+  extractPlanSafety,
+  extractFeaturedSpotlightSection,
+} from '@/lib/extractors/rideExtractor';
 import { getAllStrapiLocations } from '@/lib/strapi/getLocations';
 import { getNavItems } from '@/lib/strapi/getNav';
 
@@ -10,8 +18,8 @@ import { Footer } from '@/components/Footer';
 import { MobBook } from '@/components/MobBook';
 import { RidesHero } from '@/components/rides/RidesHero';
 import { RidesContent } from '@/components/rides/RidesContent';
-import { RIDE_SECTIONS, RIDE_CATEGORIES, FEATURED_RIDE } from '@/lib/data/rides';
 import { RidesContent1 } from '@/components/rides/RidesContent1';
+import { RIDE_SECTIONS, RIDE_CATEGORIES, FEATURED_RIDE } from '@/lib/data/rides';
 
 export function generateMetadata({ params }) {
   const loc = getLocation(params.location);
@@ -22,18 +30,16 @@ export function generateMetadata({ params }) {
 }
 
 export default async function RidesPage({ params }) {
-
   const strapiCategories = await getRideCategories();
   const location = getLocation(params.location);
 
   const ridesPage = await getPage(location.slug, 'pages', 'water-park/rides-and-attractions');
   const strapiRides = await getAllStrapiRides(location.slug);
-  // console.log("LOCATION:", location.slug, "RIDES COUNT:", strapiRides.length);
+
   const sections = extractRideSections(strapiRides, strapiCategories) || RIDE_SECTIONS;
   const categories = extractRideCategories(strapiRides, strapiCategories) || RIDE_CATEGORIES;
   const featured = extractFeaturedSpotlight(strapiRides) || FEATURED_RIDE;
   const featuredSection = extractFeaturedSpotlightSection(ridesPage);
-
 
   const ridesHero = extractRidesHero(ridesPage);
   const planSafety = extractPlanSafety(ridesPage);
@@ -41,15 +47,15 @@ export default async function RidesPage({ params }) {
   const strapiLocations = await getAllStrapiLocations();
   const navItems = await getNavItems(location.slug);
 
-
   return (
     <>
       <Navbar location={location} locations={strapiLocations} navItems={navItems} />
       <RidesHero locationSlug={location.slug} data={ridesHero} mosaic={mosaicTiles} />
 
+      {location.slug === 'mehsana' && <RidesContent1 params={params} />}
 
-      {location.slug == "mehsana" && (<RidesContent1 params={params} />)}
-      <RidesContent id="rides"
+      <RidesContent
+        id="rides"
         locationSlug={location.slug}
         sections={sections}
         featured={featured}
@@ -58,7 +64,10 @@ export default async function RidesPage({ params }) {
         featuredSection={featuredSection}
       />
 
-      <Footer location={location} navItems={navItems} locations={strapiLocations} />
+      {/* pb-24 keeps the footer clear of the fixed mobile booking bar */}
+      <div className="pb-24 md:pb-0">
+        <Footer location={location} navItems={navItems} locations={strapiLocations} />
+      </div>
       <MobBook location={location} />
     </>
   );
