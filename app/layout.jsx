@@ -24,6 +24,7 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en" className={`${outfit.variable} ${space.variable}`}>
+      <head><meta name="google-site-verification" content="9vBKzRqKkkndEarA8yCRiyg5yG2bja98w3CyeTN-JXQ" /></head>
       <body>{children}</body>
     </html>
   );
