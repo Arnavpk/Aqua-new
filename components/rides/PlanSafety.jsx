@@ -27,7 +27,7 @@ export function PlanSafety({ locationSlug, data }) {
             </p>
             <div className="flex gap-3 flex-wrap relative">
               <button type="button" className="btn btn-primary">{d.planCtaLabel}</button>
-              <Link href={d.planCtaUrl || `/${locationSlug}/tickets`} className="btn btn-glass">See tickets</Link>
+              <Link href={d.planCtaUrl || `/${locationSlug}/tickets-and-offers`} className="btn btn-glass">See tickets</Link>
             </div>
           </div>
 
