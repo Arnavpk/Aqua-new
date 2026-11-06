@@ -12,6 +12,7 @@ import { Footer } from '@/components/Footer';
 import { MobBook } from '@/components/MobBook';
 import { Reveal } from '@/components/Reveal';
 import { FaqAccordion } from '@/components/faq/FaqAccordion';
+import { notFound } from 'next/navigation';
 
 export async function generateMetadata({ params }) {
     const location = getLocation(params.location);
@@ -24,6 +25,9 @@ export async function generateMetadata({ params }) {
 
 export default async function FaqHelpPage({ params, locations }) {
     const location = getLocation(params.location);
+    if (!location) {
+        notFound();
+    }
     const base = `/${location.slug}`;
 
     const [strapiLocations, navItems, faqPage] = await Promise.all([
