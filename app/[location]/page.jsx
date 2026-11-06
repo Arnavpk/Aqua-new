@@ -30,10 +30,15 @@ import { getAllStrapiLocations } from '@/lib/strapi/getLocations';
 import { getNavItems } from '@/lib/strapi/getNav';
 import { extractAboutStory } from '@/lib/extractors/aboutExtractor';
 import Image from 'next/image';
+import { notFound } from 'next/navigation';
 
 
 export default async function LocationHome({ params }) {
   const location = getLocation(params.location);
+  // 2. Catch invalid locations and return a 404
+  if (!location) {
+    notFound();
+  }
   const homePage = await getPage(location.slug, 'pages', 'home');
   const hero = homePage ? extractHero(homePage) : null;
   const featuredRides = homePage ? extractFeaturedRides(homePage) : null;

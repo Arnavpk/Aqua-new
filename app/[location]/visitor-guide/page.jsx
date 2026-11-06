@@ -10,6 +10,7 @@ import { MobBook } from '@/components/MobBook';
 
 
 import { TermsContent } from '@/components/TermsContent';
+import { notFound } from 'next/navigation';
 
 export function generateMetadata({ params }) {
   const loc = getLocation(params.location);
@@ -21,6 +22,10 @@ export function generateMetadata({ params }) {
 
 export default async function VisitorGuidePage({ params }) {
   const location = getLocation(params.location);
+
+  if (!location) {
+    notFound();
+  }
   const base = `/${location.slug}`;
   const strapiLocations = await getAllStrapiLocations();
   const navItems = await getNavItems(location.slug);

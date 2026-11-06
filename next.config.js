@@ -24,9 +24,13 @@ const nextConfig = {
                 protocol: 'https', // switch to https in production
                 hostname: 'www.shankuswaterpark.com',
                 pathname: '/**',
+            },
+            // Your new Strapi production subdomain
+            {
+                protocol: 'https',
+                hostname: 'strapi.aquaimagicaa.com',
+                pathname: '/uploads/**',
             }
-            // add production Strapi domain here once deployed, e.g.:
-            // { protocol: 'https', hostname: 'cms.aquaimagica.com', pathname: '/uploads/**' }
         ],
     },
 };
