@@ -12,6 +12,7 @@ import { Footer } from '@/components/Footer';
 import { Reveal } from '@/components/Reveal';
 import { getNavItems } from '@/lib/strapi/getNav';
 import Image from 'next/image';
+import { notFound } from 'next/navigation';
 
 
 export function generateMetadata({ params }) {
@@ -24,6 +25,10 @@ export function generateMetadata({ params }) {
 
 export default async function RetailShopPage({ params }) {
   const location = getLocation(params.location);
+
+  if (!location) {
+    notFound();
+  }
   const base = `/${location.slug}`;
   const strapiLocations = await getAllStrapiLocations();
 

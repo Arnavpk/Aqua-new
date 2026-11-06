@@ -7,10 +7,14 @@ import { getLocation } from '@/lib/locations';
 import { getAllStrapiLocations } from '@/lib/strapi/getLocations';
 import { getNavItems } from '@/lib/strapi/getNav';
 import { getPage } from '@/lib/strapi/getPage';
+import { notFound } from 'next/navigation';
 import React from 'react'
 
 const GuestServices = async ({ params }) => {
     const location = getLocation(params.location);
+    if (!location) {
+        notFound();
+    }
     const base = `/${location.slug}`;
     const strapiLocations = await getAllStrapiLocations();
     const navItems = await getNavItems(location.slug);
