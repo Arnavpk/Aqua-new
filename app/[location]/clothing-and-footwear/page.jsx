@@ -8,6 +8,7 @@ import { PageHero } from '@/components/PageHero';
 import { Footer } from '@/components/Footer';
 import { MobBook } from '@/components/MobBook';
 import { TermsContent } from '@/components/TermsContent';
+import { notFound } from 'next/navigation';
 
 const FALLBACK_BODY = [
   'Aqua Imagicaa Water Park offers a range of nylon, lycra and polyester branded swimwear and costumes for purchase at the Park. For hygiene reasons swimwear is not available on rental. Only nylon, polyester and lycra-based swimwear is permitted on all slides and attractions.',
@@ -41,6 +42,10 @@ export function generateMetadata({ params }) {
 
 export default async function ClothingAndFootwearPage({ params }) {
   const location = getLocation(params.location);
+
+  if (!location) {
+    notFound();
+  }
   const base = `/${location.slug}`;
   const strapiLocations = await getAllStrapiLocations();
   const navItems = await getNavItems(location.slug);
