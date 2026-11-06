@@ -52,7 +52,7 @@ export default async function HappierBirthdayPage({ params }) {
                 breadcrumbs={[{ label: 'Home', href: base }, { label: 'Tickets & offers', href: `${base}/tickets-and-offers` }, { label: 'Happier Birthday' }]}
                 primaryCta={{ label: hero.primaryCtaLabel, href: bookHref }}
                 secondaryCta={hero.secondaryCta}
-                stats={hero.stats}
+                // stats={hero.stats}
                 bgImage={hero.bgImage}
                 mobileImage={hero.mobileImage}
             />
@@ -87,11 +87,11 @@ export default async function HappierBirthdayPage({ params }) {
                     </Reveal>
 
                     <Reveal className="mt-5 flex flex-wrap items-center justify-between gap-4">
-                        <ul className="m-0 p-0 list-none flex flex-wrap gap-2">
+                        {/* <ul className="m-0 p-0 list-none flex flex-wrap gap-2">
                             {offer.notes.map((n) => (
                                 <li key={n} className="rest-tag inline-flex items-center gap-1.5 bg-white">✓ {n}</li>
                             ))}
-                        </ul>
+                        </ul> */}
                         <a href={bookHref} className="btn btn-primary">{hero.primaryCtaLabel}</a>
                     </Reveal>
                 </div>
@@ -104,7 +104,7 @@ export default async function HappierBirthdayPage({ params }) {
                         <div>
                             <span className="eyebrow mb-2 block">{experiences.eyebrow}</span>
                             <h2 className="h2 mb-2">{experiences.heading}</h2>
-                            <p className="text-[15px] text-ink-2 m-0 max-w-[560px]">{experiences.subtitle}</p>
+                            {/* <p className="text-[15px] text-ink-2 m-0 max-w-[560px]">{experiences.subtitle}</p> */}
                         </div>
                     </Reveal>
                     <Reveal className="grid grid-cols-4 gap-4 max-[1024px]:grid-cols-2 max-[720px]:gap-3">
@@ -123,7 +123,7 @@ export default async function HappierBirthdayPage({ params }) {
             </section>
 
             {/* You'll love */}
-            <section className="section-shell">
+            {/* <section className="section-shell">
                 <div className="container-x">
                     <Reveal className="section-head">
                         <div>
@@ -141,7 +141,12 @@ export default async function HappierBirthdayPage({ params }) {
                         ))}
                     </Reveal>
                 </div>
-            </section>
+            </section> */}
+
+            {/* FAQ */}
+            <div id="faqs" className="scroll-mt-28">
+                <AboutContent faqData={faq} aboutFaqs={faq.faqs} />
+            </div>
 
             {/* Terms */}
             <section id="terms" className="section-shell scroll-mt-28" style={{ background: 'white' }}>
@@ -171,10 +176,7 @@ export default async function HappierBirthdayPage({ params }) {
                 </div>
             </section>
 
-            {/* FAQ */}
-            <div id="faqs" className="scroll-mt-28">
-                <AboutContent faqData={faq} aboutFaqs={faq.faqs} />
-            </div>
+
 
             {/* Closing CTA */}
             <section className="section-shell">
