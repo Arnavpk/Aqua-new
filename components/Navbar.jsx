@@ -68,7 +68,7 @@ export function Navbar({ location, locations, navItems }) {
   }else if (base.includes('surat')) {
     bookingLink = 'https://www.aquaimagicaa.com/book-now?theme=aquaimagicaa&location_id=6';
   }else {
-    bookingLink = '/mehsana/tickets-and-offers';
+    bookingLink = 'https://www.aquaimagicaa.com/book-now?theme=aquaimagicaa&location_id=8';
   }
 
   return (
