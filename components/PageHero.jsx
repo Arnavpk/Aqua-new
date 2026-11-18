@@ -11,12 +11,47 @@ export function PageHero({
   secondaryCta = null,
   bgImage = null,
   mobileImage = null,
+  // Optional { width, height } of the images. Only used when the hero shows the image alone,
+  // to reserve the right space before the image loads.
+  bgImageSize = null,
+  mobileImageSize = null,
   bgVideo = null,
   mobileVideo = null,
   videoPoster = null,
   fill = '#EAFBFD',
 }) {
   const hasMedia = Boolean(bgVideo || bgImage);
+  const hasContent = Boolean(eyebrow || title || subtitle || primaryCta || secondaryCta || stats.length);
+
+  // No text, buttons or stats: show the image at its own proportions instead of
+  // squeezing it into the padded text layout, so it doesn't shrink. No dark overlay.
+  if (!hasContent && !bgVideo && bgImage) {
+    const separateMobile = Boolean(mobileImage && mobileImage !== bgImage);
+    return (
+      <header className="relative overflow-hidden">
+        <Image
+          src={bgImage}
+          alt=""
+          width={bgImageSize?.width || 3840}
+          height={bgImageSize?.height || 1600}
+          sizes="100vw"
+          priority
+          className={`block w-full h-auto ${separateMobile ? 'hidden md:block' : ''}`}
+        />
+        {separateMobile && (
+          <Image
+            src={mobileImage}
+            alt=""
+            width={mobileImageSize?.width || 2160}
+            height={mobileImageSize?.height || 1920}
+            sizes="100vw"
+            className="block w-full h-auto md:hidden"
+          />
+        )}
+        <WaveDivider fill={fill} />
+      </header>
+    );
+  }
 
   return (
     <header
@@ -52,13 +87,19 @@ export function PageHero({
         </>
       ) : bgImage ? (
         <>
-          <Image height={200} width={400}
-            className="absolute inset-0 h-full w-full object-cover z-0 hidden md:block"
+          {/* fill + sizes="100vw" so the browser gets a full-width image, not a 400px one stretched. */}
+          <Image
+            fill
+            sizes="100vw"
+            priority
+            className="object-cover z-0 hidden md:block"
             src={bgImage}
             alt=""
           />
-          <Image height={200} width={400}
-            className="absolute inset-0 h-full w-full object-cover z-0 md:hidden"
+          <Image
+            fill
+            sizes="100vw"
+            className="object-cover z-0 md:hidden"
             src={mobileImage || bgImage}
             alt=""
           />
@@ -91,7 +132,7 @@ export function PageHero({
           </nav>
         )}
         {eyebrow && <span className="eyebrow eyebrow-sun mb-4 block">{eyebrow}</span>}
-        <h1 className="h-display mb-4">{title}</h1>
+        {title && <h1 className="h-display mb-4">{title}</h1>}
         {subtitle && (
           <p className="mt-4 text-lg text-white/85 max-w-[600px] leading-relaxed">{subtitle}</p>
         )}
